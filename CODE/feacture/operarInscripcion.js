@@ -30,9 +30,8 @@ document.addEventListener("DOMContentLoaded", function () {
   var apellido_nino = document.getElementById("apellido_nino");
   var dni_nino = document.getElementById("DNI_nino");
   var fecha_nacimiento = document.getElementById("fecha_nacimiento");
-  var programa = document.getElementById('programa1');
-  var seguro = document.getElementById('seguro_si');
-
+  var programa = document.getElementById("programa1");
+  var seguro = document.getElementById("seguro_si");
 
   nombre.onblur = function () {
     if (nombre.value == "") {
@@ -138,25 +137,130 @@ document.addEventListener("DOMContentLoaded", function () {
   };
 
   //VERTIFICAMOS CUANDO PRESIONAMOS EL ENVIAR
-  document.getElementById("enviar").addEventListener("click", function () {
+  document.getElementById("enviar").addEventListener("click", function (event) {
     // Validar campos requeridos
-    if (nombre.value === '') mostrarError(nombre, 'El nombre es obligatorio') ;
-    if (apellido.value === '') mostrarError(apellido, 'El apellido es obligatorio');
-    if (direccion.value === '') mostrarError(direccion, 'La dirección es obligatoria');
-    if (ciudad.value === '') mostrarError(ciudad, 'La ciudad es obligatoria');
-    if (provincia.value === '') mostrarError(provincia, 'La provincia es obligatoria');
-    if (codigo_postal.value === '') mostrarError(codigo_postal, 'El código postal es obligatorio');
-    if (pais.value === '') mostrarError(pais, 'El país es obligatorio');
-    if (correo.value === '') mostrarError(correo, 'El correo es obligatorio');
-    if (telefono.value === '') mostrarError(telefono, 'El teléfono es obligatorio');
-    if (dni.value === '') mostrarError(dni, 'El DNI es obligatorio');
-    if (nombre_nino.value === '') mostrarError(nombre_nino, 'El nombre del niño es obligatorio');
-    if (apellido_nino.value === '') mostrarError(apellido_nino, 'El apellido del niño es obligatorio');
-    if (dni_nino.value === '') mostrarError(dni_nino, 'El DNI del niño es obligatorio');
-    if (fecha_nacimiento.value === '') mostrarError(fecha_nacimiento, 'La fecha de nacimiento es obligatoria');
-    if (programas.value === '') mostrarError(programa, 'Debe seleccionar al menos un programa');
-    if (seguro.value === '') mostrarError(seguro, 'Debe seleccionar una opción de seguro de cancelación');
+    let error = false; // Por defecto no hay errores
 
+    if (nombre.value === "") {
+      mostrarError(nombre, "El nombre es obligatorio");
+      error = true;
+    } else {
+      error = false;
+    }
+
+    if (apellido.value === "") {
+      mostrarError(apellido, "El apellido es obligatorio");
+      error = true;
+    } else {
+      error = false;
+    }
+
+    if (direccion.value === "") {
+      mostrarError(direccion, "La dirección es obligatoria");
+      error = true;
+    } else {
+      error = false;
+    }
+
+    if (ciudad.value === "") {
+      mostrarError(ciudad, "La ciudad es obligatoria");
+      error = true;
+    } else {
+      error = false;
+    }
+
+    if (provincia.value === "") {
+      mostrarError(provincia, "La provincia es obligatoria");
+      error = true;
+    } else {
+      error = false;
+    }
+
+    if (codigo_postal.value === "") {
+      mostrarError(codigo_postal, "El código postal es obligatorio");
+      error = true;
+    } else {
+      error = false;
+    }
+
+    if (pais.value === "") {
+      mostrarError(pais, "El país es obligatorio");
+      error = true;
+    } else {
+      error = false;
+    }
+
+    if (correo.value === "") {
+      mostrarError(correo, "El correo es obligatorio");
+      error = true;
+    } else {
+      error = false;
+    }
+
+    if (telefono.value === "") {
+      mostrarError(telefono, "El teléfono es obligatorio");
+      error = true;
+    } else {
+      error = false;
+    }
+
+    if (dni.value === "") {
+      mostrarError(dni, "El DNI es obligatorio");
+      error = true;
+    } else {
+      error = false;
+    }
+
+    if (nombre_nino.value === "") {
+      mostrarError(nombre_nino, "El nombre del niño es obligatorio");
+      error = true;
+    } else {
+      error = false;
+    }
+
+    if (apellido_nino.value === "") {
+      mostrarError(apellido_nino, "El apellido del niño es obligatorio");
+      error = true;
+    } else {
+      error = false;
+    }
+
+    if (dni_nino.value === "") {
+      mostrarError(dni_nino, "El DNI del niño es obligatorio");
+      error = true;
+    } else {
+      error = false;
+    }
+
+    if (fecha_nacimiento.value === "") {
+      mostrarError(fecha_nacimiento, "La fecha de nacimiento es obligatoria");
+      error = true;
+    } else {
+      error = false;
+    }
+
+    if (programas.value === "") {
+      mostrarError(programas, "Debe seleccionar al menos un programa");
+      error = true;
+    } else {
+      error = false;
+    }
+
+    if (seguro.value === "") {
+      mostrarError(
+        seguro,
+        "Debe seleccionar una opción de seguro de cancelación"
+      );
+      error = true;
+    } else {
+      error = false;
+    }
+
+    if (error == true) {
+      event.preventDefault(); // Evita que el formulario se envíe
+      // Aquí puedes agregar tu lógica de validación o cualquier otra acción
+      console.log("Formulario validado pero no enviado.");
+    }
   });
 });
 
