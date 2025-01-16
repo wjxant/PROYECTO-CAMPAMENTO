@@ -1,3 +1,4 @@
+//COMPROBACION DE ENTRADA
 function mostrarError(campo, mensaje) {
     // Limpiar mensaje de error previo
     var error = campo.nextElementSibling;
@@ -14,7 +15,6 @@ function mostrarError(campo, mensaje) {
         campo.parentNode.insertBefore(error, campo.nextSibling);
     }
 }
-
 document.addEventListener('DOMContentLoaded', function () {
     var nombre = document.getElementById('nombre');
     var apellido = document.getElementById('apellido');
@@ -158,6 +158,10 @@ function validarFormulario() {
         mostrarError(document.getElementById('seguro_si'), 'Debe seleccionar una opción de seguro de cancelación');
         valido = false;
     }
-
     return valido;
 }
+
+//VERTIFICAMOS CUANDO PRESIONAMOS EL ENVIAR
+document.getElementById('enviar').addEventListener('click', function(){
+
+});
