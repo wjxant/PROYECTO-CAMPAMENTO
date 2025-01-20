@@ -167,3 +167,24 @@ correoSignup.addEventListener('input', function() {
 contrasenaSignup.addEventListener('input', function() {
     validarCampos(contrasenaSignup, errorContrasenaSignup, validarContrasena); // Llama a la función de validación para la contraseña de signup
 });
+
+
+//--------------------------------------------------------------------------------------------//
+// Listener para la validación al perder el foco (onblur)
+//--------------------------------------------------------------------------------------------//
+correoLogin.addEventListener('blur', function () {
+    validarCampos(correoLogin, errorCorreoLogin, validarCorreo); // Valida el correo de login al perder el foco
+});
+
+contrasenaLogin.addEventListener('blur', function () {
+    validarCampos(contrasenaLogin, errorContrasenaLogin, validarContrasena); // Valida la contraseña de login al perder el foco
+});
+
+correoSignup.addEventListener('blur', function () {
+    validarCampos(correoSignup, errorCorreoSignup, validarCorreo); // Valida el correo de signup al perder el foco
+});
+
+contrasenaSignup.addEventListener('blur', function () {
+    validarCampos(contrasenaSignup, errorContrasenaSignup, validarContrasena); // Valida la contraseña de signup al perder el foco
+});
+
