@@ -1,3 +1,34 @@
+//-----------------------------------------------------------------------------------------//
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("loginForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        // Validación de los campos de correo y contraseña
+        let email = document.getElementById("email").value;
+        let pswd = document.getElementById("pswd").value;
+//--------------------------------------------------------------------------------------------//
+        // Envío de los datos al servidor para la validación
+        fetch("../Server/GestionarLogin.php", {  // Enviar los datos al script PHP
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: `email=${encodeURIComponent(email)}&pswd=${encodeURIComponent(pswd)}`
+        })
+//--------------------------------------------------------------------------------------------//
+        // Redirección a la página principal después de un éxito en el login
+        .then(response => response.text()) // Se obtiene el texto de la respuesta
+        .then(data => {
+            if (data.includes("Error")) { 
+                alert(data);
+            } else {
+                window.location.href = data;
+            }
+        })
+        .catch(error => console.error("Error:", error));
+    });
+});
+//-----------------------------------------------------------------------------------------//
+
 //--------------------------------------------------------------------------------------------//
 // Selección de elementos de formulario (Iniciar sesión y Crear Cuenta)
 //--------------------------------------------------------------------------------------------//
