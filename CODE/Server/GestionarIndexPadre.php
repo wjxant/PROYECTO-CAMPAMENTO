@@ -1,0 +1,146 @@
+<?php
+// servidor enviará estará en formato JSON
+header('Content-Type: application/json');
+require_once 'conexion.php';
+// comprobacion de conexion
+if ($conn->connect_error) {
+    echo json_encode(['error' => 'Error de conexión a la base de datos']);
+    exit();
+}
+
+session_start(); // Reanuda/recuperar la sesión que teníamos creada
+//comprobamos si recoge el id
+if (!isset($_SESSION['id'])) {
+    //en caso si no se recoge bien el id
+    echo json_encode(['error' => 'No se encontró la sesión del usuario.']);
+    exit();
+}
+
+// Obtener el contenido JSON de la solicitud POST
+$data = json_decode(file_get_contents('php://input'), true);
+
+// Preparar la consulta para evitar inyección SQL
+//SACAR TODOS INFORMACION DEL PADRE
+$queryInfoPadre = $conn->prepare("SELECT * FROM TUTORES WHERE id_tutor = ?");
+$queryInfoPadre->bind_param("i", $_SESSION['id']);    //asignamos el valor de ?, es un i porque es un numero(integer)
+$queryInfoPadre->execute();   //ejecutar en bbdd
+$result = $queryInfoPadre->get_result();  //recoge el resultado de la consulta 
+// Comprobamos la respuesta de la consulta
+if ($result->num_rows > 0) {    //comprueba si hay resultado o no 
+    $infoPadre = $result->fetch_assoc();  //extraer los datos del primier fila ([nombre => padreEjemplo, wjdwedeu, sduewhud, sduhuwe]), en este caso en js no hace falta mapear, por que solo hay una fila de datos
+}
+//cerramos e query
+$queryInfoPadre->close();
+
+//-------------------------------------------------------------------------------------------------------------------------
+//SACAR TODO LOS HIJOS DE UN PADRE
+$queryInfoHijo = $conn->prepare("SELECT * FROM NINOS WHERE id_tutor = ?");
+$queryInfoHijo->bind_param("i", $_SESSION['id']);    //asignamos el valor de ?, es un i porque es un numero(integer)
+$queryInfoHijo->execute();   //ejecutar en bbdd
+$result = $queryInfoHijo->get_result();  //recoge el resultado de la consulta 
+// Comprobamos si hay resultados
+$infoHijos = [];  // Creamos un array vacío para almacenar la información de los hijos
+while ($row = $result->fetch_assoc()) {
+    // Añadimos cada hijo al array
+    $infoHijos[] = $row;
+}
+
+//-------------------------------------------------------------------------------------------------------------------------
+//SACAR LOS INFOS DE UN HIJO
+$datoHijo = [];
+$nombreGrupo = [];
+$profesorNino = [];
+$idProfesorNino = [];
+$actividades = [];  // Creamos un array vacío para almacenar los actividades
+if (isset($data['id_nino'])) {
+    //SACAR INFORMACION BASICO DEL NIÑO
+    $id_nino = $data['id_nino'];
+    $querydatoHijo = $conn->prepare("SELECT * FROM NINOS WHERE id_nino = ?");
+    $querydatoHijo->bind_param("i", $id_nino);    //asignamos el valor de ?, es un i porque es un numero(integer)
+    $querydatoHijo->execute();   //ejecutar en bbdd
+    $result = $querydatoHijo->get_result();  //recoge el resultado de la consulta 
+    // Comprobamos la respuesta de la consulta
+    if ($result->num_rows > 0) {    //comprueba si hay resultado o no 
+        $datoHijo = $result->fetch_assoc();  //extraer los datos del primier fila ([nombre => padreEjemplo, wjdwedeu, sduewhud, sduhuwe]), en este caso en js no hace falta mapear, por que solo hay una fila de datos
+    } else {
+        // echo json_encode(['error' => "No se encontraron datos para esta Hijo con el ID " . $id_nino]);
+        // exit();
+    }
+    //var_dump($datoHijo);  // Puedes dejar esta línea si es necesario para debugging.
+    //cerramos e query
+    $querydatoHijo->close();
+
+    //SACAR EL NOMBRE DEL GRUPO QUE PERTENECE EL NIÑO
+    $querygrupoNino = $conn->prepare("SELECT G.nombre 
+                                                FROM GRUPOS G
+                                                JOIN GRUPO_NINOS GN ON G.id_grupo = GN.id_grupo
+                                                WHERE GN.id_nino = ?;
+                                                ");
+    $querygrupoNino->bind_param("i", $id_nino);    //asignamos el valor de ?, es un i porque es un numero(integer)
+    $querygrupoNino->execute();   //ejecutar en bbdd
+    $result = $querygrupoNino->get_result();  //recoge el resultado de la consulta 
+    // Comprobamos la respuesta de la consulta
+    if ($result->num_rows > 0) {    //comprueba si hay resultado o no 
+        $grupoHijo = $result->fetch_assoc();  //extraer los datos del primier fila ([nombre => padreEjemplo, wjdwedeu, sduewhud, sduhuwe]), en este caso en js no hace falta mapear, por que solo hay una fila de datos
+        $nombreGrupo = $grupoHijo['nombre'];
+    } else {
+        // echo json_encode(['error' => "No se encontraron datos de nombre del grupo para esta persona con el ID " . $id_nino]);
+        // exit();
+    }
+    //var_dump($datoHijo);  // Puedes dejar esta línea si es necesario para debugging.
+    //cerramos e query
+    $querygrupoNino->close();
+
+    //SACAR EL NOMBRE Y EL ID DEL MONITOR DEL GRUPO DEL NIÑO QUE PERTENECE
+    $queryprofesorgrupoNino = $conn->prepare("SELECT M.nombre AS monitor_nombre, M.id_monitor AS monitor_id
+                                                FROM MONITORES M
+                                                JOIN GRUPOS G ON M.id_monitor = G.id_monitor
+                                                JOIN GRUPO_NINOS GN ON G.id_grupo = GN.id_grupo
+                                                WHERE GN.id_nino = ?;
+                                                ");
+    $queryprofesorgrupoNino->bind_param("i", $id_nino);    //asignamos el valor de ?, es un i porque es un numero(integer)
+    $queryprofesorgrupoNino->execute();   //ejecutar en bbdd
+    $result = $queryprofesorgrupoNino->get_result();  //recoge el resultado de la consulta 
+    // Comprobamos la respuesta de la consulta
+    if ($result->num_rows > 0) {    //comprueba si hay resultado o no 
+        $profesor = $result->fetch_assoc();  //extraer los datos del primier fila ([nombre => padreEjemplo, wjdwedeu, sduewhud, sduhuwe]), en este caso en js no hace falta mapear, por que solo hay una fila de datos
+        $profesorNino = $profesor['monitor_nombre'];
+        $idProfesorNino =  $profesor['monitor_id'];
+    } else {
+        // echo json_encode(['error' => "No se encontraron datos para sacar el monitor y el id del monitor para esta persona con el ID " . $id_nino]);
+        // exit();
+    }
+    //cerramos e query
+    $queryprofesorgrupoNino->close();
+
+
+    //HACEMOS LA CONSULTA PARA ENVIAR TODO LOS ACTIVIDADES QUE HAY CON EL MONITOR
+    $queryActividades = $conn->prepare("SELECT * FROM ACTIVIDADES WHERE id_monitor = ?");
+    $queryActividades->bind_param("i", $idProfesorNino);    //asignamos el valor de ?, es un i porque es un numero(integer)
+    $queryActividades->execute();   //ejecutar en bbdd
+    $result = $queryActividades->get_result();  //recoge el resultado de la consulta 
+    // Comprobamos la respuesta de la consulta
+    if ($result->num_rows > 0) {    //comprueba si hay resultado o no 
+        // Comprobamos si hay resultados
+        while ($row = $result->fetch_assoc()) {
+            // Añadimos cada hijo al array
+            $actividades[] = $row;
+        }
+    } else {
+        // echo json_encode(['error' => "No se encontraron datos para esta persona con el ID " . $id_nino]);
+        // exit();
+    }
+    //cerramos e query
+    $queryActividades->close();
+}
+
+echo json_encode([
+    'id_Padre' => $_SESSION['id'],
+    'infoPadre' => $infoPadre,
+    'infoHijos' => $infoHijos,
+    'datoHijo' => $datoHijo,
+    'nombreGrupo' => $nombreGrupo,
+    'profesorHijo' => $profesorNino,
+    'idProfesorHijo' => $idProfesorNino,
+    'actividades' => $actividades
+]);

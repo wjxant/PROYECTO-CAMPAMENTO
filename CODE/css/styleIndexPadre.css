@@ -1,0 +1,233 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+}
+
+/* Estilo del navbar */
+.navbar {
+    background-color: #8a58c9;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.navbar > ul {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar > ul > li {
+    position: relative;
+    padding: 15px 20px;
+    color: white;
+    cursor: pointer;
+}
+
+.navbar > ul > li:hover {
+    background-color: #7a4fb8;
+}
+
+.navbar > ul > li > a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* Estilo del submenú */
+.submenu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #e7d6f5;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    z-index: 10;
+    min-width: 200px;
+}
+
+.submenu li {
+    padding: 10px 20px;
+    white-space: nowrap;
+    color: #4a3f63;
+    border-bottom: 1px solid #d1bae8;
+    list-style: none;
+}
+
+.submenu li:last-child {
+    border-bottom: none;
+}
+
+.submenu li:hover {
+    background-color: #d1bae8;
+}
+
+.navbar > ul > li:hover .submenu {
+    display: block;
+}
+
+/* Ajuste para evitar que el submenú se salga de la pantalla */
+.navbar > ul > li:hover .submenu {
+    right: 0;
+    left: auto;
+}
+
+.logo {
+    margin-right: auto;
+}
+
+.logo img {
+    height: 50px;
+    border-radius: 8px;
+}
+
+@media (max-width: 768px) {
+    .submenu {
+        right: auto;
+        left: 0;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.padres {
+    width: 80%;
+    margin: 20px auto;
+    background-color: #e6ccff;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    position: relative;
+}
+
+#imagenPadres img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+
+#nombrePadres {
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+#correoPadres {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+/* Estilos para el select de hijos */
+#selectHijo {
+    margin: 10px auto;
+    position: relative;
+    display: inline-block;
+}
+
+#selectHijo select {
+    padding: 8px 12px;
+    font-size: 14px;
+    border: 2px solid #800080;
+    border-radius: 5px;
+    background-color: white;
+    color: #333;
+    cursor: pointer;
+    appearance: none; /* Oculta el estilo nativo del navegador */
+}
+
+#selectHijo::after {
+    content: "▼";
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #800080;
+    font-size: 12px;
+}
+
+#tablaPadres {
+    background-color: white;
+    padding: 10px;
+    border-radius: 10px;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ccc;
+}
+
+th {
+    background-color: #b300b3;
+    color: white;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.hijo {
+    width: 80%;
+    margin: 20px auto;
+    background-color: #e6ccff;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+}
+
+.divFotoHijo img {
+    width: 120px;
+    height: 120px;
+    border-radius: 10px;
+    margin-right: 20px;
+}
+
+.divInformacionHijo {
+    font-size: 16px;
+}
+
+.divInformacionHijo div {
+    font-weight: bold;
+}
+
+button {
+    background-color: #800080;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #a600a6;
+}
+
+.oculto {
+    display: none;
+  }
