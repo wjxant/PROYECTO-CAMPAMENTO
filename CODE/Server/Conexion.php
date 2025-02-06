@@ -60,16 +60,25 @@ $sql_tables = "
         id_grupo INT PRIMARY KEY AUTO_INCREMENT,
         nombre VARCHAR(50) NOT NULL,
         id_monitor INT NOT NULL,
-        id_nino INT NOT NULL,
-        FOREIGN KEY (id_monitor) REFERENCES MONITORES(id_monitor),
-        FOREIGN KEY (id_nino) REFERENCES NINOS(id_nino)
+        FOREIGN KEY (id_monitor) REFERENCES MONITORES(id_monitor)
     );
+
+    CREATE TABLE IF NOT EXISTS GRUPO_NINOS (
+        id_grupo INT NOT NULL,
+        id_nino INT NOT NULL,
+        PRIMARY KEY (id_grupo, id_nino),
+        FOREIGN KEY (id_grupo) REFERENCES GRUPOS(id_grupo) ON DELETE CASCADE,
+        FOREIGN KEY (id_nino) REFERENCES NINOS(id_nino) ON DELETE CASCADE
+    );
+
 
     CREATE TABLE IF NOT EXISTS ACTIVIDADES (
         id_actividad INT PRIMARY KEY AUTO_INCREMENT,
         titulo VARCHAR(50) NOT NULL,
         descripcion TEXT,
         hora TIME NOT NULL,
+        hora_fin TIME NOT NULL,
+        dia date not null,
         id_monitor INT NOT NULL,
         FOREIGN KEY (id_monitor) REFERENCES MONITORES(id_monitor)
     );
