@@ -143,6 +143,7 @@ fetch("../Server/GestionarIndexPadre.php", {
                 const tabla = document.getElementById('tablaActividad').getElementsByTagName('tbody')[0];
                 //borramos el contenido anterior
                 tabla.innerHTML="";
+                document.getElementById('infoTabla').innerHTML="";
                 //comprobamos si hay actividad o no 
                 if (data.actividades.length>0){
                     data.actividades.forEach(actividad =>{
