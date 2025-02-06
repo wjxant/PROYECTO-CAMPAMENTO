@@ -1,30 +1,25 @@
 <?php
+//----------------------------------------------------------------------------------------//
+// Configuración de conexión
+//----------------------------------------------------------------------------------------//
 $servername = "localhost";
 $username = "root";
 $password = "";
 $dbname = "Campamento";
 
 //----------------------------------------------------------------------------------------//
-// Crear la conexión
+// Crear la conexión (sin seleccionar la base aún)
 //----------------------------------------------------------------------------------------//
 $conn = new mysqli($servername, $username, $password);
-
-//----------------------------------------------------------------------------------------//
-// Verificar la conexión
-//----------------------------------------------------------------------------------------//
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
 //----------------------------------------------------------------------------------------//
-// Crear la Base de datos si no existe
+// Crear la base de datos si no existe
 //----------------------------------------------------------------------------------------//
 $sql = "CREATE DATABASE IF NOT EXISTS $dbname";
-if ($conn->query($sql) === TRUE) {
-    echo "Base de datos creada con éxito<br>";
-} else {
-    echo "Error al crear la base de datos: " . $conn->error . "<br>";
-}
+$conn->query($sql);  // Se crea la base de datos si no existe, sin imprimir nada
 
 //----------------------------------------------------------------------------------------//
 // Seleccionar la base de datos
@@ -85,64 +80,44 @@ $sql_tables = "
         contrasenia VARCHAR(20) NOT NULL
     );
 ";
-
-// Ejecutar la creación de tablas
-if ($conn->multi_query($sql_tables)) {
-    echo "Tablas creadas con éxito.<br>";
-} else {
-    echo "Error al crear las tablas: " . $conn->error . "<br>";
-}
-
-// Esperar a que terminen todas las consultas anteriores.
-while ($conn->more_results() && $conn->next_result()) {}
+$conn->multi_query($sql_tables);  // Se ejecuta la creación de todas las tablas
+while ($conn->more_results() && $conn->next_result()) {}  // Espera a que terminen todas las consultas
 
 //----------------------------------------------------------------------------------------//
 // Insertar datos de prueba si no existen
 //----------------------------------------------------------------------------------------//
-
-// Verificar si ya existen registros antes de insertar
 $check_tutor = "SELECT COUNT(*) as count FROM TUTORES WHERE email = 'padre@ejemplo.com'";
 $check_monitor = "SELECT COUNT(*) as count FROM MONITORES WHERE email = 'monitor@ejemplo.com'";
 $check_admin = "SELECT COUNT(*) as count FROM ADMIN WHERE email = 'admin@ejemplo.com'";
 
-// Comprobar e insertar tutor
+// Insertar Tutor
 $result = $conn->query($check_tutor);
 $row = $result->fetch_assoc();
 if ($row['count'] == 0) {
     $sql_insert_tutor = "INSERT INTO TUTORES (nombre, dni, telefono, email, contrasenia) 
                          VALUES ('Padre Ejemplo', '12345678A', '123456789', 'padre@ejemplo.com', '1234567')";
-    if ($conn->query($sql_insert_tutor) === TRUE) {
-        echo "Tutor insertado correctamente.<br>";
-    } else {
-        echo "Error insertando tutor: " . $conn->error . "<br>";
-    }
+    $conn->query($sql_insert_tutor);
 }
 
-// Comprobar e insertar monitor
+// Insertar Monitor
 $result = $conn->query($check_monitor);
 $row = $result->fetch_assoc();
 if ($row['count'] == 0) {
     $sql_insert_monitor = "INSERT INTO MONITORES (nombre, email, contrasenia) 
                            VALUES ('Monitor Ejemplo', 'monitor@ejemplo.com', '1234567')";
-    if ($conn->query($sql_insert_monitor) === TRUE) {
-        echo "Monitor insertado correctamente.<br>";
-    } else {
-        echo "Error insertando monitor: " . $conn->error . "<br>";
-    }
+    $conn->query($sql_insert_monitor);
 }
 
-// Comprobar e insertar admin
+// Insertar Admin
 $result = $conn->query($check_admin);
 $row = $result->fetch_assoc();
 if ($row['count'] == 0) {
     $sql_insert_admin = "INSERT INTO ADMIN (email, contrasenia) 
                          VALUES ('admin@ejemplo.com', 'admin1234')";
-    if ($conn->query($sql_insert_admin) === TRUE) {
-        echo "Admin insertado correctamente.<br>";
-    } else {
-        echo "Error insertando admin: " . $conn->error . "<br>";
-    }
+    $conn->query($sql_insert_admin);
 }
 
-
+//----------------------------------------------------------------------------------------//
+// No se cierra la conexión para que se pueda usar en GestionarLogin.php IMPORTANTE
+//----------------------------------------------------------------------------------------//
 ?>

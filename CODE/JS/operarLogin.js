@@ -1,32 +1,42 @@
-//-----------------------------------------------------------------------------------------//
 document.addEventListener("DOMContentLoaded", function () {
+    //----------------------------------------------------------------------------------------//
+    // Añadir listener para el submit del formulario de login
+    //----------------------------------------------------------------------------------------//
     document.getElementById("loginForm").addEventListener("submit", function (e) {
-        e.preventDefault();
-        // Validación de los campos de correo y contraseña
+        e.preventDefault();  // Prevenir el comportamiento por defecto del formulario
+        //----------------------------------------------------------------------------------------//
+        // Obtener los valores de los campos de email y contraseña
+        //----------------------------------------------------------------------------------------//
         let email = document.getElementById("email").value;
         let pswd = document.getElementById("pswd").value;
-//--------------------------------------------------------------------------------------------//
-        // Envío de los datos al servidor para la validación
-        fetch("../Server/GestionarLogin.php", {  // Enviar los datos al script PHP
+
+        //----------------------------------------------------------------------------------------//
+        // Enviar los datos al servidor usando fetch
+        //----------------------------------------------------------------------------------------//
+        fetch("../Server/GestionarLogin.php", {  // Verifica que la ruta sea correcta
             method: "POST",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded"
             },
             body: `email=${encodeURIComponent(email)}&pswd=${encodeURIComponent(pswd)}`
         })
-//--------------------------------------------------------------------------------------------//
-        // Redirección a la página principal después de un éxito en el login
-        .then(response => response.text()) // Se obtiene el texto de la respuesta
+        .then(response => response.json())  // Parsear la respuesta como JSON
         .then(data => {
-            if (data.includes("Error")) { 
-                alert(data);
+            //------------------------------------------------------------------------------------//
+            // Procesar la respuesta JSON
+            //------------------------------------------------------------------------------------//
+            if (data.error) { 
+                alert(data.error);
+            } else if (data.redirect) {
+                window.location.href = data.redirect;
             } else {
-                window.location.href = data;
+                alert("Respuesta desconocida del servidor.");
             }
         })
-        .catch(error => console.error("Error:", error));
+        .catch(error => console.error("Error:", error));  // Manejar errores en la petición 
     });
 });
+
 //-----------------------------------------------------------------------------------------//
 
 //--------------------------------------------------------------------------------------------//
