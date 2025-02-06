@@ -36,9 +36,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($result && $result->num_rows > 0) {
         $_SESSION["usuario"] = $email;
         $_SESSION["tipo"] = "TUTOR";
-        $row = $result->fetch_assoc();  // Obtener la fila de datos
-        $_SESSION["id"] = $row["id_tutor"]; // Guardar el id_tutor en la sesión
-        $_SESSION["login"] = "OK";
         echo json_encode(["redirect" => "../html/IndexPadre.html"]);
         exit();
     }
@@ -51,9 +48,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($result && $result->num_rows > 0) {
         $_SESSION["usuario"] = $email;
         $_SESSION["tipo"] = "MONITOR";
-        $row = $result->fetch_assoc();  // Obtener la fila de datos
-        $_SESSION["id"] = $row["id_monitor"];   // Guardar el id_tutor en la sesión
-        $_SESSION["login"] = "OK";
         echo json_encode(["redirect" => "../html/IndexMonitor.html"]);
         exit();
     }
@@ -66,9 +60,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($result && $result->num_rows > 0) {
         $_SESSION["usuario"] = $email;
         $_SESSION["tipo"] = "ADMIN";
-        $row = $result->fetch_assoc();  // Obtener la fila de datos
-        $_SESSION["id"] = $row["id_admin"]; // Guardar el id_admin en la sesion 
-        $_SESSION["login"] = "OK";
         echo json_encode(["redirect" => "../html/IndexAdmin.html"]);
         exit();
     }
