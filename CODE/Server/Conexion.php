@@ -30,15 +30,21 @@ if ($conn->query($sql) === TRUE) {
 // Seleccionar la base de datos a utilizar.
 $conn->select_db($dbname);
 
+//----------------------------------------------------------------------------------------//
+// Creación de tablas e inserción de datos
+//----------------------------------------------------------------------------------------//
 $sql_tables = "
     CREATE TABLE IF NOT EXISTS TUTORES (
         id_tutor INT PRIMARY KEY AUTO_INCREMENT, 
         nombre VARCHAR(50) NOT NULL,
         dni VARCHAR(9) NOT NULL,
         telefono VARCHAR(9) NOT NULL,
-        email VARCHAR(50) NOT NULL,
+        email VARCHAR(50) NOT NULL UNIQUE,
         contrasenia VARCHAR(20) NOT NULL
     );
+
+    INSERT IGNORE INTO TUTORES (id_tutor, nombre, dni, telefono, email, contrasenia) VALUES 
+    (1, 'Padre Ejemplo', '12345678A', '123456789', 'padre@ejemplo.com', '1234567');
 
     CREATE TABLE IF NOT EXISTS NINOS (
         id_nino INT PRIMARY KEY AUTO_INCREMENT, 
@@ -53,10 +59,13 @@ $sql_tables = "
     CREATE TABLE IF NOT EXISTS MONITORES (
         id_monitor INT PRIMARY KEY AUTO_INCREMENT,
         nombre VARCHAR(50) NOT NULL,
-        email VARCHAR(50) NOT NULL,
+        email VARCHAR(50) NOT NULL UNIQUE,
         contrasenia VARCHAR(20) NOT NULL
     );
-    
+
+    INSERT IGNORE INTO MONITORES (id_monitor, nombre, email, contrasenia) VALUES 
+    (1, 'Monitor Ejemplo', 'monitor@ejemplo.com', '1234567');
+
     CREATE TABLE IF NOT EXISTS GRUPOS (
         id_grupo INT PRIMARY KEY AUTO_INCREMENT,
         nombre VARCHAR(50) NOT NULL,
@@ -71,77 +80,28 @@ $sql_tables = "
         titulo VARCHAR(50) NOT NULL,
         descripcion TEXT,
         hora TIME NOT NULL,
+        id_monitor INT NOT NULL,
         FOREIGN KEY (id_monitor) REFERENCES MONITORES(id_monitor)
     );
-    
+
     CREATE TABLE IF NOT EXISTS ADMIN (
         id_admin INT PRIMARY KEY AUTO_INCREMENT,
-        email VARCHAR(50) NOT NULL,
+        email VARCHAR(50) NOT NULL UNIQUE,
         contrasenia VARCHAR(20) NOT NULL
     );
+
+    INSERT IGNORE INTO ADMIN (id_admin, email, contrasenia) VALUES 
+    (1, 'admin@ejemplo.com', 'admin1234');
 ";
 
 //----------------------------------------------------------------------------------------//
-// Ejecutar la creación de las tablas
+// Ejecutar la creación de las tablas e inserción de datos
 //----------------------------------------------------------------------------------------//
 if ($conn->multi_query($sql_tables) === TRUE) {
-    echo "Tablas creadas con éxito<br>";
+    echo "Tablas creadas e inicializadas con éxito.<br>";
 } else {
-    echo "Error al crear las tablas: " . $conn->error . "<br>";
+    echo "Error al crear tablas o insertar datos: " . $conn->error . "<br>";
 }
-
-// Esperar a que terminen todas las consultas anteriores.
-while ($conn->more_results() && $conn->next_result()) {}
-
-//----------------------------------------------------------------------------------------//
-// Insertar datos en las tablas (datos de prueba)
-//----------------------------------------------------------------------------------------//
-
-// Inserción de datos de prueba en TUTORES
-$sql_insert_tutor = "
-INSERT INTO TUTORES (nombre, dni, telefono, email, contrasenia)
-SELECT 'Padre Ejemplo', '12345678A', '123456789', 'padre@ejemplo.com', '1234567'
-WHERE NOT EXISTS (SELECT 1 FROM TUTORES WHERE email = 'padre@ejemplo.com');
-";
-
-// Inserción de datos de prueba en MONITORES
-$sql_insert_monitor = "
-INSERT INTO MONITORES (nombre, email, contrasenia)
-SELECT 'Monitor Ejemplo', 'monitor@ejemplo.com', '1234567'
-WHERE NOT EXISTS (SELECT 1 FROM MONITORES WHERE email = 'monitor@ejemplo.com');
-";
-
-// Inserción de datos de prueba en ADMIN
-$sql_insert_admin = "
-INSERT INTO ADMIN (email, contrasenia)
-SELECT 'admin@ejemplo.com', 'admin1234'
-WHERE NOT EXISTS (SELECT 1 FROM ADMIN WHERE email = 'admin@ejemplo.com');
-";
-
-//----------------------------------------------------------------------------------------//
-
-//----------------------------------------------------------------------------------------//
-// Ejecutar inserciones
-//----------------------------------------------------------------------------------------//
-if ($conn->query($sql_insert_tutor) === TRUE) {
-    echo "Tutor insertado correctamente.<br>";
-} else {
-    echo "Error insertando tutor: " . $conn->error . "<br>";
-}
-
-if ($conn->query($sql_insert_monitor) === TRUE) {
-    echo "Monitor insertado correctamente.<br>";
-} else {
-    echo "Error insertando monitor: " . $conn->error . "<br>";
-}
-
-if ($conn->query($sql_insert_admin) === TRUE) {
-    echo "Admin insertado correctamente.<br>";
-} else {
-    echo "Error insertando admin: " . $conn->error . "<br>";
-}
-
-//----------------------------------------------------------------------------------------//
 
 //----------------------------------------------------------------------------------------//
 // Cerrar la conexión
