@@ -9,12 +9,24 @@ if ($conn->connect_error) {
 }
 
 session_start(); // Reanuda/recuperar la sesión que teníamos creada
+//el comprobar login tiene que estar arriba del todo, porque si cae en el condicion, se encia al js y se para todo
+$login = "no";
+//comprobar si ha logueado o no 
+if (!isset($_SESSION["login"])){
+    echo json_encode(['noLogin' => '../html/noLogeado.html']);
+    exit(); //detenerse
+}else{
+    $login= "ok";
+}
+
+
 //comprobamos si recoge el id
 if (!isset($_SESSION['id'])) {
     //en caso si no se recoge bien el id
     echo json_encode(['error' => 'No se encontró la sesión del usuario.']);
     exit();
 }
+
 
 // Obtener el contenido JSON de la solicitud POST
 $data = json_decode(file_get_contents('php://input'), true);
@@ -145,6 +157,7 @@ if (isset($data['id_nino'])) {
 
 
 echo json_encode([
+    'login' => $login,
     'id_Padre' => $_SESSION['id'],
     'infoPadre' => $infoPadre,
     'infoHijos' => $infoHijos,

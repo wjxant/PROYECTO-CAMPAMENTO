@@ -27,8 +27,13 @@ fetch("../Server/GestionarIndexPadre.php", {
     if (data.error) {
         //en caso de si
         alert('Error: ' + data.error);
-    }else{
-        //en caso de no
+    }
+    else if (data.noLogin){
+        window.location.href = data.noLogin;  // Redirige a la URL proporcionada en el JSON
+        console.log(`Login: ${data.login}`);  //comprobar el login
+      }else{
+        //en caso de no hay error
+        console.log(`Login: ${data.login}`);  //comprobar el login
         //AQUI SE REVIBE LOS RESPUESTAS DEL SERVIDOR
         idPadre.innerHTML='ID: '+data.id_Padre;
         nombrePadre.innerHTML=data.infoPadre['nombre'];
@@ -96,7 +101,7 @@ fetch("../Server/GestionarIndexPadre.php", {
         })
         .then(response => {
             if (!response.ok) {
-                throw new Error('Error al obtener datos del servidor.');
+                throw new Error('Error al obtener datos del servidor (2).');
             }
             return response.json();
         })
@@ -104,7 +109,7 @@ fetch("../Server/GestionarIndexPadre.php", {
             //comprobar si es un error o no
             if (data.error) {
                 //en caso de si
-                console.log('Error: ' + data.error);
+                console.log('2Error: ' + data.error);
             }else{
                 console.log("Datos del hijo: ",data.datoHijo)
                 nombreHijo.innerHTML = data.datoHijo['nombre'];
