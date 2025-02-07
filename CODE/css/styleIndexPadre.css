@@ -231,3 +231,20 @@ button:hover {
 .oculto {
     display: none;
   }
+
+
+  button#modificar {
+    background-color: #7E3EFF;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-left: auto;
+    width: 150px;
+}
+/* #suscribirse{
+
+    margin-left: 50%;
+    margin-top: -5em;
+} */

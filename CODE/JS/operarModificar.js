@@ -243,9 +243,38 @@ formulario.onsubmit = function(event) {
     event.preventDefault(); // Evita el envío del formulario
 
   }
-
-
-
-  
 }
+
+
+
+
+
+//id del nino
+//--------------------------------------------------------------------------------//
+let idNino = 0;
+//--------------------------------------------------------------------------------//
+//CONEXION BBDD
+fetch("../Server/GestionarModificar.php", {
+    method: 'POST',
+    headers: {
+        'Content-type': 'application/json',
+    },
+    // body: JSON.stringify({ inscribirse: "ok"})
+})
+.then(response => {
+    if (!response.ok) {
+        throw new Error('Error al obtener datos del servidor.');
+    }
+    return response.json();
+})
+.then(data => {
+    //comprobar si es un error o no
+    if (data.error) {
+        //en caso de si
+        console.log('Error: ' + data.error);
+    } else {
+      console.log(`El id del niño es: ${data.id_nino}`) //recogemos el dato
+      idNino = data.id_nino;  //asignamos al varible
+    }
+})
 

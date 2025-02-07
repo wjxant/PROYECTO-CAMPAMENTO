@@ -177,16 +177,19 @@ fetch("../Server/GestionarIndexPadre.php", {
                     document.getElementById('tablaActividad').classList.add('oculto')
                     document.getElementById('infoTabla').innerHTML = "No tiene ninguna actividad programada";
                 }
-
-
             }
-
-
-
         })
-
     }
-
-
-
 })
+
+//cuando presionamos el boton de inscribir un niño
+document.getElementById('suscribirse').addEventListener('click', function() {
+    $paginaInscripcion = '../html/inscripcion.html'
+    window.location.href = $paginaInscripcion;
+});
+
+//cuando presionamos el boton de modificar un niño
+document.getElementById('modificar').addEventListener('click', function() {
+    $paginaModificar = '../html/Modificar.html'
+    window.location.href = $paginaModificar;
+});

@@ -184,4 +184,31 @@ formulario.onsubmit = function(event) {
 
   }
 }
-
+//id del padre
+//--------------------------------------------------------------------------------//
+let idPadre = 0;
+//--------------------------------------------------------------------------------//
+//CONEXION BBDD
+fetch("../Server/GestionarInscripcion.php", {
+    method: 'POST',
+    headers: {
+        'Content-type': 'application/json',
+    },
+    // body: JSON.stringify({ inscribirse: "ok"})
+})
+.then(response => {
+    if (!response.ok) {
+        throw new Error('Error al obtener datos del servidor.');
+    }
+    return response.json();
+})
+.then(data => {
+    //comprobar si es un error o no
+    if (data.error) {
+        //en caso de si
+        console.log('Error: ' + data.error);
+    } else {
+      console.log(`El id del padre es: ${data.id_Padre}`) //recogemos el dato
+      idPadre = data.id_Padre;  //asignamos al varible
+    }
+})

@@ -54,6 +54,8 @@ $idProfesorNino = [];
 $actividades = [];  // Creamos un array vacío para almacenar los actividades
 if (isset($data['id_nino'])) {
     //SACAR INFORMACION BASICO DEL NIÑO
+    //guardamos el id de niño al server
+    $_SESSION["idNino"] = $data['id_nino'];
     $id_nino = $data['id_nino'];
     $querydatoHijo = $conn->prepare("SELECT * FROM NINOS WHERE id_nino = ?");
     $querydatoHijo->bind_param("i", $id_nino);    //asignamos el valor de ?, es un i porque es un numero(integer)
@@ -134,6 +136,13 @@ if (isset($data['id_nino'])) {
     //cerramos e query
     $queryActividades->close();
 }
+
+
+// if (isset($data['inscribirse'])) {
+//     echo json_encode(["redirect" => "../html/IndexPadre.html"]);
+// }
+
+
 
 echo json_encode([
     'id_Padre' => $_SESSION['id'],
