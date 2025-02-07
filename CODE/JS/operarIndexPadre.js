@@ -186,9 +186,12 @@ fetch("../Server/GestionarIndexPadre.php", {
 
                 //estado del niños
                 // Asegúrate de que las fechas estén en formato adecuado
-                let fechaInicio = new Date(data.fecha_inicio); 
-                let fechaFin = new Date(data.fecha_fin);
+                let fechaInicio = new Date(data.datoHijo['fecha_inicio']); 
+                let fechaFin = new Date(data.datoHijo['fecha_fin']);
                 let fechaActual = new Date();  // Obtiene la fecha y hora actuales
+
+                console.log(`fecha inicio: ${fechaInicio}`);
+                console.log(`fecha fin: ${fechaFin}`)
 
                 // Compara las fechas
                 if (fechaActual < fechaInicio) {
@@ -202,6 +205,11 @@ fetch("../Server/GestionarIndexPadre.php", {
                     estadoHijo.innerHTML="normal";
                 }else{
                     estadoHijo.innerHTML="error";
+                }
+                //para decir en caso si no esta pagado
+                console.log(data.datoHijo['pagado'])
+                if (data.datoHijo['pagado'] !== true){
+                    estadoHijo.innerHTML="No pagado"
                 }
             }
         })
