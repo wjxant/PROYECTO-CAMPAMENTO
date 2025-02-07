@@ -146,6 +146,8 @@ fetch("../Server/GestionarIndexPadre.php", {
                 document.getElementById('infoTabla').innerHTML="";
                 //comprobamos si hay actividad o no 
                 if (data.actividades.length>0){
+                    //Quitamos el escondido
+                    document.getElementById('tablaActividad').classList.remove('oculto');
                     data.actividades.forEach(actividad =>{
                         // Crea una nueva fila
                         const nuevaFila = tabla.insertRow();
@@ -171,6 +173,8 @@ fetch("../Server/GestionarIndexPadre.php", {
                     })
                 }else{
                     //en caso si no hay actividad
+                    //escondemos la tabla
+                    document.getElementById('tablaActividad').classList.add('oculto')
                     document.getElementById('infoTabla').innerHTML = "No tiene ninguna actividad programada";
                 }
 
