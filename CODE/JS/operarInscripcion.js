@@ -268,6 +268,7 @@ function enviarBBDD(){
     observacionesTXT = "nada"
   }
 
+  ///////FALTA POR TERMINARRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
 
 //   //FETCH
 //   fetch("../Server/GestionarInscripcion.php", {

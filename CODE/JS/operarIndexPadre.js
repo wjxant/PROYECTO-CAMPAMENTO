@@ -8,6 +8,7 @@ const edadHijo = document.getElementById('edadHijo');
 const alergia = document.getElementById('alergiaHijo');
 const grupoHijo = document.getElementById('grupoHijo');
 const profesorHijo = document.getElementById('profesorHijo');
+const estadoHijo = document.getElementById('estadoHijo');
 
 //conexion con php
 fetch("../Server/GestionarIndexPadre.php", {
@@ -181,6 +182,26 @@ fetch("../Server/GestionarIndexPadre.php", {
                     //escondemos la tabla
                     document.getElementById('tablaActividad').classList.add('oculto')
                     document.getElementById('infoTabla').innerHTML = "No tiene ninguna actividad programada";
+                }
+
+                //estado del niños
+                // Asegúrate de que las fechas estén en formato adecuado
+                let fechaInicio = new Date(data.fecha_inicio); 
+                let fechaFin = new Date(data.fecha_fin);
+                let fechaActual = new Date();  // Obtiene la fecha y hora actuales
+
+                // Compara las fechas
+                if (fechaActual < fechaInicio) {
+                    // Si la fecha actual es menor que la fecha de inicio o mayor que la fecha de fin
+                    console.log("El niño esta en estado no iniciado.");
+                    estadoHijo.innerHTML="no iniciado";
+                } else if(fechaActual > fechaFin){
+                    console.log("El niño está caducado.");
+                    estadoHijo.innerHTML="caducado";
+                }else if(fechaActual > fechaInicio && fechaActual < fechaFin){
+                    estadoHijo.innerHTML="normal";
+                }else{
+                    estadoHijo.innerHTML="error";
                 }
             }
         })
