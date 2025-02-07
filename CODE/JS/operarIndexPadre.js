@@ -208,7 +208,7 @@ fetch("../Server/GestionarIndexPadre.php", {
                 }
                 //para decir en caso si no esta pagado
                 console.log(data.datoHijo['pagado'])
-                if (data.datoHijo['pagado'] !== true){
+                if (data.datoHijo['pagado'] !== 1){
                     estadoHijo.innerHTML="No pagado"
                 }
             }
