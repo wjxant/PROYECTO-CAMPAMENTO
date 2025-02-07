@@ -71,7 +71,7 @@ fetch("../Server/GestionarIndexPadre.php", {
                 hijoSeleccionado = this.value;  //se coge el valor del seleccionado, porque he asignado el id a su valor
                 console.log('ID del niño seleccionado:'+ hijoSeleccionado);
                 //despues del cambiar (change) se muestra otra vez el dato, cambiando el id
-                if (hijoSeleccionado!=0){
+                if (hijoSeleccionado!=0){   //comprueba el id es mayor que 0 
                     mostarDatosNino(hijoSeleccionado)
                 }
                
@@ -79,7 +79,7 @@ fetch("../Server/GestionarIndexPadre.php", {
         }
         console.log("id hijo seleccionado:" +hijoSeleccionado)
         //se muestra dato una vez cargado
-        if (hijoSeleccionado!=0){
+        if (hijoSeleccionado!=0){   //comprueba el id es mayor que 0 
             mostarDatosNino(hijoSeleccionado)
        }
     }

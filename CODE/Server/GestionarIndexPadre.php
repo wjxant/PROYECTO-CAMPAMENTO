@@ -75,7 +75,8 @@ if (isset($data['id_nino'])) {
                                                 FROM GRUPOS G
                                                 JOIN GRUPO_NINOS GN ON G.id_grupo = GN.id_grupo
                                                 WHERE GN.id_nino = ?;
-                                                ");
+                                                "); //Es una consulta doble: primero, obtenemos el id_grupo al que pertenece el niño desde la tabla GRUPO_NINOS. Luego, utilizamos ese id_grupo para consultar la tabla GRUPOS y obtener el nombre del grupo correspondiente
+    
     $querygrupoNino->bind_param("i", $id_nino);    //asignamos el valor de ?, es un i porque es un numero(integer)
     $querygrupoNino->execute();   //ejecutar en bbdd
     $result = $querygrupoNino->get_result();  //recoge el resultado de la consulta 
@@ -97,7 +98,7 @@ if (isset($data['id_nino'])) {
                                                 JOIN GRUPOS G ON M.id_monitor = G.id_monitor
                                                 JOIN GRUPO_NINOS GN ON G.id_grupo = GN.id_grupo
                                                 WHERE GN.id_nino = ?;
-                                                ");
+                                                "); //Primero, obtenemos el id_grupo al que pertenece el id_nino desde la tabla GRUPO_NINOS. Luego, usamos ese id_grupo para obtener el id_monitor desde la tabla GRUPOS. Finalmente, con el id_monitor, obtenemos la información del monitor del niño desde la tabla MONITORES
     $queryprofesorgrupoNino->bind_param("i", $id_nino);    //asignamos el valor de ?, es un i porque es un numero(integer)
     $queryprofesorgrupoNino->execute();   //ejecutar en bbdd
     $result = $queryprofesorgrupoNino->get_result();  //recoge el resultado de la consulta 
@@ -105,7 +106,7 @@ if (isset($data['id_nino'])) {
     if ($result->num_rows > 0) {    //comprueba si hay resultado o no 
         $profesor = $result->fetch_assoc();  //extraer los datos del primier fila ([nombre => padreEjemplo, wjdwedeu, sduewhud, sduhuwe]), en este caso en js no hace falta mapear, por que solo hay una fila de datos
         $profesorNino = $profesor['monitor_nombre'];
-        $idProfesorNino =  $profesor['monitor_id'];
+        $idProfesorNino =  $profesor['monitor_id']; //aqui sacamos el id del monitor corespondiente del niño
     } else {
         // echo json_encode(['error' => "No se encontraron datos para sacar el monitor y el id del monitor para esta persona con el ID " . $id_nino]);
         // exit();
@@ -115,7 +116,7 @@ if (isset($data['id_nino'])) {
 
 
     //HACEMOS LA CONSULTA PARA ENVIAR TODO LOS ACTIVIDADES QUE HAY CON EL MONITOR
-    $queryActividades = $conn->prepare("SELECT * FROM ACTIVIDADES WHERE id_monitor = ?");
+    $queryActividades = $conn->prepare("SELECT * FROM ACTIVIDADES WHERE id_monitor = ?");   //sacamos todo los informaciones del actividad, dependiendo del monitor
     $queryActividades->bind_param("i", $idProfesorNino);    //asignamos el valor de ?, es un i porque es un numero(integer)
     $queryActividades->execute();   //ejecutar en bbdd
     $result = $queryActividades->get_result();  //recoge el resultado de la consulta 
