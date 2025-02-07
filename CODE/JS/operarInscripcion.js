@@ -1,28 +1,25 @@
 //recogemos nombres en html 
 const nombre = document.getElementById("nombre");
-const apellido = document.getElementById("apellido");
 const correo = document.getElementById("correo");
 const telefono = document.getElementById("telefono");
 const dni = document.getElementById("DNI");
 const nombre_nino = document.getElementById("nombre_nino");
-const apellido_nino = document.getElementById("apellido_nino");
 const dni_nino = document.getElementById("DNI_nino");
 const fecha_nacimiento = document.getElementById("fecha_nacimiento");
-const seguro = document.getElementById("seguro_si");
+const alergia = document.getElementById("alergiaNew");
+const observaciones = document.getElementById('observaciones');
 
 
 // Los divs donde se mostrarán los errores
 const errornombre = document.getElementById("errornombre");
-const errorapellido = document.getElementById("errorapellido");
 const errorcorreo = document.getElementById("errorcorreo");
 const errortelefono = document.getElementById("errortelefono");
 const errorDNI = document.getElementById("errorDNI");
 const errornombre_nino = document.getElementById("errornombre_nino");
-const errorapellido_nino = document.getElementById("errorapellido_nino");
 const errorDNI_nino = document.getElementById("errorDNI_nino");
 const errorfecha_nacimiento = document.getElementById("errorfecha_nacimiento");
 const errorprograma = document.getElementById("errorprograma");
-const errorseguro = document.getElementById("errorseguro");
+const errorAlergia = document.getElementById("errorAlergiaNew");
 
 //funcion para mostrar el eror
 function mostrarError(lugar, mensaje) {
@@ -45,13 +42,6 @@ function comprobarNombre (){
     mostrarError(errornombre, "El nombre no puede estar vacío");
   } else {
     mostrarError(errornombre, "");
-  }
-}
-function comprobarApellido() {
-  if (apellido.value == "") {
-    mostrarError(errorapellido, "El apellido no puede estar vacío");
-  } else {
-    mostrarError(errorapellido, "");
   }
 }
 function comprobarCorreo() {
@@ -97,13 +87,7 @@ function comprobarNombreNino() {
     mostrarError(errornombre_nino, "");
   }
 }
-function comprobarApellidoNino() {
-  if (apellido_nino.value == "") {
-    mostrarError(errorapellido_nino, "El apellido del niño no puede estar vacío");
-  } else {
-    mostrarError(errorapellido_nino, "");
-  }
-}
+
 function comprobarDniNino() {
   if (dni_nino.value == "") {
     mostrarError(errorDNI_nino, "El DNI del niño no puede estar vacío");
@@ -131,59 +115,97 @@ function comprobarFechaNacimiento() {
   }
 }
 
-// Asignar el evento onblur a cada campo
+
+let alergiatxt = 'no';  //variable pasa raber si tiene alergia o no
+function comprobarAlergia() {
+  let seleccionado = document.querySelector('input[name="alergiaNew"]:checked');
+  if (!seleccionado) return; // No hacer nada si no hay un radio seleccionado
+  let espacio = document.getElementById('espacioInputAlergiaNew');
+  if (seleccionado.value === "si") {
+    if (!document.getElementById('alergiasNew')) {
+      espacio.innerHTML = `
+        <textarea
+            name="alergiasNew"
+            id="alergiasNew"
+            cols="30"
+            rows="10"
+        ></textarea>
+      `;
+      document.getElementById('alergiasNew').onblur = comprobarInputAlergia;
+      alergiatxt = "si"
+    }
+  } else if (seleccionado.value === "no") {
+    espacio.innerHTML = ''; // Elimina el textarea si selecciona "No"
+    mostrarError(errorAlergia); // Limpia el mensaje de error
+    alergiatxt = "no";
+  }
+}
+
+function comprobarInputAlergia() {
+  let inputAlergia = document.getElementById('alergiasNew');
+  if (!inputAlergia) return; // No hacer nada si el textarea no existe
+  let valorAlergia = inputAlergia.value.trim();
+  if (valorAlergia === "") {
+    mostrarError(errorAlergia, "Alergia no indicada");
+  } else {
+    mostrarError(errorAlergia);
+  }
+}
+
+// Asignar evento "change" a los radios
+document.querySelectorAll('input[name="alergiaNew"]').forEach(radio => {
+  radio.addEventListener("change", comprobarAlergia);
+});
 nombre.onblur = comprobarNombre;
-apellido.onblur = comprobarApellido;
 correo.onblur = comprobarCorreo;
 telefono.onblur = comprobarTelefono;
 dni.onblur = comprobarDni;
 nombre_nino.onblur = comprobarNombreNino;
-apellido_nino.onblur = comprobarApellidoNino;
 dni_nino.onblur = comprobarDniNino;
 fecha_nacimiento.onblur = comprobarFechaNacimiento;
 
-//cando presiomos el boton 
+
+// Evento submit del formulario
+//cogemos el formulario
 const formulario = document.getElementById('formularioInscripcion');
-// Asigna un evento submit
+//cuando hacemos el submit
 formulario.onsubmit = function(event) {
   comprobarNombre();
-  comprobarApellido();
   comprobarCorreo();
   comprobarTelefono();
   comprobarDni();
   comprobarNombreNino();
-  comprobarApellidoNino();
   comprobarDniNino();
   comprobarFechaNacimiento();
-  
+  comprobarInputAlergia();
 
-// Función para comprobar si los elementos de error están vacíos
+  // Función para verificar errores
   function checkError(element) {
     return element && element.textContent.trim() === "";
   }
 
-  // Comprobamos todos los errores
-  //en caso si hay algun error, saltaria el alert y bloquearia el envio
   if (
     checkError(errornombre) &&
-    checkError(errorapellido) &&
     checkError(errorcorreo) &&
     checkError(errortelefono) &&
     checkError(errorDNI) &&
     checkError(errornombre_nino) &&
-    checkError(errorapellido_nino) &&
     checkError(errorDNI_nino) &&
     checkError(errorfecha_nacimiento) &&
-    checkError(errorseguro)
+    checkError(errorAlergia)
   ) {
-    // Si todos los errores están vacíos
-    //AQUI DE DEJA EL PASO SOGUIENTE
-  }else{
-    alert('El formulario contiene errores');
-    event.preventDefault(); // Evita el envío del formulario
+    // Formulario válido, permitir el envío
+    //AQUI ES LO SIGUIENTE PASO
+    enviarBBDD()
 
+
+  } else {
+    mostrarError(document.getElementById('errorEnviar'), "El formulario contiene errores");
+    event.preventDefault(); // Evita el envío del formulario
   }
-}
+};
+
+
 //id del padre
 //--------------------------------------------------------------------------------//
 let idPadre = 0;
@@ -213,5 +235,71 @@ fetch("../Server/GestionarInscripcion.php", {
       console.log(`Login: ${data.login}`);  //comprobar el login
       console.log(`El id del padre es: ${data.id_Padre}`) //recogemos el dato
       idPadre = data.id_Padre;  //asignamos al varible
+
+      //rellenamos los datos del padre con el funcion rellenarInput
+      rellenarInput(nombre, data.infoPadre['nombre']);
+      rellenarInput(correo, data.infoPadre['email']);
+      rellenarInput(telefono, data.infoPadre['telefono']);
+      rellenarInput(dni, data.infoPadre['dni']);
+
     }
 })
+
+function rellenarInput (input, valor){
+  input.value = valor;  //escribir
+  input.disabled = true; // Desactivar
+}
+
+
+function enviarBBDD(){
+
+  let alergia = 'nada';
+ let observacionesTXT = 'nada';
+  console.log(`nombre: ${nombre_nino.value}`);
+  console.log(`dni: ${dni_nino.value}`);
+  console.log(`fecha: ${fecha_nacimiento.value}`);
+  console.log(alergiatxt )
+  if (alergiatxt == "si"){  //comprobamos si hay alergia o no 
+  console.log(`alergia: ${document.getElementById('alergiasNew').value}`);
+  alergia = document.getElementById('alergiasNew').value  //en caso de si se le asigna al variable
+  }
+  console.log(`observaciones: ${observaciones.value}`)
+  if (observaciones.value.trim() = ""){
+    observacionesTXT = "nada"
+  }
+
+
+//   //FETCH
+//   fetch("../Server/GestionarInscripcion.php", {
+//     method: 'POST',
+//     headers: {
+//         'Content-type': 'application/json',
+//     },
+//     body: JSON.stringify({ 
+//       nombre_nino: nombre_nino.value,
+//       dni_nino: dni_nino.value,
+//       nacimiento_nino: fecha_nacimiento.value,
+      
+//     })
+// })
+// .then(response => {
+//     if (!response.ok) {
+//         throw new Error('Error al obtener datos del servidor.');
+//     }
+//     return response.json();
+// })
+// .then(data => {
+//     //comprobar si es un error o no
+//     if (data.error) {
+//         //en caso de si tener error
+//         console.log('Error: ' + data.error);
+//     } else {
+
+
+
+
+//     }
+// })
+
+
+}

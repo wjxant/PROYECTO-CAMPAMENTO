@@ -1,11 +1,6 @@
 //recogemos nombres en html 
 const nombre = document.getElementById("nombre");
 const apellido = document.getElementById("apellido");
-const direccion = document.getElementById("direccion");
-const ciudad = document.getElementById("ciudad");
-const provincia = document.getElementById("provincia");
-const codigo_postal = document.getElementById("codigo_postal");
-const pais = document.getElementById("pais");
 const correo = document.getElementById("correo");
 const telefono = document.getElementById("telefono");
 const dni = document.getElementById("DNI");
@@ -19,11 +14,6 @@ const seguro = document.getElementById("seguro_si");
 // Los divs donde se mostrarán los errores
 const errornombre = document.getElementById("errornombre");
 const errorapellido = document.getElementById("errorapellido");
-const errordireccion = document.getElementById("errordireccion");
-const errorciudad = document.getElementById("errorciudad");
-const errorprovincia = document.getElementById("errorprovincia");
-const errorcodigo_postal = document.getElementById("errorcodigo_postal");
-const errorpais = document.getElementById("errorpais");
 const errorcorreo = document.getElementById("errorcorreo");
 const errortelefono = document.getElementById("errortelefono");
 const errorDNI = document.getElementById("errorDNI");
@@ -62,41 +52,6 @@ function comprobarApellido() {
     mostrarError(errorapellido, "El apellido no puede estar vacío");
   } else {
     mostrarError(errorapellido, "");
-  }
-}
-function comprobarDireccion() {
-  if (direccion.value == "") {
-    mostrarError(errordireccion, "La dirección no puede estar vacía");
-  } else {
-    mostrarError(errordireccion, "");
-  }
-}
-function comprobarCiudad() {
-  if (ciudad.value == "") {
-    mostrarError(errorciudad, "La ciudad no puede estar vacía");
-  } else {
-    mostrarError(errorciudad, "");
-  }
-}
-function comprobarProvincia() {
-  if (provincia.value == "") {
-    mostrarError(errorprovincia, "La provincia no puede estar vacía");
-  } else {
-    mostrarError(errorprovincia, "");
-  }
-}
-function comprobarCodigoPostal() {
-  if (codigo_postal.value == "") {
-    mostrarError(errorcodigo_postal, "El código postal no puede estar vacío");
-  } else {
-    mostrarError(errorcodigo_postal, "");
-  }
-}
-function comprobarPais() {
-  if (pais.value == "") {
-    mostrarError(errorpais, "El país no puede estar vacío");
-  } else {
-    mostrarError(errorpais, "");
   }
 }
 function comprobarCorreo() {
@@ -179,11 +134,6 @@ function comprobarFechaNacimiento() {
 // Asignar el evento onblur a cada campo
 nombre.onblur = comprobarNombre;
 apellido.onblur = comprobarApellido;
-direccion.onblur = comprobarDireccion;
-ciudad.onblur = comprobarCiudad;
-provincia.onblur = comprobarProvincia;
-codigo_postal.onblur = comprobarCodigoPostal;
-pais.onblur = comprobarPais;
 correo.onblur = comprobarCorreo;
 telefono.onblur = comprobarTelefono;
 dni.onblur = comprobarDni;
@@ -198,11 +148,6 @@ const formulario = document.getElementById('formularioInscripcion');
 formulario.onsubmit = function(event) {
   comprobarNombre();
   comprobarApellido();
-  comprobarDireccion();
-  comprobarCiudad();
-  comprobarProvincia();
-  comprobarCodigoPostal();
-  comprobarPais();
   comprobarCorreo();
   comprobarTelefono();
   comprobarDni();
@@ -222,11 +167,6 @@ formulario.onsubmit = function(event) {
   if (
     checkError(errornombre) &&
     checkError(errorapellido) &&
-    checkError(errordireccion) &&
-    checkError(errorciudad) &&
-    checkError(errorprovincia) &&
-    checkError(errorcodigo_postal) &&
-    checkError(errorpais) &&
     checkError(errorcorreo) &&
     checkError(errortelefono) &&
     checkError(errorDNI) &&

@@ -46,6 +46,8 @@ $sql_tables = "
         observaciones TEXT,
         fecha_nacimiento DATE NOT NULL,
         id_tutor INT NOT NULL,
+        fecha_inicio date not null,
+        fecha_fin date not null,
         FOREIGN KEY (id_tutor) REFERENCES TUTORES(id_tutor)
     );
 

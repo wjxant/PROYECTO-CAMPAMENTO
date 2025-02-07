@@ -16,11 +16,6 @@
       <div id="errornombre"></div> 
       <br />
 
-      <label for="apellido">Apellido</label>
-      <input type="text" name="apellido" id="apellido" />
-      <div id="errorapellido"></div>
-      <br />
-
       <label for="correo">Correo electrónico</label>
       <input type="email" name="correo" id="correo" />
       <div id="errorcorreo"></div>
@@ -43,11 +38,6 @@
       <div id="errornombre_nino"></div>
       <br />
 
-      <label for="apellido_nino">Apellido del niño</label>
-      <input type="text" name="apellido_nino" id="apellido_nino" />
-      <div id="errorapellido_nino"></div>
-      <br />
-
       <label for="DNI_nino">DNI /NIE</label>
       <input type="text" name="DNI_nino" id="DNI_nino" />
       <div id="errorDNI_nino"></div>
@@ -67,23 +57,16 @@
       ></textarea>
       <div id="errorobservaciones"></div>
       <br />
-      <label for="alergias">Alergias</label>
-      <textarea
-        name="alergias"
-        id="alergias"
-        cols="30"
-        rows="10"
-      ></textarea>
-      <div id="errorAlergiass"></div>
-      <br />
-
-      <label for="seguro">Seguro de cancelación</label>
-      <input type="radio" name="seguro" value="si" id="seguro_si" required/> Si
-      <input type="radio" name="seguro" value="no" id="seguro_no" /> No
-      <div id="errorseguro"></div>
+      
+      <label for="alergiaNew">Alergias</label>
+      <input type="radio" name="alergiaNew" value="si" id="alergiaNew_si" required /> Si
+      <input type="radio" name="alergiaNew" value="no" id="alergiaNew_no" /> No
+      <div id="espacioInputAlergiaNew"></div>
+      <div id="errorAlergiaNew"></div>
       <br />
 
       <input type="submit" value="Enviar" id="enviar"/>
+      <div id="errorEnviar"></div>
     </form>
     <script src="../JS/operarInscripcion.js"></script>
   </body>
