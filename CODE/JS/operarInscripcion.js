@@ -207,7 +207,10 @@ fetch("../Server/GestionarInscripcion.php", {
     if (data.error) {
         //en caso de si
         console.log('Error: ' + data.error);
-    } else {
+    } else if (data.noLogin){
+      window.location.href = data.noLogin;  // Redirige a la URL proporcionada en el JSON
+    }else {
+      console.log(`Login: ${data.login}`);  //comprobar el login
       console.log(`El id del padre es: ${data.id_Padre}`) //recogemos el dato
       idPadre = data.id_Padre;  //asignamos al varible
     }

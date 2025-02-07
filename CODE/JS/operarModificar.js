@@ -272,7 +272,11 @@ fetch("../Server/GestionarModificar.php", {
     if (data.error) {
         //en caso de si
         console.log('Error: ' + data.error);
+    }else if (data.noLogin){
+      window.location.href = data.noLogin;  // Redirige a la URL proporcionada en el JSON
+
     } else {
+      console.log(`Login: ${data.login}`);  //comprobar el login
       console.log(`El id del niño es: ${data.id_nino}`) //recogemos el dato
       idNino = data.id_nino;  //asignamos al varible
     }
