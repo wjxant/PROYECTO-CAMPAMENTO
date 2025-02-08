@@ -124,6 +124,7 @@ function comprobarAlergia() {
             rows="10"
         ></textarea>
       `;
+      //comprobamos el contenido de txtarea
       document.getElementById('alergiasNew').onblur = comprobarInputAlergia;
       alergiatxt = "si"
     }
@@ -133,7 +134,7 @@ function comprobarAlergia() {
     alergiatxt = "no";
   }
 }
-
+//funcion para comprobar el txtarea del alergia, en caso de vacio salta el error
 function comprobarInputAlergia() {
   let inputAlergia = document.getElementById('alergiasNew');
   if (!inputAlergia) return; // No hacer nada si el textarea no existe
@@ -220,12 +221,15 @@ formulario.onsubmit = function(event) {
   ) {
     // Formulario válido, permitir el envío
     //AQUI ES LO SIGUIENTE PASO
+    mostrarError(document.getElementById('errorEnviar'));
     event.preventDefault(); // Evita el envío del formulario
 
-    enviarBBDD()
+    //envia al servidor
+    InsertsInscripcionNinoBBDD()
 
 
   } else {
+    //mostrar error
     mostrarError(document.getElementById('errorEnviar'), "El formulario contiene errores");
     event.preventDefault(); // Evita el envío del formulario
   }
@@ -305,22 +309,24 @@ function rellenarInput (input, valor){
   input.disabled = true; // Desactivar
 }
 
+//funcion para insert de datos
+function InsertsInscripcionNinoBBDD(){
 
-function enviarBBDD(){
-
-  let alergia = 'nada';
+  let alergiaContenido = 'nada';
  let observacionesTXT = 'nada';
   console.log(`nombre: ${nombre_nino.value}`);
   console.log(`fecha: ${fecha_nacimiento.value}`);
   console.log(`id_plan: ${id_plan}`)
-  console.log(alergiatxt )
+  console.log('hay contenido alergia?: ' +alergiatxt )
   if (alergiatxt == "si"){  //comprobamos si hay alergia o no 
   console.log(`alergia: ${document.getElementById('alergiasNew').value}`);
-  alergia = document.getElementById('alergiasNew').value  //en caso de si se le asigna al variable
+  alergiaContenido = document.getElementById('alergiasNew').value  //en caso de si se le asigna al variable
+  console.log(`Hay contenido Alergia es: `+alergiaContenido )
   }
+
   console.log(`observaciones: ${observaciones.value}`)
-  if (observaciones.value.trim() == ""){
-    observacionesTXT = "nada"
+  if (observaciones.value.trim() !== ""){
+    observacionesTXT = observaciones.value;
   }
 
 
@@ -335,7 +341,7 @@ function enviarBBDD(){
       nombre_nino: nombre_nino.value,
       nacimiento_nino: fecha_nacimiento.value,
       id_plan: id_plan,
-      alergia: alergiatxt,
+      alergia: alergiaContenido,
       observaciones: observacionesTXT
       
     })
