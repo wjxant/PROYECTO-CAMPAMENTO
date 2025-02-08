@@ -64,6 +64,7 @@ $nombreGrupo = [];
 $profesorNino = [];
 $idProfesorNino = [];
 $actividades = [];  // Creamos un array vacío para almacenar los actividades
+$datoInfoPlan=[];
 if (isset($data['id_nino'])) {
     //SACAR INFORMACION BASICO DEL NIÑO
     //guardamos el id de niño al server
@@ -80,9 +81,24 @@ if (isset($data['id_nino'])) {
         // echo json_encode(['error' => "No se encontraron datos para esta Hijo con el ID " . $id_nino]);
         // exit();
     }
-    //var_dump($datoHijo);  // Puedes dejar esta línea si es necesario para debugging.
     //cerramos e query
     $querydatoHijo->close();
+
+    
+    //SACAR EL LAS FECHA DE INICIO Y FIN DEL PLAN QUE ENCUENTRA EL NIÑO
+    $queryInfoPlan = $conn->prepare("SELECT * FROM plan_fechas WHERE id_plan = ?");
+    $queryInfoPlan->bind_param("i", $datoHijo['id_plan']);    //asignamos el valor de ?, es un i porque es un numero(integer)
+    $queryInfoPlan->execute();   //ejecutar en bbdd
+    $result = $queryInfoPlan->get_result();  //recoge el resultado de la consulta 
+    // Comprobamos la respuesta de la consulta
+    if ($result->num_rows > 0) {    //comprueba si hay resultado o no 
+        $datoInfoPlan = $result->fetch_assoc();  //extraer los datos del primier fila ([nombre => padreEjemplo, wjdwedeu, sduewhud, sduhuwe]), en este caso en js no hace falta mapear, por que solo hay una fila de datos
+    } else {
+        // echo json_encode(['error' => "No se encontraron datos para esta Hijo con el ID " . $id_nino]);
+        // exit();
+    }
+    //cerramos e query
+    $queryInfoPlan->close();
 
     //SACAR EL NOMBRE DEL GRUPO QUE PERTENECE EL NIÑO
     $querygrupoNino = $conn->prepare("SELECT G.nombre 
@@ -129,9 +145,9 @@ if (isset($data['id_nino'])) {
     $queryprofesorgrupoNino->close();
 
 
-    //HACEMOS LA CONSULTA PARA ENVIAR TODO LOS ACTIVIDADES QUE HAY CON EL MONITOR
-    $queryActividades = $conn->prepare("SELECT * FROM ACTIVIDADES WHERE id_monitor = ?");   //sacamos todo los informaciones del actividad, dependiendo del monitor
-    $queryActividades->bind_param("i", $idProfesorNino);    //asignamos el valor de ?, es un i porque es un numero(integer)
+    //HACEMOS LA CONSULTA PARA VER TODO LOS ACTIVIDADES QUE HAY CON EL MONITOR
+    $queryActividades = $conn->prepare("SELECT * FROM ACTIVIDADES WHERE id_monitor = ? AND id_plan = ?");   //sacamos todo los informaciones del actividad, dependiendo del monitor
+    $queryActividades->bind_param("ii", $idProfesorNino, $datoHijo['id_plan']);    //asignamos el valor de ?, es un i porque es un numero(integer)
     $queryActividades->execute();   //ejecutar en bbdd
     $result = $queryActividades->get_result();  //recoge el resultado de la consulta 
     // Comprobamos la respuesta de la consulta
@@ -165,5 +181,6 @@ echo json_encode([
     'nombreGrupo' => $nombreGrupo,
     'profesorHijo' => $profesorNino,
     'idProfesorHijo' => $idProfesorNino,
-    'actividades' => $actividades
+    'actividades' => $actividades,
+    'datoInfoPlan' => $datoInfoPlan
 ]);

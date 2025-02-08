@@ -9,6 +9,7 @@ const alergia = document.getElementById('alergiaHijo');
 const grupoHijo = document.getElementById('grupoHijo');
 const profesorHijo = document.getElementById('profesorHijo');
 const estadoHijo = document.getElementById('estadoHijo');
+const planHijo = document.getElementById('planHijo');
 
 //conexion con php
 fetch("../Server/GestionarIndexPadre.php", {
@@ -186,12 +187,12 @@ fetch("../Server/GestionarIndexPadre.php", {
 
                 //estado del niños
                 // Asegúrate de que las fechas estén en formato adecuado
-                let fechaInicio = new Date(data.datoHijo['fecha_inicio']); 
-                let fechaFin = new Date(data.datoHijo['fecha_fin']);
+                let fechaInicio = new Date(data.datoInfoPlan['fecha_inicio']); 
+                let fechaFin = new Date(data.datoInfoPlan['fecha_fin']);
                 let fechaActual = new Date();  // Obtiene la fecha y hora actuales
 
-                console.log(`fecha inicio: ${fechaInicio}`);
-                console.log(`fecha fin: ${fechaFin}`)
+                console.log(`fecha inicio: ${data.datoInfoPlan['fecha_inicio']}`);
+                console.log(`fecha fin: ${data.datoInfoPlan['fecha_fin']}`);
 
                 // Compara las fechas
                 if (fechaActual < fechaInicio) {
@@ -211,6 +212,10 @@ fetch("../Server/GestionarIndexPadre.php", {
                 if (data.datoHijo['pagado'] !== 1){
                     estadoHijo.innerHTML="No pagado"
                 }
+
+                //mostrar plan del hijo
+                console.log(data.datoHijo['id_plan'])
+                planHijo.innerHTML=`${data.datoHijo['id_plan']} : ${data.datoInfoPlan['fecha_inicio']} a ${data.datoInfoPlan['fecha_fin']}`;
             }
         })
     }

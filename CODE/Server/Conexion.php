@@ -30,6 +30,12 @@ $conn->select_db($dbname);
 // Creación de tablas
 //----------------------------------------------------------------------------------------//
 $sql_tables = "
+
+ CREATE TABLE IF NOT EXISTS PLAN_FECHAS (
+    id_plan INT PRIMARY KEY AUTO_INCREMENT,
+    fecha_inicio DATE NOT NULL,
+    fecha_fin DATE NOT NULL
+);
     CREATE TABLE IF NOT EXISTS TUTORES (
         id_tutor INT PRIMARY KEY AUTO_INCREMENT, 
         nombre VARCHAR(50) NOT NULL,
@@ -39,18 +45,18 @@ $sql_tables = "
         contrasenia VARCHAR(20) NOT NULL
     );
 
-    CREATE TABLE IF NOT EXISTS NINOS (
-        id_nino INT PRIMARY KEY AUTO_INCREMENT, 
-        nombre VARCHAR(50) NOT NULL,
-        alergias TEXT,
-        observaciones TEXT,
-        fecha_nacimiento DATE NOT NULL,
-        id_tutor INT NOT NULL,
-        fecha_inicio date not null,
-        fecha_fin date not null,
-        pagado boolean not null,
-        FOREIGN KEY (id_tutor) REFERENCES TUTORES(id_tutor)
-    );
+ CREATE TABLE IF NOT EXISTS NINOS (
+    id_nino INT PRIMARY KEY AUTO_INCREMENT, 
+    nombre VARCHAR(50) NOT NULL,
+    alergias TEXT,
+    observaciones TEXT,
+    fecha_nacimiento DATE NOT NULL,
+    id_tutor INT NOT NULL,
+    id_plan INT NOT NULL,
+    pagado BOOLEAN NOT NULL,
+    FOREIGN KEY (id_tutor) REFERENCES TUTORES(id_tutor),
+    FOREIGN KEY (id_plan) REFERENCES PLAN_FECHAS(id_plan)
+);
 
     CREATE TABLE IF NOT EXISTS MONITORES (
         id_monitor INT PRIMARY KEY AUTO_INCREMENT,
@@ -75,22 +81,27 @@ $sql_tables = "
     );
 
 
-    CREATE TABLE IF NOT EXISTS ACTIVIDADES (
-        id_actividad INT PRIMARY KEY AUTO_INCREMENT,
-        titulo VARCHAR(50) NOT NULL,
-        descripcion TEXT,
-        hora TIME NOT NULL,
-        hora_fin TIME NOT NULL,
-        dia date not null,
-        id_monitor INT NOT NULL,
-        FOREIGN KEY (id_monitor) REFERENCES MONITORES(id_monitor)
-    );
+
+     CREATE TABLE IF NOT EXISTS ACTIVIDADES (
+    id_actividad INT PRIMARY KEY AUTO_INCREMENT,
+    titulo VARCHAR(50) NOT NULL,
+    descripcion TEXT,
+    hora TIME NOT NULL,
+    hora_fin TIME NOT NULL,
+    dia DATE NOT NULL,
+    id_monitor INT NOT NULL,
+    id_plan INT NOT NULL,
+    FOREIGN KEY (id_monitor) REFERENCES MONITORES(id_monitor),
+    FOREIGN KEY (id_plan) REFERENCES PLAN_FECHAS(id_plan)
+);
 
     CREATE TABLE IF NOT EXISTS ADMIN (
         id_admin INT PRIMARY KEY AUTO_INCREMENT,
         email VARCHAR(50) NOT NULL UNIQUE,
         contrasenia VARCHAR(20) NOT NULL
     );
+
+    
 ";
 $conn->multi_query($sql_tables);  // Se ejecuta la creación de todas las tablas
 while ($conn->more_results() && $conn->next_result()) {}  // Espera a que terminen todas las consultas
