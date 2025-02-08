@@ -4,11 +4,6 @@ const nombre_nino = document.getElementById("nombre_nino");
 const fecha_nacimiento = document.getElementById("fecha_nacimiento");
 const alergia = document.getElementById("alergiaNew");
 const observaciones = document.getElementById('observaciones');
-let nombre_bbdd ="";
-let fecha_bbdd ="";
-let alergia_bbdd ="";
-let obervaciones_bbdd ="";
-
 
 
 
@@ -183,7 +178,11 @@ fetch("../Server/GestionarModificar.php", {
       //asignamos en los input
       nombre_nino.value=data.infoNino['nombre'];
       fecha_nacimiento.value=data.infoNino['fecha_nacimiento'];
-      observaciones.value=data.infoNino['observaciones'];
+      //solo rellenamos cuando en observaciones no es nada
+      if (data.infoNino['observaciones'] != 'nada'){
+              observaciones.value=data.infoNino['observaciones'];
+      }
+
       //comprobamos si ha alergia o no 
       if (data.infoNino['alergias'] === 'nada'){
         document.getElementById('alergiaNew_no').checked = true;  //en caso si no han tenido alergia
