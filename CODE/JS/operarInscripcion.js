@@ -282,8 +282,12 @@ fetch("../Server/GestionarInscripcion.php", {
       //comprobar el contenido del array de plan devuelto por bbdd
       if (data.infoPlan.length === 0){
         plan.innerHTML='El administrador aun no ha creado los planes' //informamos que no hay ningun plan 
+        document.getElementById('infoForm').innerHTML="El administrador aun no ha creado los planes"
         document.getElementById('enviar').disabled = true;  //desactivamos el boton
+        document.getElementById('formularioInscripcion').classList.add('oculto');; // Esconde el elemento
       }else{
+        document.getElementById('formularioInscripcion').classList.remove('oculto');; // aparecer el elemento
+        document.getElementById('infoForm').innerHTML=''
         //en caso nos devuelve un array de tamaño distinto que 0
         document.getElementById('enviar').disabled = false; //habilitamos el boton 
         $arrayPlanes = data.infoPlan; //pasamos los el array enviado por php a un variable
@@ -370,4 +374,8 @@ function InsertsInscripcionNinoBBDD(){
 })
 
 
+
 }
+document.getElementById('volver').addEventListener('click', ()=>{
+  window.location.href = '../html/IndexPadre.html'; // Redirige al login cuando se hace clic en el botón
+})

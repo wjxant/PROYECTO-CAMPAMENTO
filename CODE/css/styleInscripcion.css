@@ -94,3 +94,8 @@ textarea {
     cursor: not-allowed;     /* Muestra el puntero de prohibido */
     opacity: 0.6;            /* Hace que se vea más apagado */
 }
+
+
+.oculto {
+    display: none;
+  }
