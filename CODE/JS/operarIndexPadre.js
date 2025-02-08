@@ -90,6 +90,9 @@ fetch("../Server/GestionarIndexPadre.php", {
         if (hijoSeleccionado!=0){   //comprueba el id es mayor que 0 
             mostarDatosNino(hijoSeleccionado)
        }
+
+
+
     }
 
     //funcion para mostrar datos del niño
@@ -217,6 +220,19 @@ fetch("../Server/GestionarIndexPadre.php", {
                 //mostrar plan del hijo
                 console.log(data.datoHijo['id_plan'])
                 planHijo.innerHTML=`${data.datoHijo['id_plan']} : ${data.datoInfoPlan['fecha_inicio']} a ${data.datoInfoPlan['fecha_fin']}`;
+                
+                //Actualizacion de avatar
+                //creamos un funcion para que se muestre el avatar
+                function Avatar({avatar_src, nombreAvatar}) {
+                return `<img src=${avatar_src} alt=${nombreAvatar} " width="100px" />`;
+                }
+                //lo rescribimos el div para el avatar con el avatar de la ruta del bbdd
+                document.getElementById('imagenHijo').innerHTML = Avatar({
+                avatar_src: data.datoHijo['avatar_src'],
+                nombreAvatar: data.datoHijo['nombre']
+                })
+
+            
             }
         })
     }

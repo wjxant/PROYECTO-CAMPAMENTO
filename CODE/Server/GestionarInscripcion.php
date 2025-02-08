@@ -49,7 +49,7 @@ $queryInfoPadre->close();
 $queryInfoPlan = $conn->prepare(" SELECT * FROM PLAN_FECHAS 
                                     WHERE (fecha_maxInscripcion > CURDATE()) 
                                     OR (fecha_maxInscripcion = CURDATE() AND hora_maximaInscripcion >= CURTIME())
-                                "); //seleccionar los que tiene fecha de fecha_maxInscripcion mayor que hoy o fecha_maxInscripcion igual q hoy pero la hora tiene que ser mayor o igual la de hora_maximaInscripcion
+                                "); //seleccionar los que tiene fecha de fecha_maxInscripcion mayor que hoy o fecha_maxInscripcion igual q hoy pero la hora tiene que ser mayor o igual la de 
 $queryInfoPlan->execute();   //ejecutar en bbdd
 $result = $queryInfoPlan->get_result();  //recoge el resultado de la consulta 
 // Comprobamos si hay resultados
@@ -62,8 +62,10 @@ while ($row = $result->fetch_assoc()) {
 
 //INSERTS DE DATOS PARA NIÑO (CREAR NIÑO)
 if (isset($data['nombre_nino']) && isset($data['nacimiento_nino']) && isset($data['id_plan']) && isset($data['alergia']) && isset($data['observaciones'])) {
-    $queryInsertNiño = $conn->prepare("INSERT INTO ninos (nombre, fecha_nacimiento, id_plan, alergias, observaciones, id_tutor) VALUES (?, ?, ?, ?, ?, ?)");
-    $queryInsertNiño->bind_param("sssssi", $data['nombre_nino'], $data['nacimiento_nino'], $data['id_plan'], $data['alergia'], $data['observaciones'], $_SESSION['id']);
+    //RUPA DE AVATAR DEFAULT 
+    $avatar_default_src="../assets/img/avatar.png"; //cuando creamos el niño hay que asignar un avatar default sino sale blanco
+    $queryInsertNiño = $conn->prepare("INSERT INTO ninos (nombre, fecha_nacimiento, id_plan, alergias, observaciones, id_tutor, avatar_src) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $queryInsertNiño->bind_param("sssssis", $data['nombre_nino'], $data['nacimiento_nino'], $data['id_plan'], $data['alergia'], $data['observaciones'], $_SESSION['id'], $avatar_default_src);
     if ($queryInsertNiño->execute()) { //comprobamos la ejecucion
         if ($queryInsertNiño->affected_rows > 0) { // Si se inserta al menos un registro
             echo json_encode(['registrado' => '../html/inscripcion/html/inscripcionExitosa.html']);

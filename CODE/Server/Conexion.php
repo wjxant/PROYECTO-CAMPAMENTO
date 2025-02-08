@@ -56,6 +56,7 @@ $sql_tables = "
     id_tutor INT NOT NULL,
     id_plan INT NOT NULL,
     pagado BOOLEAN NOT NULL,
+    avatar_src text,
     FOREIGN KEY (id_tutor) REFERENCES TUTORES(id_tutor),
     FOREIGN KEY (id_plan) REFERENCES PLAN_FECHAS(id_plan)
 );

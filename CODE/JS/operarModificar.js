@@ -1,12 +1,9 @@
-//recogemos nombres en html 
+//recogemos nombres en html
 
 const nombre_nino = document.getElementById("nombre_nino");
 const fecha_nacimiento = document.getElementById("fecha_nacimiento");
 const alergia = document.getElementById("alergiaNew");
-const observaciones = document.getElementById('observaciones');
-
-
-
+const observaciones = document.getElementById("observaciones");
 
 // Los divs donde se mostrarán los errores
 
@@ -14,8 +11,6 @@ const errornombre_nino = document.getElementById("errornombre_nino");
 const errorfecha_nacimiento = document.getElementById("errorfecha_nacimiento");
 const errorprograma = document.getElementById("errorprograma");
 const errorAlergia = document.getElementById("errorAlergiaNew");
-
-
 
 //funcion para mostrar el eror
 function mostrarError(lugar, mensaje) {
@@ -32,7 +27,6 @@ function mostrarError(lugar, mensaje) {
   }
 }
 
-
 function comprobarNombreNino() {
   if (nombre_nino.value == "") {
     mostrarError(errornombre_nino, "El nombre del niño no puede estar vacío");
@@ -41,13 +35,16 @@ function comprobarNombreNino() {
   }
 }
 function comprobarFechaNacimiento() {
-  const fechaIngresada = new Date(fecha_nacimiento.value);  // Convertimos la fecha ingresada a un objeto Date
-  const fechaActual = new Date();  // Obtenemos la fecha y hora actual
+  const fechaIngresada = new Date(fecha_nacimiento.value); // Convertimos la fecha ingresada a un objeto Date
+  const fechaActual = new Date(); // Obtenemos la fecha y hora actual
   if (fecha_nacimiento.value == "") {
-    mostrarError(errorfecha_nacimiento, "La fecha de nacimiento no puede estar vacía");
+    mostrarError(
+      errorfecha_nacimiento,
+      "La fecha de nacimiento no puede estar vacía"
+    );
   } else {
     mostrarError(errorfecha_nacimiento, "");
-    if (fechaIngresada > fechaActual){
+    if (fechaIngresada > fechaActual) {
       mostrarError(errorfecha_nacimiento, "La fecha no puede ser futura");
     } else {
       mostrarError(errorfecha_nacimiento, "");
@@ -55,14 +52,13 @@ function comprobarFechaNacimiento() {
   }
 }
 
-
-let alergiatxt = 'no';  //variable pasa raber si tiene alergia o no
+let alergiatxt = "no"; //variable pasa raber si tiene alergia o no
 function comprobarAlergia() {
   let seleccionado = document.querySelector('input[name="alergiaNew"]:checked');
   if (!seleccionado) return; // No hacer nada si no hay un radio seleccionado
-  let espacio = document.getElementById('espacioInputAlergiaNew');
+  let espacio = document.getElementById("espacioInputAlergiaNew");
   if (seleccionado.value === "si") {
-    if (!document.getElementById('alergiasNew')) {
+    if (!document.getElementById("alergiasNew")) {
       espacio.innerHTML = `
         <textarea
             name="alergiasNew"
@@ -72,18 +68,18 @@ function comprobarAlergia() {
         ></textarea>
       `;
       //comprobamos el contenido de txtarea
-      document.getElementById('alergiasNew').onblur = comprobarInputAlergia;
-      alergiatxt = "si"
+      document.getElementById("alergiasNew").onblur = comprobarInputAlergia;
+      alergiatxt = "si";
     }
   } else if (seleccionado.value === "no") {
-    espacio.innerHTML = ''; // Elimina el textarea si selecciona "No"
+    espacio.innerHTML = ""; // Elimina el textarea si selecciona "No"
     mostrarError(errorAlergia); // Limpia el mensaje de error
     alergiatxt = "no";
   }
 }
 //funcion para comprobar el txtarea del alergia, en caso de vacio salta el error
 function comprobarInputAlergia() {
-  let inputAlergia = document.getElementById('alergiasNew');
+  let inputAlergia = document.getElementById("alergiasNew");
   if (!inputAlergia) return; // No hacer nada si el textarea no existe
   let valorAlergia = inputAlergia.value.trim();
   if (valorAlergia === "") {
@@ -97,21 +93,19 @@ function comprobarInputAlergia() {
 nombre_nino.onblur = comprobarNombreNino;
 fecha_nacimiento.onblur = comprobarFechaNacimiento;
 // Asignar evento "change" a los radios
-document.querySelectorAll('input[name="alergiaNew"]').forEach(radio => {
+document.querySelectorAll('input[name="alergiaNew"]').forEach((radio) => {
   radio.addEventListener("change", comprobarAlergia);
 });
 
-//cando presiomos el boton 
-const formulario = document.getElementById('formularioModificacion');
+//cando presiomos el boton
+const formulario = document.getElementById("formularioModificacion");
 // Asigna un evento submit
-formulario.onsubmit = function(event) {
-
+formulario.onsubmit = function (event) {
   comprobarNombreNino();
   comprobarFechaNacimiento();
   comprobarInputAlergia();
 
-
-// Función para comprobar si los elementos de error están vacíos
+  // Función para comprobar si los elementos de error están vacíos
   function checkError(element) {
     return element && element.textContent.trim() === "";
   }
@@ -119,29 +113,24 @@ formulario.onsubmit = function(event) {
   // Comprobamos todos los errores
   //en caso si hay algun error, saltaria el alert y bloquearia el envio
   if (
-    //comprobaciones si hay error o no 
+    //comprobaciones si hay error o no
     checkError(errornombre_nino) &&
     checkError(errorfecha_nacimiento) &&
     checkError(errorAlergia)
   ) {
     // Si todos los errores están vacíos
     //AQUI DE DEJA EL PASO SOGUIENTE
-    mostrarError(document.getElementById('errorEnviar'));
+    mostrarError(document.getElementById("errorEnviar"));
     event.preventDefault(); // Evita el envío del formulario
     ModificacionnNinoBBDD();
-
-    
-  }else{
-    
-    mostrarError(document.getElementById('errorEnviar'), "El formulario contiene errores");
+  } else {
+    mostrarError(
+      document.getElementById("errorEnviar"),
+      "El formulario contiene errores"
+    );
     event.preventDefault(); // Evita el envío del formulario
-
   }
-}
-
-
-
-
+};
 
 //id del nino
 //--------------------------------------------------------------------------------//
@@ -150,115 +139,147 @@ let idNino = 0;
 //CONEXION BBDD
 //este fetch se ejecuta SIEMPRE
 fetch("../Server/GestionarModificar.php", {
-    method: 'POST',
-    headers: {
-        'Content-type': 'application/json',
-    },
-    // body: JSON.stringify({ inscribirse: "ok"})
+  method: "POST",
+  headers: {
+    "Content-type": "application/json",
+  },
+  // body: JSON.stringify({ inscribirse: "ok"})
 })
-.then(response => {
+  .then((response) => {
     if (!response.ok) {
-        throw new Error('Error al obtener datos del servidor.');
+      throw new Error("Error al obtener datos del servidor.");
     }
     return response.json();
-})
-.then(data => {
+  })
+  .then((data) => {
     //comprobar si es un error o no
     if (data.error) {
-        //en caso de si
-        console.log('Error: ' + data.error);
-    }else if (data.noLogin){
-      window.location.href = data.noLogin;  // Redirige a la URL proporcionada en el JSON
-
+      //en caso de si
+      console.log("Error: " + data.error);
+    } else if (data.noLogin) {
+      window.location.href = data.noLogin; // Redirige a la URL proporcionada en el JSON
     } else {
-      console.log(`Login: ${data.login}`);  //comprobar el login
-      console.log(`El id del niño es: ${data.id_nino}`) //recogemos el dato
-      idNino = data.id_nino;  //asignamos al varible
-      console.log(data.infoNino)
+      console.log(`Login: ${data.login}`); //comprobar el login
+      console.log(`El id del niño es: ${data.id_nino}`); //recogemos el dato
+      idNino = data.id_nino; //asignamos al varible
+      console.log(data.infoNino);
       //asignamos en los input
-      nombre_nino.value=data.infoNino['nombre'];
-      fecha_nacimiento.value=data.infoNino['fecha_nacimiento'];
+      nombre_nino.value = data.infoNino["nombre"];
+      fecha_nacimiento.value = data.infoNino["fecha_nacimiento"];
       //solo rellenamos cuando en observaciones no es nada
-      if (data.infoNino['observaciones'] != 'nada'){
-              observaciones.value=data.infoNino['observaciones'];
+      if (data.infoNino["observaciones"] != "nada") {
+        observaciones.value = data.infoNino["observaciones"];
       }
 
-      //comprobamos si ha alergia o no 
-      if (data.infoNino['alergias'] === 'nada'){
-        document.getElementById('alergiaNew_no').checked = true;  //en caso si no han tenido alergia
-      }else{
-        document.getElementById('alergiaNew_si').checked = true;  //en caso de tener alergia
+      //comprobamos si ha alergia o no
+      if (data.infoNino["alergias"] === "nada") {
+        document.getElementById("alergiaNew_no").checked = true; //en caso si no han tenido alergia
+      } else {
+        document.getElementById("alergiaNew_si").checked = true; //en caso de tener alergia
         comprobarAlergia();
 
         //solo asignamos en el texarea cuando existe
-        if (document.getElementById('alergiasNew')) {
-          document.getElementById('alergiasNew').value = data.infoNino['alergias'];  // asigna el valor al textarea
-        } 
+        if (document.getElementById("alergiasNew")) {
+          document.getElementById("alergiasNew").value =
+            data.infoNino["alergias"]; // asigna el valor al textarea
+        }
       }
 
+      //VER AVATAR
+      //----------------------------------------------------------------------------------------------------------------------------------//
+      // //Actualizacion de avatar
+      // //funcion para mostrar avatar con ruda especifico
+      // function Avatar({avatar_src, nombreAvatar}) {
+      //   return `<img src=${avatar_src} alt=${nombreAvatar} " width="100px" />`;
+      // }
+      // //donde se sobreescribe
+      // document.getElementById('vistaPreviaavatar').innerHTML = Avatar({
+      //   //informaciones para que funcione rl funcion
+      //   avatar_src: data.infoNino['avatar_src'],
+      //   nombreAvatar: data.infoNino['nombre']
+      // })
+      //----------------------------------------------------------------------------------------------------------------------------------//
+
+      //VER AVATAR VISTA PREVIA
+      //----------------------------------------------------------------------------------------------------------------------------------//
+      // document
+      //   .getElementById("avatar")
+      //   .addEventListener("change", function (event) {
+      //     //señeccionamos el archivo seleccionado
+      //     const file = event.target.files[0];
+      //     // Si hay un archivo seleccionado
+      //     if (file) {
+      //       document.getElementById('vistaPreviaavatar').src = URL.createObjectURL(file);
+      //       document.getElementById('vistaPreviaavatar').style.display = 'block';
+      //   } else {
+      //     document.getElementById('vistaPreviaavatar').style.display = 'none';
+      //   }
+      //   });
+      //----------------------------------------------------------------------------------------------------------------------------------//
     }
-})
-
-
+  });
 
 //funcion para insert de datos
-function ModificacionnNinoBBDD(){
-
-  let alergiaContenido = 'nada';
- let observacionesTXT = 'nada';
+function ModificacionnNinoBBDD() {
+  let alergiaContenido = "nada";
+  let observacionesTXT = "nada";
   console.log(`nombre: ${nombre_nino.value}`);
   console.log(`fecha: ${fecha_nacimiento.value}`);
-  console.log(`Hay contenido Alergia ?: `+alergiatxt )
-  if (alergiatxt == "si"){  //comprobamos si hay alergia o no 
-  console.log(`alergia: ${document.getElementById('alergiasNew').value}`);
-  alergiaContenido = document.getElementById('alergiasNew').value  //en caso de si se le asigna al variable
+  console.log(`Hay contenido Alergia ?: ` + alergiatxt);
+  if (alergiatxt == "si") {
+    //comprobamos si hay alergia o no
+    console.log(`alergia: ${document.getElementById("alergiasNew").value}`);
+    alergiaContenido = document.getElementById("alergiasNew").value; //en caso de si se le asigna al variable
   }
-  console.log(`Hay contenido Alergia es: `+alergiaContenido )
-  console.log(`observaciones: ${observaciones.value}`)
-  if (observaciones.value.trim() !== ""){
+  console.log(`Hay contenido Alergia es: ` + alergiaContenido);
+  console.log(`observaciones: ${observaciones.value}`);
+  if (observaciones.value.trim() !== "") {
     observacionesTXT = observaciones.value;
   }
 
+  //PREPARAMOS LOS DATOS PARA ENVIAR AL SERVIDOR CON FETCH PARA HACER EL UBDATE
+  let formData = new FormData();
+  //definimos que datos se envia
+  formData.append("nombre_nino", nombre_nino.value);
+  formData.append("nacimiento_nino", fecha_nacimiento.value);
+  formData.append("alergia", alergiaContenido);
+  formData.append("observaciones", observacionesTXT);
 
-  //FETCH PARA EL INSCRIPCION DEL NIÑO
+  // Solo agregar el avatar si hay uno seleccionado
+  let avatarInput = document.getElementById("avatar");
+  if (avatarInput.files.length > 0) {
+    formData.append("avatar", avatarInput.files[0]);
+  }
+
+  //FETCH PARA EL MODIFICACION DEL NIÑO
   fetch("../Server/GestionarModificar.php", {
-    method: 'POST',
-    headers: {
-        'Content-type': 'application/json',
-    },
-    body: JSON.stringify({ 
-      //envia datos al php
-      nombre_nino: nombre_nino.value,
-      nacimiento_nino: fecha_nacimiento.value,
-      alergia: alergiaContenido,
-      observaciones: observacionesTXT
-      
+    method: "POST",
+    //enviamos los datos
+    body: formData,
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Error al obtener datos del servidor.");
+      }
+      return response.json();
     })
-})
-.then(response => {
-    if (!response.ok) {
-        throw new Error('Error al obtener datos del servidor.');
-    }
-    return response.json();
-})
-.then(data => {
-    //comprobar si es un error o no
-    if (data.error) {
+    .then((data) => {
+      //comprobar si es un error o no
+      if (data.error) {
         //en caso de si tener error
-        console.log('Error: ' + data.error);
-    }else if (data.registrado){ //en caso si ha ejecutado
-      window.location.href = data.registrado;  // Redirige a la URL proporcionada en el JSON
-    }
-    else if (data.noRegistrado){  //en caso de no ejecutado
-      window.location.href = data.noRegistrado;  // Redirige a la URL proporcionada en el JSON
-    }else{
-      console.log(data)
-      alert(data)
-      //en otros casos
-      window.location.href = '../html/modificacion/html/modificacionFallada.html';  // Redirige a la URL proporcionada en el JSON
-
-    }
-})
-
-
+        console.log("Error: " + data.error);
+      } else if (data.registrado) {
+        //en caso si ha ejecutado
+        window.location.href = data.registrado; // Redirige a la URL proporcionada en el JSON
+      } else if (data.noRegistrado) {
+        //en caso de no ejecutado
+        window.location.href = data.noRegistrado; // Redirige a la URL proporcionada en el JSON
+      } else {
+        console.log(data);
+        alert("datos NO ENVIADO");
+        //en otros casos
+        window.location.href =
+          "../html/modificacion/html/modificacionFallada.html"; // Redirige a la URL proporcionada en el JSON
+      }
+    });
 }

@@ -46,14 +46,44 @@ $data = json_decode(file_get_contents('php://input'), true);
  $queryInfoNino->close();
 
 
+
+
+
 //INSERTS DE DATOS PARA NIÑO (MODIFICAR NIÑO)
-if (isset($data['nombre_nino']) && isset($data['nacimiento_nino']) && isset($data['alergia']) && isset($data['observaciones'])) {
-    if (empty($data['nombre_nino']) || empty($data['nacimiento_nino']) || empty($data['alergia']) || empty($data['observaciones'])) {
+if (isset($_POST['nombre_nino']) && isset($_POST['nacimiento_nino']) && isset($_POST['alergia']) && isset($_POST['observaciones'])) {
+    if (empty($_POST['nombre_nino']) || empty($_POST['nacimiento_nino']) || empty($_POST['alergia']) || empty($_POST['observaciones'])) {
         echo json_encode(['error' => 'Faltan datos necesarios']);
         exit();
     }
-    $queryModificacionNiño = $conn->prepare("UPDATE ninos SET nombre = ?, fecha_nacimiento = ?, alergias = ?, observaciones = ? WHERE id_nino = ?");
-    $queryModificacionNiño->bind_param("ssssi", $data['nombre_nino'], $data['nacimiento_nino'], $data['alergia'], $data['observaciones'], $_SESSION['idNino']);
+
+    //ASIGNACION DE NUEVO AVATAR EN BBDD
+    //----------------------------------------------------------------------------------------------------------------------------------//
+    //definimos donde queremos que se guarde el archivo
+    $directorio_subida_avatar = "../assets/avatar/uploads/";
+    $rutaAvatar = "../assets/img/avatar.png";   //esta ruta se actualizara si el usuario ha introducido un avatar, y si el usuario no introduce avatar va a usar esta como default
+    //comprobar si hemos asignado el avatar y si hay algun error
+    if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] == 0){
+
+        $name_avatar = $_FILES['avatar']['name'];  //sacamos el nombre del archivo
+        //sacamos los informaciones del archivo segun su nombre
+        $array_avatar = pathinfo($name_avatar);
+
+        //sacamos la ruta antigua del avatar
+        $ruta_antiguo_avatar = $_FILES['avatar']['tmp_name'];
+
+        //sacamos la ruta que tiene que estrar en uploads
+        $ruta_destino_avatar = $directorio_subida_avatar . $name_avatar;
+
+        //movemos
+        move_uploaded_file($ruta_antiguo_avatar, $ruta_destino_avatar);
+        $rutaAvatar = $ruta_destino_avatar;
+    }
+    //----------------------------------------------------------------------------------------------------------------------------------//
+    
+    
+    //UPDATES DE INFORMACION
+    $queryModificacionNiño = $conn->prepare("UPDATE ninos SET nombre = ?, fecha_nacimiento = ?, alergias = ?, observaciones = ? , avatar_src = ? WHERE id_nino = ?");
+    $queryModificacionNiño->bind_param("sssssi", $_POST['nombre_nino'], $_POST['nacimiento_nino'], $_POST['alergia'], $_POST['observaciones'], $rutaAvatar, $_SESSION['idNino']);
     if ($queryModificacionNiño->execute()) { //comprobamos la ejecucion
         
         if ($queryModificacionNiño->affected_rows >= 0) { // Si se inserta al menos 1 o 0 registro
