@@ -45,11 +45,47 @@ if ($result->num_rows > 0) {    //comprueba si hay resultado o no
 //cerramos e query
 $queryInfoPadre->close();
 
+//SACAMOS TODO LOS PLANES QUE HAY PARA QUE EL PADRE PUEDA SELECCIONAR
+$queryInfoPlan = $conn->prepare("SELECT * FROM PLAN_FECHAS ");
+$queryInfoPlan->execute();   //ejecutar en bbdd
+$result = $queryInfoPlan->get_result();  //recoge el resultado de la consulta 
+// Comprobamos si hay resultados
+$infoPlan = [];  // Creamos un array vacío para almacenar la información de los planes
+while ($row = $result->fetch_assoc()) {
+    // Añadimos cada hijo al array
+    $infoPlan[] = $row;
+}
 
+
+//INSERTS DE DATOS PARA NIÑO (CREAR NIÑO)
+if (isset($data['nombre_nino']) && isset($data['nacimiento_nino']) && isset($data['id_plan']) && isset($data['alergia']) && isset($data['observaciones'])) {
+    $queryInsertNiño = $conn->prepare("INSERT INTO ninos (nombre, fecha_nacimiento, id_plan, alergias, observaciones, id_tutor) VALUES (?, ?, ?, ?, ?, ?)");
+    $queryInsertNiño->bind_param("sssssi", $data['nombre_nino'], $data['nacimiento_nino'], $data['id_plan'], $data['alergia'], $data['observaciones'], $_SESSION['id']);
+    if ($queryInsertNiño->execute()) { //comprobamos la ejecucion
+        if ($queryInsertNiño->affected_rows > 0) { // Si se inserta al menos un registro
+            echo json_encode(['registrado' => '../html/inscripcion/html/inscripcionExitosa.html']);
+            $queryInsertNiño->close();   
+            exit();
+        } else {
+            echo json_encode(['noRegistrado' => '../html/inscripcion/html/inscripcionFallada.html']);
+            $queryInsertNiño->close();   
+            exit();
+
+        }
+    } else {
+        //en caso si no ha podido ejecutar
+        echo json_encode(['error' => 'Error ejecutar inserts de niño']);
+        $queryInsertNiño->close();   
+        exit();
+    }
+    
+    
+}
 
 echo json_encode([
     'login' => $login,
     'id_Padre' => $_SESSION['id'],
-    'infoPadre' => $infoPadre
+    'infoPadre' => $infoPadre,
+    'infoPlan' => $infoPlan
 
 ]);

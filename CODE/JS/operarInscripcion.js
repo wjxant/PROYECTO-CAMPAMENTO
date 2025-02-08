@@ -4,10 +4,10 @@ const correo = document.getElementById("correo");
 const telefono = document.getElementById("telefono");
 const dni = document.getElementById("DNI");
 const nombre_nino = document.getElementById("nombre_nino");
-const dni_nino = document.getElementById("DNI_nino");
 const fecha_nacimiento = document.getElementById("fecha_nacimiento");
 const alergia = document.getElementById("alergiaNew");
 const observaciones = document.getElementById('observaciones');
+const plan = document.getElementById('plan');
 
 
 // Los divs donde se mostrarán los errores
@@ -16,10 +16,15 @@ const errorcorreo = document.getElementById("errorcorreo");
 const errortelefono = document.getElementById("errortelefono");
 const errorDNI = document.getElementById("errorDNI");
 const errornombre_nino = document.getElementById("errornombre_nino");
-const errorDNI_nino = document.getElementById("errorDNI_nino");
 const errorfecha_nacimiento = document.getElementById("errorfecha_nacimiento");
 const errorprograma = document.getElementById("errorprograma");
 const errorAlergia = document.getElementById("errorAlergiaNew");
+const errorPlan = document.getElementById('errorPlan');
+
+
+//SACAMOS EL ID DEL PLAN
+let id_plan= -1
+
 
 //funcion para mostrar el eror
 function mostrarError(lugar, mensaje) {
@@ -88,18 +93,6 @@ function comprobarNombreNino() {
   }
 }
 
-function comprobarDniNino() {
-  if (dni_nino.value == "") {
-    mostrarError(errorDNI_nino, "El DNI del niño no puede estar vacío");
-  } else {
-    mostrarError(errorDNI_nino, "");
-    if (/^[XxYyZz]?\d{8}[A-Za-z]$/.test(dni_nino.value)){
-      mostrarError(errorDNI_nino, "");
-    } else {
-      mostrarError(errorDNI_nino, "Error de formato, tiene que contener 8 dígitos de número o letra y una letra al final");
-    }
-  }
-}
 function comprobarFechaNacimiento() {
   const fechaIngresada = new Date(fecha_nacimiento.value);  // Convertimos la fecha ingresada a un objeto Date
   const fechaActual = new Date();  // Obtenemos la fecha y hora actual
@@ -152,6 +145,26 @@ function comprobarInputAlergia() {
   }
 }
 
+function comprobarPlan(){
+  let valorSeleccionado = document.getElementById("planSelect").value;
+  console.log("id_plan seleccionado: " +valorSeleccionado)
+  id_plan = valorSeleccionado;
+  if (valorSeleccionado == 0){
+    mostrarError(errorPlan, "Escoge un plan");
+  } else {
+    mostrarError(errorPlan);
+  }
+  
+}
+
+function comprobarPlanExterno(){
+  if (id_plan == 0 ||id_plan == -1){  //0 en caso si es "seleccione uno" y -1 es por el parametro(no ha seleccionado el nuevo)
+    mostrarError(errorPlan, "Escoge un plan");
+  } else {
+    mostrarError(errorPlan);
+  }
+}
+
 // Asignar evento "change" a los radios
 document.querySelectorAll('input[name="alergiaNew"]').forEach(radio => {
   radio.addEventListener("change", comprobarAlergia);
@@ -161,8 +174,8 @@ correo.onblur = comprobarCorreo;
 telefono.onblur = comprobarTelefono;
 dni.onblur = comprobarDni;
 nombre_nino.onblur = comprobarNombreNino;
-dni_nino.onblur = comprobarDniNino;
 fecha_nacimiento.onblur = comprobarFechaNacimiento;
+
 
 
 // Evento submit del formulario
@@ -175,9 +188,9 @@ formulario.onsubmit = function(event) {
   comprobarTelefono();
   comprobarDni();
   comprobarNombreNino();
-  comprobarDniNino();
   comprobarFechaNacimiento();
   comprobarInputAlergia();
+  comprobarPlanExterno();
 
   // Función para verificar errores
   function checkError(element) {
@@ -190,12 +203,14 @@ formulario.onsubmit = function(event) {
     checkError(errortelefono) &&
     checkError(errorDNI) &&
     checkError(errornombre_nino) &&
-    checkError(errorDNI_nino) &&
     checkError(errorfecha_nacimiento) &&
-    checkError(errorAlergia)
+    checkError(errorAlergia) &&
+    checkError(errorPlan)
   ) {
     // Formulario válido, permitir el envío
     //AQUI ES LO SIGUIENTE PASO
+    event.preventDefault(); // Evita el envío del formulario
+
     enviarBBDD()
 
 
@@ -204,6 +219,7 @@ formulario.onsubmit = function(event) {
     event.preventDefault(); // Evita el envío del formulario
   }
 };
+
 
 
 //id del padre
@@ -242,6 +258,30 @@ fetch("../Server/GestionarInscripcion.php", {
       rellenarInput(telefono, data.infoPadre['telefono']);
       rellenarInput(dni, data.infoPadre['dni']);
 
+
+
+      //rellenar el div del plan 
+      console.log('Plan:')
+      console.log(data.infoPlan)
+      //comprobar el contenido del array de plan devuelto por bbdd
+      if (data.infoPlan.length === 0){
+        plan.innerHTML='El administrador aun no ha creado los planes'
+        document.getElementById('enviar').disabled = true;
+      }else{
+        document.getElementById('enviar').disabled = false;
+        $arrayPlanes = data.infoPlan;
+        plan.innerHTML = `<select name="planSelect" id="planSelect">
+        <option value="0">---- Seleccione un Plan ----</option>
+                ${$arrayPlanes.map(plan =>`
+                    <option value="${plan['id_plan']}">${plan['fecha_inicio']} - ${plan['fecha_fin']}</option>
+                        `)}
+            </select> 
+            `;
+
+            //comprobar el valor
+            document.getElementById('planSelect').onblur = comprobarPlan;
+      }
+
     }
 })
 
@@ -256,51 +296,55 @@ function enviarBBDD(){
   let alergia = 'nada';
  let observacionesTXT = 'nada';
   console.log(`nombre: ${nombre_nino.value}`);
-  console.log(`dni: ${dni_nino.value}`);
   console.log(`fecha: ${fecha_nacimiento.value}`);
+  console.log(`id_plan: ${id_plan}`)
   console.log(alergiatxt )
   if (alergiatxt == "si"){  //comprobamos si hay alergia o no 
   console.log(`alergia: ${document.getElementById('alergiasNew').value}`);
   alergia = document.getElementById('alergiasNew').value  //en caso de si se le asigna al variable
   }
   console.log(`observaciones: ${observaciones.value}`)
-  if (observaciones.value.trim() = ""){
+  if (observaciones.value.trim() == ""){
     observacionesTXT = "nada"
   }
 
-  ///////FALTA POR TERMINARRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
 
-//   //FETCH
-//   fetch("../Server/GestionarInscripcion.php", {
-//     method: 'POST',
-//     headers: {
-//         'Content-type': 'application/json',
-//     },
-//     body: JSON.stringify({ 
-//       nombre_nino: nombre_nino.value,
-//       dni_nino: dni_nino.value,
-//       nacimiento_nino: fecha_nacimiento.value,
+  //FETCH
+  fetch("../Server/GestionarInscripcion.php", {
+    method: 'POST',
+    headers: {
+        'Content-type': 'application/json',
+    },
+    body: JSON.stringify({ 
+      nombre_nino: nombre_nino.value,
+      nacimiento_nino: fecha_nacimiento.value,
+      id_plan: id_plan,
+      alergia: alergiatxt,
+      observaciones: observacionesTXT
       
-//     })
-// })
-// .then(response => {
-//     if (!response.ok) {
-//         throw new Error('Error al obtener datos del servidor.');
-//     }
-//     return response.json();
-// })
-// .then(data => {
-//     //comprobar si es un error o no
-//     if (data.error) {
-//         //en caso de si tener error
-//         console.log('Error: ' + data.error);
-//     } else {
+    })
+})
+.then(response => {
+    if (!response.ok) {
+        throw new Error('Error al obtener datos del servidor.');
+    }
+    return response.json();
+})
+.then(data => {
+    //comprobar si es un error o no
+    if (data.error) {
+        //en caso de si tener error
+        console.log('Error: ' + data.error);
+    }else if (data.registrado){ //en caso si ha ejecutado
+      window.location.href = data.registrado;  // Redirige a la URL proporcionada en el JSON
+    }
+    else if (data.noRegistrado){  //en caso de no ejecutado
+      window.location.href = data.noRegistrado;  // Redirige a la URL proporcionada en el JSON
+    }else{
+      window.location.href = '../html/inscripcion/html/inscripcionFallada.html';  // Redirige a la URL proporcionada en el JSON
 
-
-
-
-//     }
-// })
+    }
+})
 
 
 }
