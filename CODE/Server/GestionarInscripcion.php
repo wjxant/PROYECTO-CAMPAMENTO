@@ -45,8 +45,11 @@ if ($result->num_rows > 0) {    //comprueba si hay resultado o no
 //cerramos e query
 $queryInfoPadre->close();
 
-//SACAMOS TODO LOS PLANES QUE HAY PARA QUE EL PADRE PUEDA SELECCIONAR
-$queryInfoPlan = $conn->prepare("SELECT * FROM PLAN_FECHAS ");
+//SACAMOS TODO LOS PLANES QUE HAY PARA QUE EL PADRE PUEDA SELECCIONAR SIEMPLE LOS PLANES QUE NO HA PASADO EL LIMITE DEL DIA DE INSCRIPCION
+$queryInfoPlan = $conn->prepare(" SELECT * FROM PLAN_FECHAS 
+                                    WHERE (fecha_maxInscripcion > CURDATE()) 
+                                    OR (fecha_maxInscripcion = CURDATE() AND hora_maximaInscripcion >= CURTIME())
+                                "); //seleccionar los que tiene fecha de fecha_maxInscripcion mayor que hoy o fecha_maxInscripcion igual q hoy pero la hora tiene que ser mayor o igual la de hora_maximaInscripcion
 $queryInfoPlan->execute();   //ejecutar en bbdd
 $result = $queryInfoPlan->get_result();  //recoge el resultado de la consulta 
 // Comprobamos si hay resultados

@@ -34,7 +34,9 @@ $sql_tables = "
  CREATE TABLE IF NOT EXISTS PLAN_FECHAS (
     id_plan INT PRIMARY KEY AUTO_INCREMENT,
     fecha_inicio DATE NOT NULL,
-    fecha_fin DATE NOT NULL
+    fecha_fin DATE NOT NULL,
+    fecha_maxInscripcion DATE NOT null,
+    hora_maximaInscripcion time not null
 );
     CREATE TABLE IF NOT EXISTS TUTORES (
         id_tutor INT PRIMARY KEY AUTO_INCREMENT, 

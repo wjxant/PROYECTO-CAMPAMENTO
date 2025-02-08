@@ -145,8 +145,8 @@ if (isset($data['id_nino'])) {
     $queryprofesorgrupoNino->close();
 
 
-    //HACEMOS LA CONSULTA PARA VER TODO LOS ACTIVIDADES QUE HAY CON EL MONITOR
-    $queryActividades = $conn->prepare("SELECT * FROM ACTIVIDADES WHERE id_monitor = ? AND id_plan = ?");   //sacamos todo los informaciones del actividad, dependiendo del monitor y el plan, por que no va a ser el mismo actividades en los diferentes plan 
+    //HACEMOS LA CONSULTA PARA VER TODO LOS ACTIVIDADES PENDIENTES(HOY O FUTURAS) QUE HAY CON EL MONITOR Y CON EL PLAN QUE PERTENECE EL NIÑO
+    $queryActividades = $conn->prepare("SELECT * FROM ACTIVIDADES WHERE id_monitor = ? AND id_plan = ? AND dia >= CURDATE()");   //sacamos todo los informaciones del actividad, dependiendo del monitor y el plan, por que no va a ser el mismo actividades en los diferentes plan 
     $queryActividades->bind_param("ii", $idProfesorNino, $datoHijo['id_plan']);    //asignamos el valor de ?, es un i porque es un numero(integer)
     $queryActividades->execute();   //ejecutar en bbdd
     $result = $queryActividades->get_result();  //recoge el resultado de la consulta 
