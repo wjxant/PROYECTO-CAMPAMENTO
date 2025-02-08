@@ -202,19 +202,21 @@ fetch("../Server/GestionarModificar.php", {
 
       //VER AVATAR VISTA PREVIA
       //----------------------------------------------------------------------------------------------------------------------------------//
-      // document
-      //   .getElementById("avatar")
-      //   .addEventListener("change", function (event) {
-      //     //señeccionamos el archivo seleccionado
-      //     const file = event.target.files[0];
-      //     // Si hay un archivo seleccionado
-      //     if (file) {
-      //       document.getElementById('vistaPreviaavatar').src = URL.createObjectURL(file);
-      //       document.getElementById('vistaPreviaavatar').style.display = 'block';
-      //   } else {
-      //     document.getElementById('vistaPreviaavatar').style.display = 'none';
-      //   }
-      //   });
+      document
+        .getElementById("avatar")
+        .addEventListener("change", function (event) {
+          //escogemos el archivo seleccionado
+          const file = event.target.files[0];
+          // comprobamos si existe o no el archivo
+          if (file) {
+            //en caso de existir (adjuntado)
+            document.getElementById('vistaPrevia').src = URL.createObjectURL(file); //modificamos el src de del img vacio en el html, con URL.createObjectURL(file) podemos sacar la ruta
+            document.getElementById('vistaPrevia').style.display = 'block'; //mostramos el img para la vista previa que esta en html como un bloqu
+        } else {
+          //en caso si no existe el archivo (no ha adjuntado)
+          document.getElementById('vistaPrevia').style.display = 'none';  //escondemos el img para la vista previa que esta en html
+        }
+        });
       //----------------------------------------------------------------------------------------------------------------------------------//
     }
   });
