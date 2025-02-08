@@ -4,6 +4,10 @@ const nombre_nino = document.getElementById("nombre_nino");
 const fecha_nacimiento = document.getElementById("fecha_nacimiento");
 const alergia = document.getElementById("alergiaNew");
 const observaciones = document.getElementById('observaciones');
+let nombre_bbdd ="";
+let fecha_bbdd ="";
+let alergia_bbdd ="";
+let obervaciones_bbdd ="";
 
 
 
@@ -192,6 +196,7 @@ fetch("../Server/GestionarModificar.php", {
           document.getElementById('alergiasNew').value = data.infoNino['alergias'];  // asigna el valor al textarea
         } 
       }
+
     }
 })
 
@@ -202,15 +207,15 @@ function ModificacionnNinoBBDD(){
 
   let alergiaContenido = 'nada';
  let observacionesTXT = 'nada';
-  alert(`nombre: ${nombre_nino.value}`);
-  alert(`fecha: ${fecha_nacimiento.value}`);
-  alert(`Hay contenido Alergia ?: `+alergiatxt )
+  console.log(`nombre: ${nombre_nino.value}`);
+  console.log(`fecha: ${fecha_nacimiento.value}`);
+  console.log(`Hay contenido Alergia ?: `+alergiatxt )
   if (alergiatxt == "si"){  //comprobamos si hay alergia o no 
-  alert(`alergia: ${document.getElementById('alergiasNew').value}`);
+  console.log(`alergia: ${document.getElementById('alergiasNew').value}`);
   alergiaContenido = document.getElementById('alergiasNew').value  //en caso de si se le asigna al variable
   }
-  alert(`Hay contenido Alergia es: `+alergiaContenido )
-  alert(`observaciones: ${observaciones.value}`)
+  console.log(`Hay contenido Alergia es: `+alergiaContenido )
+  console.log(`observaciones: ${observaciones.value}`)
   if (observaciones.value.trim() !== ""){
     observacionesTXT = observaciones.value;
   }

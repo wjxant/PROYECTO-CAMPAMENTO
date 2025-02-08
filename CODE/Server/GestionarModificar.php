@@ -56,7 +56,7 @@ if (isset($data['nombre_nino']) && isset($data['nacimiento_nino']) && isset($dat
     $queryModificacionNiño->bind_param("ssssi", $data['nombre_nino'], $data['nacimiento_nino'], $data['alergia'], $data['observaciones'], $_SESSION['idNino']);
     if ($queryModificacionNiño->execute()) { //comprobamos la ejecucion
         
-        if ($queryModificacionNiño->affected_rows > 0) { // Si se inserta al menos un registro
+        if ($queryModificacionNiño->affected_rows >= 0) { // Si se inserta al menos 1 o 0 registro
             echo json_encode(['registrado' => '../html/modificacion/html/modificacionExitosa.html']);
             $queryModificacionNiño->close();   
             exit();
