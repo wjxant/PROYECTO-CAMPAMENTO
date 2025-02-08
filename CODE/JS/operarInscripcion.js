@@ -145,23 +145,34 @@ function comprobarInputAlergia() {
   }
 }
 
+//funcion para comprobar si hemos seleccionado el select del plan o no, en caso de si se le asigna el valor a id_plan
 function comprobarPlan(){
+  //sacamos el valor
   let valorSeleccionado = document.getElementById("planSelect").value;
-  console.log("id_plan seleccionado: " +valorSeleccionado)
+  console.log("planSelect seleccionado: " +valorSeleccionado)
+  //asignamos en el valor el valor seleccionado
   id_plan = valorSeleccionado;
+  //comprobar el valor seleccionado
   if (valorSeleccionado == 0){
+    //en caso es 0 se salte el error
     mostrarError(errorPlan, "Escoge un plan");
   } else {
+    //en caso de otros, se borra el error
     mostrarError(errorPlan);
   }
   
 }
 
+//funcion para comprobar si el variable de id_plan es valido o no
 function comprobarPlanExterno(){
-  if (id_plan == 0 ||id_plan == -1){  //0 en caso si es "seleccione uno" y -1 es por el parametro(no ha seleccionado el nuevo)
-    mostrarError(errorPlan, "Escoge un plan");
+  //ejecutamos el funcion para asegurar que se asigna un valor en el variable id_plan
+  comprobarPlan()
+  console.log("id_plan seleccionado: " +id_plan)  //imprime el nuevo id_plan, ya que se asigna el id_plan en el funcion de la linea anterior
+  //comprobar el variable
+  if (id_plan == 0 ||id_plan == -1){  //0 en caso si es "seleccione uno" y -1 es por el parametro(no ha seleccionado)
+    mostrarError(errorPlan, "Escoge un plan");  //mostrar el error
   } else {
-    mostrarError(errorPlan);
+    mostrarError(errorPlan);  //quitar
   }
 }
 
@@ -227,6 +238,7 @@ formulario.onsubmit = function(event) {
 let idPadre = 0;
 //--------------------------------------------------------------------------------//
 //CONEXION BBDD
+//este fetch se ejecuta SIEMPRE
 fetch("../Server/GestionarInscripcion.php", {
     method: 'POST',
     headers: {
@@ -265,12 +277,14 @@ fetch("../Server/GestionarInscripcion.php", {
       console.log(data.infoPlan)
       //comprobar el contenido del array de plan devuelto por bbdd
       if (data.infoPlan.length === 0){
-        plan.innerHTML='El administrador aun no ha creado los planes'
-        document.getElementById('enviar').disabled = true;
+        plan.innerHTML='El administrador aun no ha creado los planes' //informamos que no hay ningun plan 
+        document.getElementById('enviar').disabled = true;  //desactivamos el boton
       }else{
-        document.getElementById('enviar').disabled = false;
-        $arrayPlanes = data.infoPlan;
-        plan.innerHTML = `<select name="planSelect" id="planSelect">
+        //en caso nos devuelve un array de tamaño distinto que 0
+        document.getElementById('enviar').disabled = false; //habilitamos el boton 
+        $arrayPlanes = data.infoPlan; //pasamos los el array enviado por php a un variable
+        //lo mapeamos y ponemos planes en el selecr 
+        plan.innerHTML = `<select name="planSelect" id="planSelect"> 
         <option value="0">---- Seleccione un Plan ----</option>
                 ${$arrayPlanes.map(plan =>`
                     <option value="${plan['id_plan']}">${plan['fecha_inicio']} - ${plan['fecha_fin']}</option>
@@ -278,7 +292,8 @@ fetch("../Server/GestionarInscripcion.php", {
             </select> 
             `;
 
-            //comprobar el valor
+            //cuando perdemos el foco del select comprobamos si hemos seleccionado o no
+            //por defecto es 0 si no lo selecionamos siempre es 0, y si es 0 se salta el error
             document.getElementById('planSelect').onblur = comprobarPlan;
       }
 
@@ -309,13 +324,14 @@ function enviarBBDD(){
   }
 
 
-  //FETCH
+  //FETCH PARA EL INSCRIPCION DEL NIÑO
   fetch("../Server/GestionarInscripcion.php", {
     method: 'POST',
     headers: {
         'Content-type': 'application/json',
     },
     body: JSON.stringify({ 
+      //envia datos al php
       nombre_nino: nombre_nino.value,
       nacimiento_nino: fecha_nacimiento.value,
       id_plan: id_plan,
@@ -341,6 +357,7 @@ function enviarBBDD(){
     else if (data.noRegistrado){  //en caso de no ejecutado
       window.location.href = data.noRegistrado;  // Redirige a la URL proporcionada en el JSON
     }else{
+      //en otros casos
       window.location.href = '../html/inscripcion/html/inscripcionFallada.html';  // Redirige a la URL proporcionada en el JSON
 
     }

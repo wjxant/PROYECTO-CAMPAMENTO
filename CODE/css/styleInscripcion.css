@@ -88,3 +88,9 @@ textarea {
         font-size: 0.9rem;
     }
 }
+#enviar:disabled {
+    background-color: grey;  /* Cambia el color de fondo */
+    color: white;            /* Cambia el color del texto */
+    cursor: not-allowed;     /* Muestra el puntero de prohibido */
+    opacity: 0.6;            /* Hace que se vea más apagado */
+}
