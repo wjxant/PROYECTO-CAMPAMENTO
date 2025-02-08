@@ -47,7 +47,7 @@ fetch("../Server/GestionarIndexPadre.php", {
         //JS para el select del hijo
         if (data.infoHijos.length ===0){    // Comprueba si infoHijo es null o undefined (en caso si cae a esta condicion significa no hay hijo)
             selectHijo.innerHTML="Aun no tienes ningun hijos matriculado";
-            document.getElementById('hijodiv').classList.add('oculto');; // Esconde el elemento
+            document.getElementById('hijodiv').classList.add('oculto'); // Esconde el elemento
             document.getElementById('tablaPadres').classList.add('oculto');; // Esconde el elemento
 
         }else if(data.infoHijos.length ===1){
@@ -55,13 +55,14 @@ fetch("../Server/GestionarIndexPadre.php", {
             document.getElementById('tablaPadres').classList.remove('oculto'); // Para mostrarlo de nuevo
             hijoSeleccionado = data.infoHijos[0]['id_nino'] //hay que decir en posicion 0 porque recordamos que infoHijos es un array de objeto, y si es un solo hijo, estara en posicion 0
             console.log(hijoSeleccionado);
-            selectHijo.innerHTML = data.infoHijos[0]['nombre']
-
+            //selectHijo.innerHTML = data.infoHijos[0]['nombre']
+            document.getElementById('divParaSeleccionar').classList.add('oculto');
         }else{
 
             $arrayHijos = data.infoHijos;
             document.getElementById('hijodiv').classList.remove('oculto'); //  Para mostrarlo de nuevo
             document.getElementById('tablaPadres').classList.remove('oculto'); // Para mostrarlo de nuevo
+            document.getElementById('divParaSeleccionar').classList.remove('oculto');
             selectHijo.innerHTML = `<select name="hijoSelect" id="hijoSelect">
                 ${$arrayHijos.map(hijo =>`
                          <option value="${hijo['id_nino']}}">${hijo['nombre']}</option>
