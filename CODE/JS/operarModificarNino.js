@@ -132,13 +132,15 @@ formulario.onsubmit = function (event) {
   }
 };
 
+//variabe para guardad avatar
+let avatarbbdd = ""
 //id del nino
 //--------------------------------------------------------------------------------//
 let idNino = 0;
 //--------------------------------------------------------------------------------//
 //CONEXION BBDD
 //este fetch se ejecuta SIEMPRE
-fetch("../Server/GestionarModificar.php", {
+fetch("../Server/GestionarModificarNino.php", {
   method: "POST",
   headers: {
     "Content-type": "application/json",
@@ -185,23 +187,15 @@ fetch("../Server/GestionarModificar.php", {
         }
       }
 
-      //VER AVATAR
-      //----------------------------------------------------------------------------------------------------------------------------------//
-      // //Actualizacion de avatar
-      // //funcion para mostrar avatar con ruda especifico
-      // function Avatar({avatar_src, nombreAvatar}) {
-      //   return `<img src=${avatar_src} alt=${nombreAvatar} " width="100px" />`;
-      // }
-      // //donde se sobreescribe
-      // document.getElementById('vistaPreviaavatar').innerHTML = Avatar({
-      //   //informaciones para que funcione rl funcion
-      //   avatar_src: data.infoNino['avatar_src'],
-      //   nombreAvatar: data.infoNino['nombre']
-      // })
+
+      avatarbbdd = data.infoNino["avatar_src"]
+
       //----------------------------------------------------------------------------------------------------------------------------------//
 
       //VER AVATAR VISTA PREVIA
       //----------------------------------------------------------------------------------------------------------------------------------//
+      document.getElementById('vistaPrevia').src = avatarbbdd; //modificamos el src de del img vacio en el html, con avatarbbdd podemos sacar la ruta del avatar que esta en bbdd
+      document.getElementById('vistaPrevia').style.display = 'block'; //mostramos el img para la vista previa que esta en html como un bloqu
       document
         .getElementById("avatar")
         .addEventListener("change", function (event) {
@@ -210,11 +204,12 @@ fetch("../Server/GestionarModificar.php", {
           // comprobamos si existe o no el archivo
           if (file) {
             //en caso de existir (adjuntado)
-            document.getElementById('vistaPrevia').src = URL.createObjectURL(file); //modificamos el src de del img vacio en el html, con URL.createObjectURL(file) podemos sacar la ruta
+            document.getElementById('vistaPrevia').src = URL.createObjectURL(file); //modificamos el src de del img vacio en el html, con URL.createObjectURL(file) podemos sacar la ruta del archivo adjuntado
             document.getElementById('vistaPrevia').style.display = 'block'; //mostramos el img para la vista previa que esta en html como un bloqu
         } else {
           //en caso si no existe el archivo (no ha adjuntado)
-          document.getElementById('vistaPrevia').style.display = 'none';  //escondemos el img para la vista previa que esta en html
+           document.getElementById('vistaPrevia').src = avatarbbdd; //modificamos el src de del img vacio en el html, con avatarbbdd podemos sacar la ruta del avatar que esta en bbdd
+          document.getElementById('vistaPrevia').style.display = 'block'; //mostramos el img para la vista previa que esta en html como un bloqu
         }
         });
       //----------------------------------------------------------------------------------------------------------------------------------//
@@ -250,11 +245,17 @@ function ModificacionnNinoBBDD() {
   // Solo agregar el avatar si hay uno seleccionado
   let avatarInput = document.getElementById("avatar");
   if (avatarInput.files.length > 0) {
-    formData.append("avatar", avatarInput.files[0]);
-  }
+    //en caso si hay contenido en el input
+    formData.append("avatar", avatarInput.files[0]);  //pasamos el file al php
+    formData.append("cambiarAvatar", true); //pasamos un booleano dicidendo que hay que modificar el perfil
+  }else{
+    //en caso si no hay nada en el input
+  formData.append("avatarBBDD", avatarbbdd);  //pasamos la ruta de avatar que esta en el bbdd
+    formData.append("cambiarAvatar", false);  //pasamos un boleano para decir que no hay que cambiar nada
 
+}
   //FETCH PARA EL MODIFICACION DEL NIÑO
-  fetch("../Server/GestionarModificar.php", {
+  fetch("../Server/GestionarModificarNino.php", {
     method: "POST",
     //enviamos los datos
     body: formData,

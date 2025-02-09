@@ -222,15 +222,7 @@ fetch("../Server/GestionarIndexPadre.php", {
                 planHijo.innerHTML=`${data.datoHijo['id_plan']} : ${data.datoInfoPlan['fecha_inicio']} a ${data.datoInfoPlan['fecha_fin']}`;
                 
                 //Actualizacion de avatar
-                //creamos un funcion para que se muestre el avatar
-                function Avatar({avatar_src, nombreAvatar}) {
-                return `<img src=${avatar_src} alt=${nombreAvatar} " width="100px" />`;
-                }
-                //lo rescribimos el div para el avatar con el avatar de la ruta del bbdd
-                document.getElementById('imagenHijo').innerHTML = Avatar({
-                avatar_src: data.datoHijo['avatar_src'],
-                nombreAvatar: data.datoHijo['nombre']
-                })
+                document.getElementById('imagenHijo').innerHTML = `<img src="${data.datoHijo['avatar_src']}" alt="${data.datoHijo['nombre']}" width="100px" />`;
 
             
             }
@@ -246,6 +238,6 @@ document.getElementById('suscribirse').addEventListener('click', function() {
 
 //cuando presionamos el boton de modificar un niño
 document.getElementById('modificar').addEventListener('click', function() {
-    $paginaModificar = '../html/Modificar.html'
-    window.location.href = $paginaModificar;
+    $paginaModificarNino = '../html/ModificarNino.html'
+    window.location.href = $paginaModificarNino;
 });

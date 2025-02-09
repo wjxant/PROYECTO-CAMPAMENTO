@@ -62,7 +62,7 @@ if (isset($_POST['nombre_nino']) && isset($_POST['nacimiento_nino']) && isset($_
     $directorio_subida_avatar = "../assets/avatar/uploads/";
     $rutaAvatar = "../assets/img/avatar.png";   //esta ruta se actualizara si el usuario ha introducido un avatar, y si el usuario no introduce avatar va a usar esta como default
     //comprobar si hemos asignado el avatar y si hay algun error
-    if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] == 0){
+    if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] == 0 && $_POST['cambiarAvatar'] == true){    //aqui comprobamos si hay que cambiar el avatar
 
         $name_avatar = $_FILES['avatar']['name'];  //sacamos el nombre del archivo
         //sacamos los informaciones del archivo segun su nombre
@@ -77,6 +77,9 @@ if (isset($_POST['nombre_nino']) && isset($_POST['nacimiento_nino']) && isset($_
         //movemos
         move_uploaded_file($ruta_antiguo_avatar, $ruta_destino_avatar);
         $rutaAvatar = $ruta_destino_avatar;
+    }else{
+        //en caso de no cambiar el avatar se usa la ruta que ya esta en bbdd
+        $rutaAvatar = $_POST['avatarBBDD'];
     }
     //----------------------------------------------------------------------------------------------------------------------------------//
     
