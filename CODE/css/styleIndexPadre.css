@@ -5,6 +5,7 @@ body {
     padding: 0;
     background-color: #f0f0f0;
 
+
 }
 
 /* Estilo del navbar */
@@ -36,6 +37,7 @@ body {
     justify-items: center; /* Centra horizontalmente */
     align-items: start;    /* Ubica el contenido al inicio (arriba) */
     margin: 0;
+    background-attachment: fixed;
     
   }
 
@@ -245,8 +247,9 @@ footer {
   left: 0;
   bottom: 0;
   display: flex;
-  width: 105%; /* Ajusta este valor según el ancho de la onda */
+  width: 100%; /* Ajusta este valor según el ancho de la onda */
   height: 350px; /* Alto del footer */
+  overflow-x: hidden;
 }
 
 section {
@@ -257,6 +260,7 @@ section {
   padding-bottom: 80px; /* Ajusta este valor según el alto de la onda */
   padding-left: 60px; /* Ajusta este valor según el ancho de la onda */
   width: 100%;
+  
 }
 
 @media (width > 420px) {
