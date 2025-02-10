@@ -60,7 +60,7 @@ if (isset($_POST['nombre_nino']) && isset($_POST['nacimiento_nino']) && isset($_
     //----------------------------------------------------------------------------------------------------------------------------------//
     //definimos donde queremos que se guarde el archivo
     $directorio_subida_avatar = "../assets/avatar/uploads/";
-    $rutaAvatar = "../assets/img/avatar.png";   //esta ruta se actualizara si el usuario ha introducido un avatar, y si el usuario no introduce avatar va a usar esta como default
+    $rutaAvatar = "../assets/img/avatar.png";   //esta ruta se actualizara si el usuario ha introducido un avatar, y si el usuario no introduce avatar va a usar esta como default, este paso es para evitar insectar un null en avatar_src
     //comprobar si hemos asignado el avatar y si hay algun error
     if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] == 0 && $_POST['cambiarAvatar'] == true){    //aqui comprobamos si hay que cambiar el avatar
 

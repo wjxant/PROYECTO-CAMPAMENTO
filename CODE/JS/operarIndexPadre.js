@@ -187,6 +187,7 @@ fetch("../Server/GestionarIndexPadre.php", {
                     //escondemos la tabla
                     document.getElementById('tablaActividad').classList.add('oculto')
                     document.getElementById('infoTabla').innerHTML = "No tiene ninguna actividad programada";
+                    document.getElementById('infoTabla').style.color = "black";
                 }
 
                 //estado del niños
