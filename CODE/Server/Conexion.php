@@ -44,7 +44,8 @@ $sql_tables = "
         dni VARCHAR(9) NOT NULL,
         telefono VARCHAR(9) NOT NULL,
         email VARCHAR(50) NOT NULL UNIQUE,
-        contrasenia VARCHAR(20) NOT NULL
+        contrasenia text NOT NULL,
+        avatar_src text
     );
 
  CREATE TABLE IF NOT EXISTS NINOS (
@@ -65,7 +66,8 @@ $sql_tables = "
         id_monitor INT PRIMARY KEY AUTO_INCREMENT,
         nombre VARCHAR(50) NOT NULL,
         email VARCHAR(50) NOT NULL UNIQUE,
-        contrasenia VARCHAR(20) NOT NULL
+        contrasenia VARCHAR(20) NOT NULL,
+        avatar_src text
     );
 
     CREATE TABLE IF NOT EXISTS GRUPOS (
