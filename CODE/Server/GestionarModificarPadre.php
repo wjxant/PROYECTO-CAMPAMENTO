@@ -72,10 +72,6 @@ if (password_verify($data['contraseniaComprobacion'], $infoTutor['contrasenia'])
 if (isset($_POST['nombre_tutor']) && isset($_POST['dni']) && isset($_POST['telefono'])&& isset($_POST['contraseniaNuevaContenido'])) {
 
 
-    // if (empty($_POST['nombre_tutor']) || empty($_POST['dni']) || empty($_POST['telefono']) || empty($_POST['email']) || empty($_POST['contraseniaNuevaContenido'])) {
-    //     echo json_encode(['error' => 'Faltan datos necesarios para actualizar la tabla de tutor']);
-    //     exit();
-    // }
 
     //ASIGNACION DE NUEVO AVATAR EN BBDD
     //----------------------------------------------------------------------------------------------------------------------------------//
