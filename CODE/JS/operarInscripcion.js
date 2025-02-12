@@ -157,12 +157,42 @@ function comprobarPlan(){
   if (valorSeleccionado == 0){
     //en caso es 0 se salte el error
     mostrarError(errorPlan, "Escoge un plan");
+    document.getElementById('precioPlan').innerHTML = ``
+    document.getElementById('infoPlan').innerHTML = ``
   } else {
     //en caso de otros, se borra el error
     mostrarError(errorPlan);
+    FetchSacarInfoPlanBBDD(id_plan)
   }
-  
+
 }
+
+// Funcion para sacar informacion del plan del bbdd
+async function FetchSacarInfoPlanBBDD(id_plan) {
+  console.log("Comprobación de plan en BBDD");
+
+    let response = await fetch("../Server/GestionarInscripcion.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id_planPatabuscarEnBBDD: id_plan }),
+    });
+    if (!response.ok) {
+      throw new Error("Error al obtener datos del servidor.");
+    }
+    let data = await response.json();
+    if (data.infoPlan) {
+      document.getElementById("precioPlan").innerHTML = `Precio: ${data.infoPlan.precio}`;
+      document.getElementById("infoPlan").innerHTML = `Definición: ${data.infoPlan.definicion}`;
+    } else {
+      document.getElementById("precioPlan").innerHTML = "";
+      document.getElementById("infoPlan").innerHTML = "";
+    }
+
+}
+
+
 
 //funcion para comprobar si el variable de id_plan es valido o no
 function comprobarPlanExterno(){
@@ -303,6 +333,7 @@ fetch("../Server/GestionarInscripcion.php", {
             //cuando perdemos el foco del select comprobamos si hemos seleccionado o no
             //por defecto es 0 si no lo selecionamos siempre es 0, y si es 0 se salta el error
             document.getElementById('planSelect').onblur = comprobarPlan;
+            document.getElementById('planSelect').onchange = comprobarPlan;
       }
 
     }

@@ -41,6 +41,15 @@ fetch("../Server/GestionarIndexPadre.php", {
         nombrePadre.innerHTML=data.infoPadre['nombre'];
         emailPadres.innerHTML=data.infoPadre['email'];
 
+        //imprimir el imagen del avatar que esta en bbdd
+        //Actualizacion de avatar del padre
+        //comprobamos si hemos asignado el avatar, si no, se muestra el predeterminado
+        if (data.infoPadre['avatar_src']){
+            document.getElementById('imagenPadres').innerHTML = `<img src="${data.infoPadre['avatar_src']}" alt="${data.infoPadre['nombre']}" width="100px" />`;
+        }
+        //document.getElementById('imagenPadres').innerHTML = `<img src="${data.infoPadre['avatar_src']}" alt="${data.infoPadre['nombre']}" width="100px" />`;
+
+
         let hijoSeleccionado = 0;
 
         console.log(data.infoHijos)
@@ -242,3 +251,12 @@ document.getElementById('modificar').addEventListener('click', function() {
     $paginaModificarNino = '../html/ModificarNino.html'
     window.location.href = $paginaModificarNino;
 });
+
+
+//cuando presionamos el boton de modificar un padre
+document.getElementById('modificarPadre').addEventListener('click', function() {
+    $paginaModificarPadre = '../html/ModificarPadre.html'
+    window.location.href = $paginaModificarPadre;
+});
+
+

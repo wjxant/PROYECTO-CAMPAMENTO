@@ -87,6 +87,35 @@ if (isset($data['nombre_nino']) && isset($data['nacimiento_nino']) && isset($dat
     
 }
 
+
+////SACAMOS TODO LOS INFORMACIONES DEL PLAN SELECCIONADO POR EL PADRE
+if (isset($data['id_planPatabuscarEnBBDD'])) { // Verificar que el ID está definido
+    $queryInfoDataPlan = $conn->prepare("SELECT * FROM PLAN_FECHAS WHERE id_plan = ?");
+    $queryInfoDataPlan->bind_param("i", $data['id_planPatabuscarEnBBDD']);
+
+    if ($queryInfoDataPlan->execute()) {
+        $result = $queryInfoDataPlan->get_result(); // Obtener resultados
+        if ($result->num_rows > 0) {
+            echo json_encode(['infoPlan' => $result->fetch_assoc()]);
+            exit();
+        } else {
+            echo json_encode(['error' => 'No se encontró el plan.']);
+            exit();
+        }
+    } else {
+        echo json_encode(['error' => 'Error al ejecutar la consulta.']);
+
+    }
+    $queryInfoDataPlan->close();
+    exit();
+}
+
+
+
+
+
+
+//este echo hay que estar abajo del todo SINO SE PETA
 echo json_encode([
     'login' => $login,
     'id_Padre' => $_SESSION['id'],
@@ -94,3 +123,5 @@ echo json_encode([
     'infoPlan' => $infoPlan
 
 ]);
+
+
