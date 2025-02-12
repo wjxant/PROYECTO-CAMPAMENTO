@@ -282,7 +282,7 @@ function ModificacionnNinoBBDD() {
         alert("datos NO ENVIADO");
         //en otros casos
         window.location.href =
-          "../html/modificacionNino/html/modificacionFallada.html"; // Redirige a la URL proporcionada en el JSON
+          "../html/modificacionNinoFallada.html"; // Redirige a la URL proporcionada en el JSON
       }
     });
 }

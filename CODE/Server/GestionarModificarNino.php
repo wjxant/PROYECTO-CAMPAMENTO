@@ -90,11 +90,11 @@ if (isset($_POST['nombre_nino']) && isset($_POST['nacimiento_nino']) && isset($_
     if ($queryModificacionNiño->execute()) { //comprobamos la ejecucion
         
         if ($queryModificacionNiño->affected_rows >= 0) { // Si se inserta al menos 1 o 0 registro
-            echo json_encode(['registrado' => '../html/modificacionNino/html/modificacionExitosa.html']);
+            echo json_encode(['registrado' => '../html/modificacionNinoExitosa.html']);
             $queryModificacionNiño->close();   
             exit();
         } else {
-            echo json_encode(['noRegistrado' => '../html/modificacionNino/html/modificacionFallada.html']);
+            echo json_encode(['noRegistrado' => '../html/modificacionNinoFallada.html']);
             $queryModificacionNiño->close();   
             exit();
 

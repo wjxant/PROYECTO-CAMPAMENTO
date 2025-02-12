@@ -436,7 +436,7 @@ function ModificacionPadreBBDD() {
         alert("datos NO ENVIADO");
         //en otros casos
         window.location.href =
-          "../html/modificacionPadre/html/modificacionFallada.html"; // Redirige a la URL proporcionada en el JSON
+          "../html/modificacionPadreFallada.html"; // Redirige a la URL proporcionada en el JSON
       }
     });
 }

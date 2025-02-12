@@ -68,11 +68,11 @@ if (isset($data['nombre_nino']) && isset($data['nacimiento_nino']) && isset($dat
     $queryInsertNiño->bind_param("sssssis", $data['nombre_nino'], $data['nacimiento_nino'], $data['id_plan'], $data['alergia'], $data['observaciones'], $_SESSION['id'], $avatar_default_src);
     if ($queryInsertNiño->execute()) { //comprobamos la ejecucion
         if ($queryInsertNiño->affected_rows > 0) { // Si se inserta al menos un registro
-            echo json_encode(['registrado' => '../html/inscripcion/html/inscripcionExitosa.html']);
+            echo json_encode(['registrado' => '../html/inscripcionNinoExitosa.html']);
             $queryInsertNiño->close();   
             exit();
         } else {
-            echo json_encode(['noRegistrado' => '../html/inscripcion/html/inscripcionFallada.html']);
+            echo json_encode(['noRegistrado' => '../html/inscripcionNinoFallada.html']);
             $queryInsertNiño->close();   
             exit();
 

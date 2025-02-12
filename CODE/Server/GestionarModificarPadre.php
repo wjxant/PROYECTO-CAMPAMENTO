@@ -118,11 +118,11 @@ if (isset($_POST['nombre_tutor']) && isset($_POST['dni']) && isset($_POST['telef
     if ($queryModificacionPadre->execute()) { //comprobamos la ejecucion
         
         if ($queryModificacionPadre->affected_rows >= 0) { // Si se inserta al menos 1 o 0 registro
-            echo json_encode(['registrado' => '../html/modificacionPadre/html/modificacionExitosa.html']);
+            echo json_encode(['registrado' => '../html/modificacionPadreExitosa.html']);
             $queryModificacionPadre->close();   
             exit();
         } else {
-            echo json_encode(['noRegistrado' => '../html/modificacionPadre/html/modificacionFallada.html']);
+            echo json_encode(['noRegistrado' => '../html/modificacionPadreFallada.html']);
             $queryModificacionPadre->close();   
             exit();
 

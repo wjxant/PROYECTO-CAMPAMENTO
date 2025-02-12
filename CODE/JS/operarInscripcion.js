@@ -399,7 +399,7 @@ function InsertsInscripcionNinoBBDD(){
       window.location.href = data.noRegistrado;  // Redirige a la URL proporcionada en el JSON
     }else{
       //en otros casos
-      window.location.href = '../html/inscripcion/html/inscripcionFallada.html';  // Redirige a la URL proporcionada en el JSON
+      window.location.href = '../html/inscripcionNinoFallada.html';  // Redirige a la URL proporcionada en el JSON
 
     }
 })
