@@ -117,8 +117,8 @@ if (isset($_POST['nombre_tutor']) && isset($_POST['dni']) && isset($_POST['telef
 
     
     //UPDATES DE INFORMACION
-    $queryModificacionPadre = $conn->prepare("UPDATE tutores SET nombre = ?, dni = ?, telefono = ?, email = ?, contrasenia = ?,  avatar_src = ? WHERE id_tutor = ?");
-    $queryModificacionPadre->bind_param("ssssssi", $_POST['nombre_tutor'], $_POST['dni'], $_POST['telefono'], $_POST['email'],  $contraseniaNueva, $rutaAvatar, $_SESSION['id']);
+    $queryModificacionPadre = $conn->prepare("UPDATE tutores SET nombre = ?, dni = ?, telefono = ?, contrasenia = ?,  avatar_src = ? WHERE id_tutor = ?");
+    $queryModificacionPadre->bind_param("sssssi", $_POST['nombre_tutor'], $_POST['dni'], $_POST['telefono'],  $contraseniaNueva, $rutaAvatar, $_SESSION['id']);
     if ($queryModificacionPadre->execute()) { //comprobamos la ejecucion
         
         if ($queryModificacionPadre->affected_rows >= 0) { // Si se inserta al menos 1 o 0 registro

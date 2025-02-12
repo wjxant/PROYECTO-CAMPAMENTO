@@ -267,16 +267,19 @@ formulario.onsubmit = function (event) {
 
       //en caso si hemos seleccionado que si 
     if (quiereCambiarContrasenia === 'si'){
+      //en caso si el padre queire cambiar la contrasela
       if (
+        //añadimos los comprobacion de campo tambien 
       checkError(document.getElementById('errorContraseniaAntigua')) &&
       checkError(document.getElementById('errorContraseniaNueva1')) &&
       checkError(document.getElementById('errorContraseniaNueva2'))){
         // Si todos los errores están vacíos
         //AQUI DE DEJA EL PASO SOGUIENTE
-        mostrarError(document.getElementById("errorEnviar"));
+        mostrarError(document.getElementById("errorEnviar")); //quitar el errorr
         ModificacionPadreBBDD();  //--------------------------------------------------------------------------ENVIO DE ACTUALIZAR COLUMNA
         event.preventDefault(); // Evita el envío del formulario
       }else {
+        //en caso si hay errores en la comprobacion del campo de contrasenia
         mostrarError(
           document.getElementById("errorEnviar"), "El formulario contiene errores (Contraseñas)"
         );
@@ -284,6 +287,8 @@ formulario.onsubmit = function (event) {
       }
 
     }else if(quiereCambiarContrasenia !== 'si'){
+      //en caso si el padre no quiere cambiar la contrasema 
+      //se envia el los datos con el fetch, porque el comprobacion de error ya esta hecho 
         //AQUI DE DEJA EL PASO SOGUIENTE
         mostrarError(document.getElementById("errorEnviar"));
         ModificacionPadreBBDD();  //--------------------------------------------------------------------------ENVIO DE ACTUALIZAR COLUMNA
@@ -391,7 +396,7 @@ function ModificacionPadreBBDD() {
   formData.append("nombre_tutor", nombre_tutor.value);
   formData.append("dni", dni.value);
   formData.append("telefono", telefono.value);
-  formData.append("email", email.value);
+  //formData.append("email", email.value);
   formData.append("contraseniaNuevaContenido", contraseniaNuevaContenido);
 
   // Solo agregar el avatar si hay uno seleccionado
