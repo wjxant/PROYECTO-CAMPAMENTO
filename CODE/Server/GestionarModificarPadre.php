@@ -69,7 +69,7 @@ if (password_verify($data['contraseniaComprobacion'], $infoTutor['contrasenia'])
 
 
 //INSERTS DE DATOS PARA tutor (MODIFICAR TUTOR)
-if (isset($_POST['nombre_tutor']) && isset($_POST['dni']) && isset($_POST['telefono']) && isset($_POST['email']) && isset($_POST['contraseniaNuevaContenido'])) {
+if (isset($_POST['nombre_tutor']) && isset($_POST['dni']) && isset($_POST['telefono'])&& isset($_POST['contraseniaNuevaContenido'])) {
 
 
     // if (empty($_POST['nombre_tutor']) || empty($_POST['dni']) || empty($_POST['telefono']) || empty($_POST['email']) || empty($_POST['contraseniaNuevaContenido'])) {

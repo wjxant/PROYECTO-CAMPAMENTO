@@ -43,7 +43,7 @@ function comprobarDni() {
   } else {
     mostrarError(errorDni, "");
     if (/^[XxYyZz]?\d{8}[A-Za-z]$/.test(dni.value)){
-      mostrarError(errorDni, "");
+    mostrarError(errorDni, "");
     } else {
       mostrarError(errorDni, "Error de formato, tiene que contener 8 dígitos de número o letra y una letra al final");
     }
@@ -167,22 +167,12 @@ function comprobarContraseña2 (){
 }
 
 
-//comprobar si la contraseña antigua es vacio o no, y en caso de no estar vacio se comprueba si coincide la contraseña que esta en bbdd
-function comprobarConraseniaDesdeBBDD (){
-  if(document.getElementById('contraseniaAntigua').value.trim() == ""){
-    mostrarError(document.getElementById('errorContraseniaAntigua'), "La contraseña no puede estar vacio")
-  }else{
-    mostrarError(document.getElementById('errorContraseniaAntigua'),"");
-    //comprobamos si la contraseña antigua esta bien o no desde bbdd
-    FetchComprobarcontraseniaBBDD (document.getElementById('contraseniaAntigua').value)
-  }
-}
 
 
 // Función para comprobar la contraseña la contraseña en PHP, esta función siempre es llamada por otra función
 async function FetchComprobarcontraseniaBBDD(contrasenia) {
   console.log('comprobacion de contrasenia antigua en bbdd')
-  comprobacion = "";
+  comprobacion = "";  //variable externo para el return del funcion
   try {
     let response = await fetch("../Server/GestionarModificarPadre.php", {
       method: "POST",
@@ -196,23 +186,37 @@ async function FetchComprobarcontraseniaBBDD(contrasenia) {
       throw new Error("Error al obtener datos del servidor.");
     }
 
-    let data = await response.json();
+    let data = await response.json(); //recibimos la respuesta
 
-    if (data.contraseñaCorecta === true) {
+    if (data.contraseñaCorecta === true) {  //en caso el resultado del bbdd nos devuelve un true (pasa la comprobacion)
       //en caso si la contraseña es correcta 
       console.log(`Contraseña introducida ok`);
-      mostrarError(document.getElementById('errorContraseniaAntigua'), "")
-      comprobacion = true;
+      mostrarError(document.getElementById('errorContraseniaAntigua'), "")  //quitamos el error
+      comprobacion = true;  //asignamos al variable externo un true
     } else {
       //en caso de no 
-      mostrarError(document.getElementById('errorContraseniaAntigua'), "Contraseña incorrecta")
-      comprobacion = false;
+      mostrarError(document.getElementById('errorContraseniaAntigua'), "Contraseña incorrecta") //en caso si la contraseña esta mal
+      comprobacion = false; //asignamos al variable externo un false
     }
   } catch (error) {
-    comprobacion = false;
+    //en caso de tener error
+    comprobacion = false; //asignamos al variable externo un false
   }
-
+  //hace el return del variable externo que contiene booleano de que esta bien o no la contraseña
   return comprobacion;
+}
+
+
+//comprobar si la contraseña antigua es vacio o no, y en caso de no estar vacio se comprueba si coincide la contraseña que esta en bbdd
+async function comprobarConraseniaDesdeBBDD (){
+  if(document.getElementById('contraseniaAntigua').value.trim() == ""){
+    mostrarError(document.getElementById('errorContraseniaAntigua'), "La contraseña no puede estar vacio")
+    return false; //return un false en caso es un vacio
+  }else{
+    mostrarError(document.getElementById('errorContraseniaAntigua'),"");
+    //comprobamos si la contraseña antigua esta bien o no desde bbdd
+    return await FetchComprobarcontraseniaBBDD (document.getElementById('contraseniaAntigua').value)  //return del resultado del funcion de FetchComprobarcontraseniaBBDD
+  }
 }
 
 
@@ -237,18 +241,95 @@ email.oninput = comprobarEmail;
 
 
 
-//cando presiomos el boton de enviar
+// //cando presiomos el boton de enviar
+// const formulario = document.getElementById("formularioModificacion");
+// // Asigna un evento submit
+// formulario.onsubmit = async function (event) {
+//   comprobarNombre();
+//   comprobarDni();
+//   comprobarTelefono();
+//   comprobarEmail();
+//   if (quiereCambiarContrasenia == 'si'){
+//   comprobarConraseniaDesdeBBDD();
+//   comprobarContraseña1();
+//   comprobarContraseña2();
+//   }
+
+//   // Función para comprobar si los elementos de error están vacíos
+//   function checkError(element) {
+//     return element && element.textContent.trim() === "";
+//   }
+
+//   // Comprobamos todos los errores
+//   //en caso si hay algun error, saltaria el alert y bloquearia el envio
+//   if (
+//     //comprobaciones si hay error o no
+//     checkError(errorNombre_Tutor) &&
+//     checkError(errorDni) &&
+//     checkError(errorTelefono) &&
+//     checkError(errorEmail) ) {
+
+//       //en caso si hemos seleccionado que si 
+//     if (quiereCambiarContrasenia === 'si'){
+//       //en caso si el padre queire cambiar la contrasela
+//       await comprobarConraseniaDesdeBBDD();
+//       if (
+//         //añadimos los comprobacion de campo tambien 
+//       checkError(document.getElementById('errorContraseniaAntigua')) &&
+//       checkError(document.getElementById('errorContraseniaNueva1')) &&
+//       checkError(document.getElementById('errorContraseniaNueva2'))){
+//         // Si todos los errores están vacíos
+//         //AQUI DE DEJA EL PASO SOGUIENTE
+//         mostrarError(document.getElementById("errorEnviar"), ""); //quitar el errorr
+//         event.preventDefault(); // Evita el envío del formulario
+//         ModificacionPadreBBDD();  //--------------------------------------------------------------------------ENVIO DE ACTUALIZAR COLUMNA
+//       }else {
+//         //en caso si hay errores en la comprobacion del campo de contrasenia
+//         mostrarError(
+//           document.getElementById("errorEnviar"), "El formulario contiene errores (Contraseñas)"
+//         );
+//         event.preventDefault(); // Evita el envío del formulario
+//       }
+
+//     }else if(quiereCambiarContrasenia === 'no'){
+//       //en caso si el padre no quiere cambiar la contrasema 
+//       //se envia el los datos con el fetch, porque el comprobacion de error ya esta hecho 
+//         //AQUI DE DEJA EL PASO SOGUIENTE
+//         mostrarError(document.getElementById("errorEnviar"), ""); //quitar error
+//         event.preventDefault(); // Evita el envío del formulario
+//         ModificacionPadreBBDD();  //--------------------------------------------------------------------------ENVIO DE ACTUALIZAR COLUMNA
+        
+//     }
+    
+//   } else {
+//     mostrarError(
+//       document.getElementById("errorEnviar"), "El formulario contiene errores"
+//     );
+//     event.preventDefault(); // Evita el envío del formulario
+//   }
+// };
+
+// Cuando presionamos el botón de enviar
 const formulario = document.getElementById("formularioModificacion");
+
 // Asigna un evento submit
-formulario.onsubmit = function (event) {
+formulario.onsubmit = async function (event) {
+  // Prevenir el envío del formulario al inicio
+  event.preventDefault();
+
+  // Comprobamos los campos normales primero
   comprobarNombre();
   comprobarDni();
   comprobarTelefono();
   comprobarEmail();
-  if (quiereCambiarContrasenia == 'si'){
-  comprobarConraseniaDesdeBBDD();
-  comprobarContraseña1();
-  comprobarContraseña2();
+
+  let contraseniaValida = false; // Variable para verificar si la contraseña es válida, el default es false
+
+  if (quiereCambiarContrasenia === 'si') {  //en caso de que el usuario quire cambiar la contraseña
+    // Comprobamos la contraseña antigua de manera asíncrona
+    contraseniaValida = await comprobarConraseniaDesdeBBDD(); //se asigna el boleano del result del funcion comprobarConraseniaDesdeBBDD
+    comprobarContraseña1();
+    comprobarContraseña2();
   }
 
   // Función para comprobar si los elementos de error están vacíos
@@ -257,51 +338,36 @@ formulario.onsubmit = function (event) {
   }
 
   // Comprobamos todos los errores
-  //en caso si hay algun error, saltaria el alert y bloquearia el envio
   if (
-    //comprobaciones si hay error o no
     checkError(errorNombre_Tutor) &&
     checkError(errorDni) &&
     checkError(errorTelefono) &&
-    checkError(errorEmail) ) {
-
-      //en caso si hemos seleccionado que si 
-    if (quiereCambiarContrasenia === 'si'){
-      //en caso si el padre queire cambiar la contrasela
+    checkError(errorEmail)
+  ) {
+    if (quiereCambiarContrasenia === 'si') {
+      // Si el usuario quiere cambiar la contraseña
       if (
-        //añadimos los comprobacion de campo tambien 
-      checkError(document.getElementById('errorContraseniaAntigua')) &&
-      checkError(document.getElementById('errorContraseniaNueva1')) &&
-      checkError(document.getElementById('errorContraseniaNueva2'))){
-        // Si todos los errores están vacíos
-        //AQUI DE DEJA EL PASO SOGUIENTE
-        mostrarError(document.getElementById("errorEnviar")); //quitar el errorr
-        ModificacionPadreBBDD();  //--------------------------------------------------------------------------ENVIO DE ACTUALIZAR COLUMNA
-        event.preventDefault(); // Evita el envío del formulario
-      }else {
-        //en caso si hay errores en la comprobacion del campo de contrasenia
-        mostrarError(
-          document.getElementById("errorEnviar"), "El formulario contiene errores (Contraseñas)"
-        );
-        event.preventDefault(); // Evita el envío del formulario
+        checkError(document.getElementById('errorContraseniaAntigua')) &&
+        checkError(document.getElementById('errorContraseniaNueva1')) &&
+        checkError(document.getElementById('errorContraseniaNueva2')) &&
+        contraseniaValida == true  // Verificamos si la contraseña antigua es correcta 
+      ) {
+        mostrarError(document.getElementById("errorEnviar"), "");
+        ModificacionPadreBBDD();  // Enviar los datos a la BBDD
+      } else {
+        mostrarError(document.getElementById("errorEnviar"), "El formulario contiene errores (Contraseñas)");
       }
-
-    }else if(quiereCambiarContrasenia !== 'si'){
-      //en caso si el padre no quiere cambiar la contrasema 
-      //se envia el los datos con el fetch, porque el comprobacion de error ya esta hecho 
-        //AQUI DE DEJA EL PASO SOGUIENTE
-        mostrarError(document.getElementById("errorEnviar"));
-        ModificacionPadreBBDD();  //--------------------------------------------------------------------------ENVIO DE ACTUALIZAR COLUMNA
-        event.preventDefault(); // Evita el envío del formulario
+    } else if (quiereCambiarContrasenia === 'no') {
+      // Si no quiere cambiar la contraseña, enviamos los datos
+      mostrarError(document.getElementById("errorEnviar"), "");
+      ModificacionPadreBBDD();  // Enviar los datos a la BBDD
     }
-    
   } else {
-    mostrarError(
-      document.getElementById("errorEnviar"), "El formulario contiene errores"
-    );
-    event.preventDefault(); // Evita el envío del formulario
+    mostrarError(document.getElementById("errorEnviar"), "El formulario contiene errores");
   }
 };
+
+
 
 //variabe para guardad avatar
 let avatarbbdd = ""
