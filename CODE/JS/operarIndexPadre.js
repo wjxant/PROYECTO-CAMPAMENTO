@@ -43,7 +43,11 @@ fetch("../Server/GestionarIndexPadre.php", {
 
         //imprimir el imagen del avatar que esta en bbdd
         //Actualizacion de avatar del padre
-        document.getElementById('imagenPadres').innerHTML = `<img src="${data.infoPadre['avatar_src']}" alt="${data.infoPadre['nombre']}" width="100px" />`;
+        //comprobamos si hemos asignado el avatar, si no, se muestra el predeterminado
+        if (data.infoPadre['avatar_src']){
+            document.getElementById('imagenPadres').innerHTML = `<img src="${data.infoPadre['avatar_src']}" alt="${data.infoPadre['nombre']}" width="100px" />`;
+        }
+        //document.getElementById('imagenPadres').innerHTML = `<img src="${data.infoPadre['avatar_src']}" alt="${data.infoPadre['nombre']}" width="100px" />`;
 
 
         let hijoSeleccionado = 0;

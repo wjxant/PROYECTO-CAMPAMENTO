@@ -36,7 +36,9 @@ $sql_tables = "
     fecha_inicio DATE NOT NULL,
     fecha_fin DATE NOT NULL,
     fecha_maxInscripcion DATE NOT null,
-    hora_maximaInscripcion time not null
+    hora_maximaInscripcion time not null,
+    precio VARCHAR(9) NOT NULL,
+    definicion VARCHAR(40000) NOT NULL
 );
     CREATE TABLE IF NOT EXISTS TUTORES (
         id_tutor INT PRIMARY KEY AUTO_INCREMENT, 
