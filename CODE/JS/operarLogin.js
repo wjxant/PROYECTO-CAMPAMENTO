@@ -228,4 +228,3 @@ correoSignup.addEventListener('blur', function () {
 contrasenaSignup.addEventListener('blur', function () {
     validarCampos(contrasenaSignup, errorContrasenaSignup, validarContrasena); // Valida la contraseña de signup al perder el foco
 });
-
