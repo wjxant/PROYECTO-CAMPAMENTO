@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Añadir listener para el submit del formulario de registro 
     //-----------------------------------------------------------------------------------//
 
-    document.getElementById('formRegistro').addEventListener('submit', function(event) {
+    document.getElementById('signupForm').addEventListener('submit', function(event) {
         event.preventDefault(); // Prevenir el envio del formulario
         
 
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded"
             },
-            body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(pswd)}`
+            body: `email=${encodeURIComponent(email)}&pswd=${encodeURIComponent(pswd)}`
     })
     .then(response => response.json()) // Parsear la respuesta como JSON
     .then(data => {

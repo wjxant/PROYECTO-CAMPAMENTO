@@ -1,9 +1,20 @@
 <?php
+
+//----------------------------------------------------------------------------------------//
+// Iniciar el buffer de salida para limpiar cualquier salida previa
+//----------------------------------------------------------------------------------------//
+ob_start();
 //----------------------------------------------------------------------------------------//
 // Iniciar sesión y configurar la respuesta JSON
 //----------------------------------------------------------------------------------------//
 session_start();
 require 'Conexion.php';
+
+//----------------------------------------------------------------------------------------//
+// Limpiar la salida generada por Conexion.php (si hay) para enviar solo JSON
+//----------------------------------------------------------------------------------------//
+ob_clean();
+
 
 header('Content-Type: application/json');  // Indicamos que la respuesta es JSON para config AJAX
 
