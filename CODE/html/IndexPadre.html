@@ -41,11 +41,33 @@
             <!-- <div id="google_translate_element" class="google"></div> -->
 
             <!-- Enlace al perfil del usuario -->
-            <a class="item">Perfil</a>
+            <!-- Enlace con un menú desplegable -->
+            <div class="item">
+                Perfil
+                <div class="dropdown">
+                    <div>
+                        <!-- Opciones del menú desplegable -->
+                        <a>Ejemplo1</a>
+                        <a>Ejemplo2</a>
+                        <a><button type="button" class="botonNavbar" id="btnCerrarSesion">Cerrar Sesion</button></a>
+                    </div>
+                </div>
+            </div>
             <!-- Elemento decorativo para subrayar la navegación -->
             <div class="underline"></div>
         </div>
     </nav>
+
+    <!-- Ventana Overlay Para cerrar sesion -->
+    <div class="overlay" id="overlay">
+        <div class="overlay-content">
+            <button class="close-btn" id="cerrarOverlayCerrarSesion">×</button>
+            <h2>¿Seguro que quieres cerrar sesión?</h2>
+            <button type="button" id="volverOverlayCerrarSesion">volver</button>
+            <button type="button" id="cerrarSesionOverlayCerrarSesion">Cerrar Sesion</button>
+            
+        </div>
+    </div>
     <!---------------------------------------------------------------------------------------------------------------------------------------------------------------------->
     <!-- INICIO CONTENIDO HTML -->
     <div class="padres">

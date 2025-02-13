@@ -260,3 +260,48 @@ document.getElementById('modificarPadre').addEventListener('click', function() {
 });
 
 
+
+//-----------------------------------------------------------------------------------------------------------
+//JS DE NAVBAR
+//-----------------------------------------------------------------------------------------------------------
+
+// Función para abrir la ventana overlay
+document.getElementById('btnCerrarSesion').addEventListener('click', () => {
+    document.getElementById("overlay").classList.add("activeOverlay");
+})
+
+//cuando damos el x de cerrar el overlay
+document.getElementById('cerrarOverlayCerrarSesion').addEventListener('click', cerrarOverlayCerrarSesion)
+//cuando damos el boton de volver
+document.getElementById('volverOverlayCerrarSesion').addEventListener('click', cerrarOverlayCerrarSesion)
+//funcion para quitar el overlay
+function cerrarOverlayCerrarSesion (){
+    document.getElementById("overlay").classList.remove("activeOverlay")
+}
+
+document.getElementById('cerrarSesionOverlayCerrarSesion').addEventListener('click', cerrarSesionSeguro)
+
+function cerrarSesionSeguro (){
+    //conexion con php
+    //este fetch es para que quite los sesiones
+    fetch("../Server/quitarSesion.php", {   //me lleva al php especifico para quitar el sesion 
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json',
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Error al obtener datos del servidor.');
+        }
+        return response.json();
+    })
+    .then(data => {
+        //en caso se ejecuta bien
+        //en caso se ejecuta el funcion que quita el sesion 
+        if(data.logout){
+            //redirigimos a la pagina enviado por servidor
+            window.location.href = data.logout;
+        }
+    })
+}
