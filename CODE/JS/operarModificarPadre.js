@@ -79,11 +79,13 @@ function comprobarEmail(){
 
 let quiereCambiarContrasenia = 'no';  //variable pasa raber si tiene alergia o no
 function comprobarCambiarContrasenia() {
+  console.log('')
   let seleccionado = document.querySelector('input[name="cambiarContrasenia"]:checked');
   if (!seleccionado) return; // No hacer nada si no hay un radio seleccionado
   let espacio = document.getElementById('espacioContrasenia');
   if (seleccionado.value === "si") {
-    if (!document.getElementById('contraseniaAntigua')) {
+    console.log('Si')
+    if (!document.getElementById('contraseniaNueva1')) {  //comprobamos si no existe los dos input
       //en caso de si seleccionamos que si que si sadria los impput para modificar la contraseña
       espacio.innerHTML = `
         <label for="contraseniaNueva1">Introduce la nueva contraseña</label>
@@ -107,6 +109,7 @@ function comprobarCambiarContrasenia() {
       quiereCambiarContrasenia = "si"
     }
   } else if (seleccionado.value === "no") {
+    console.log('No')
     espacio.innerHTML = ''; // Elimina el textarea si selecciona "No"
     quiereCambiarContrasenia = "no";
   }
