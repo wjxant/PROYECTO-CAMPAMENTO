@@ -9,7 +9,10 @@ body {
     align-items: center; /* Centra los elementos verticalmente */
     min-height: 100vh; /* Asegura que el body ocupe toda la altura de la ventana */
     font-family: 'Jost', sans-serif; /* Establece la fuente de texto */
-    background: url('../assets/icons/loginbackground.webp') no-repeat center center; /* Fondo con imagen centrada */
+
+
+    /* Cambiar la imagen al html y asignarle una clase, utilizar propiedades: mask(filtro negro) y opacity(bajar opacidad) */
+
     background-size: cover; /* La imagen cubre todo el fondo, adaptándose al tamaño */
     background-attachment: fixed; /* Mantiene la imagen fija al hacer scroll */
 }
@@ -18,9 +21,9 @@ body {
 /* Estilo para el contenedor principal del login */
 /*--------------------------------------------------------------------------------------------*/
 .main {
-    width: 350px; /* Define el ancho del contenedor */
+    width: 350px; /* Define el ancho del contenedor */                 
     height: 500px; /* Define la altura del contenedor */
-    background: #302b63; /* Color de fondo del contenedor */
+    background: #0f80cb; /* Color de fondo del contenedor */
     overflow: hidden; /* Esconde cualquier contenido que se desborde */
     border-radius: 10px; /* Bordes redondeados */
     box-shadow: 5px 20px 50px #000; /* Sombra alrededor del contenedor */
