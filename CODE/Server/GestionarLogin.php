@@ -1,11 +1,11 @@
 <?php
 //----------------------------------------------------------------------------------------//
-// Iniciar sesión y configurar respuesta JSON para el login (con hasheo de contraseñas)
+// Iniciar sesión y configurar respuesta JSON
 //----------------------------------------------------------------------------------------//
 session_start();
 require 'Conexion.php';
 
-header('Content-Type: application/json');  // Indicamos que la respuesta es JSON para AJAX
+header('Content-Type: application/json');  // Indicamos que la respuesta es JSON para config AJAX
 
 //----------------------------------------------------------------------------------------//
 // Verificar que se envíen datos mediante método POST
@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST["pswd"];
 
     //------------------------------------------------------------------------------------//
-    // Validar que los campos no estén vacíos
+    // Validar que los campos no estén vacíos antes de hacer la consulta
     //------------------------------------------------------------------------------------//
     if (empty($email) || empty($password)) {
         echo json_encode(["error" => "Todos los campos son obligatorios."]);
@@ -23,77 +23,71 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     //------------------------------------------------------------------------------------//
-    // Escapar los datos para prevenir SQL Injection
+    // Escapar los datos para evitar sql injection
     //------------------------------------------------------------------------------------//
     $email = $conn->real_escape_string($email);
     $password = $conn->real_escape_string($password);
 
     //------------------------------------------------------------------------------------//
-    // Verificar en la tabla TUTORES (Padres)
+    // Consultar en la tabla de TUTORES para verificar si es un padre
     //------------------------------------------------------------------------------------//
-    $sql = "SELECT id_tutor, contrasenia FROM TUTORES WHERE email = '$email'";
+    $sql = "SELECT id_tutor FROM TUTORES WHERE email = '$email' AND contrasenia = '$password'";
     $result = $conn->query($sql);
     if ($result && $result->num_rows > 0) {
-        $row = $result->fetch_assoc();
-        // Verificar si la contraseña ingresada coincide con la hasheada en la BD
-        if (password_verify($password, $row['contrasenia'])) {
-            $_SESSION["usuario"] = $email;
-            $_SESSION["tipo"] = "TUTOR";
-            $_SESSION["id"] = $row["id_tutor"];
-            $_SESSION["login"] = "OK";
-            echo json_encode(["redirect" => "../html/IndexPadre.html"]);
-            exit();
-        }
+        $_SESSION["usuario"] = $email;
+        $_SESSION["tipo"] = "TUTOR";
+        $row = $result->fetch_assoc();  // Obtener la fila de datos
+        $_SESSION["id"] = $row["id_tutor"]; // Guardar el id_tutor en la sesión
+        $_SESSION["login"] = "OK";
+        echo json_encode(["redirect" => "../html/IndexPadre.html"]);
+        exit();
     }
 
     //------------------------------------------------------------------------------------//
-    // Verificar en la tabla MONITORES
+    // Consultar en la tabla de MONITORES para verificar si es un monitor
     //------------------------------------------------------------------------------------//
-    $sql = "SELECT id_monitor, contrasenia FROM MONITORES WHERE email = '$email'";
+    $sql = "SELECT id_monitor FROM MONITORES WHERE email = '$email' AND contrasenia = '$password'";
     $result = $conn->query($sql);
     if ($result && $result->num_rows > 0) {
-        $row = $result->fetch_assoc();
-        if (password_verify($password, $row['contrasenia'])) {
-            $_SESSION["usuario"] = $email;
-            $_SESSION["tipo"] = "MONITOR";
-            $_SESSION["id"] = $row["id_monitor"];
-            $_SESSION["login"] = "OK";
-            echo json_encode(["redirect" => "../html/IndexMonitor.html"]);
-            exit();
-        }
+        $_SESSION["usuario"] = $email;
+        $_SESSION["tipo"] = "MONITOR";
+        $row = $result->fetch_assoc();  // Obtener la fila de datos
+        $_SESSION["id"] = $row["id_monitor"];   // Guardar el id_tutor en la sesión
+        $_SESSION["login"] = "OK";
+        echo json_encode(["redirect" => "../html/IndexMonitor.html"]);
+        exit();
     }
 
     //------------------------------------------------------------------------------------//
-    // Verificar en la tabla ADMIN
+    // Consultar en la tabla de ADMIN para verificar si es un administrador
     //------------------------------------------------------------------------------------//
-    $sql = "SELECT id_admin, contrasenia FROM ADMIN WHERE email = '$email'";
+    $sql = "SELECT id_admin FROM ADMIN WHERE email = '$email' AND contrasenia = '$password'";
     $result = $conn->query($sql);
     if ($result && $result->num_rows > 0) {
-        $row = $result->fetch_assoc();
-        if (password_verify($password, $row['contrasenia'])) {
-            $_SESSION["usuario"] = $email;
-            $_SESSION["tipo"] = "ADMIN";
-            $_SESSION["id"] = $row["id_admin"];
-            $_SESSION["login"] = "OK";
-            echo json_encode(["redirect" => "../html/IndexAdmin.html"]);
-            exit();
-        }
+        $_SESSION["usuario"] = $email;
+        $_SESSION["tipo"] = "ADMIN";
+        $row = $result->fetch_assoc();  // Obtener la fila de datos
+        $_SESSION["id"] = $row["id_admin"]; // Guardar el id_admin en la sesion 
+        $_SESSION["login"] = "OK";
+        echo json_encode(["redirect" => "../html/IndexAdmin.html"]);
+        exit();
     }
 
     //------------------------------------------------------------------------------------//
-    // Si no se encuentran coincidencias, enviar mensaje de error
+    // Si no se encuentran coincidencias, enviar mensaje de error al cliente IMPORTANTE
     //------------------------------------------------------------------------------------//
     echo json_encode(["error" => "Credenciales incorrectas."]);
     exit();
 } else {
     //------------------------------------------------------------------------------------//
-    // Si el método no es POST, se deniega el acceso
+    // Si el método no es POST, se deniega el acceso 
     //------------------------------------------------------------------------------------//
     echo json_encode(["error" => "Acceso denegado."]);
     exit();
 }
 
 //----------------------------------------------------------------------------------------//
-// Opcional: Cerrar la conexión
-$conn->close();
+// Opcional: Cerrar la conexión si ya no es necesaria DE MPMENTO NO
+//----------------------------------------------------------------------------------------//
+// $conn->close();
 ?>

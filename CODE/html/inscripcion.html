@@ -7,7 +7,9 @@
     <title>Inscripcion al Campamento</title>
   </head>
   <body>
-    <h1>Inscripcion del campamento</h1>
+    <div class="container">
+      <div class="title"><h1>Inscripción del campamento</h1></div>
+    
     <form method="post" id="formularioInscripcion">
       <h2>Datos del representante legal</h2>
 
@@ -31,7 +33,7 @@
       <div id="errorDNI"></div>
       <br />
 
-      <h2>Datos del niño</h2>
+      <h4>Datos del niño</h4>
 
       <label for="nombre_nino">Nombre del niño</label>
       <input type="text" name="nombre_nino" id="nombre_nino" />
@@ -64,16 +66,19 @@
       <div id="errorPlan"></div>
       <div id="precioPlan"></div>
       <div id="infoPlan"></div>
-
+<div class="mensaje">
       <p>
         *Para actualizar tu perfil, haz clic en el botón "Modificar" después de la inscripción.
       </p>
-
-      <input type="submit" value="Inscribir" id="enviar"/>
-      <div id="errorEnviar"></div>
-    </form>
-    <div id="infoForm"></div>
-    <button type="button" id="volver">Volver</button>
-    <script src="../JS/operarInscripcion.js"></script>
-  </body>
+</div>
+<div class="button-container">
+  <input type="submit" value="Inscribir" id="enviar"/>
+  <button type="button" id="volver">Volver</button>
+</div>
+<div id="errorEnviar"></div>
+</form>
+<div id="infoForm"></div>
+<script src="../JS/operarInscripcion.js"></script>
+</div>
+</body>
 </html>
