@@ -68,7 +68,7 @@ $sql_tables = "
         id_monitor INT PRIMARY KEY AUTO_INCREMENT,
         nombre VARCHAR(50) NOT NULL,
         email VARCHAR(50) NOT NULL UNIQUE,
-        contrasenia text NOT NULL,
+        contrasenia VARCHAR(20) NOT NULL,
         avatar_src text
     );
 
@@ -93,7 +93,7 @@ $sql_tables = "
     id_actividad INT PRIMARY KEY AUTO_INCREMENT,
     titulo VARCHAR(50) NOT NULL,
     descripcion TEXT,
-    hora TIME NOT NULL, 
+    hora TIME NOT NULL,
     hora_fin TIME NOT NULL,
     dia DATE NOT NULL,
     id_monitor INT NOT NULL,
@@ -105,7 +105,7 @@ $sql_tables = "
     CREATE TABLE IF NOT EXISTS ADMIN (
         id_admin INT PRIMARY KEY AUTO_INCREMENT,
         email VARCHAR(50) NOT NULL UNIQUE,
-        contrasenia text NOT NULL
+        contrasenia VARCHAR(20) NOT NULL
     );
 
     
@@ -114,68 +114,39 @@ $conn->multi_query($sql_tables);  // Se ejecuta la creación de todas las tablas
 while ($conn->more_results() && $conn->next_result()) {}  // Espera a que terminen todas las consultas
 
 //----------------------------------------------------------------------------------------//
-// Insertar datos de prueba usando consultas preparadas
+// Insertar datos de prueba si no existen
 //----------------------------------------------------------------------------------------//
+$check_tutor = "SELECT COUNT(*) as count FROM TUTORES WHERE email = 'padre@ejemplo.com'";
+$check_monitor = "SELECT COUNT(*) as count FROM MONITORES WHERE email = 'monitor@ejemplo.com'";
+$check_admin = "SELECT COUNT(*) as count FROM ADMIN WHERE email = 'admin@ejemplo.com'";
 
-// Función para verificar si un usuario ya existe
-function usuarioExiste($conn, $tabla, $email) {
-    $stmt = $conn->prepare("SELECT COUNT(*) as count FROM $tabla WHERE email = ?");
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $result = $stmt->get_result()->fetch_assoc();
-    $stmt->close();
-    return $result['count'] > 0;
+// Insertar Tutor
+$result = $conn->query($check_tutor);
+$row = $result->fetch_assoc();
+if ($row['count'] == 0) {
+    $sql_insert_tutor = "INSERT INTO TUTORES (nombre, dni, telefono, email, contrasenia) 
+                         VALUES ('Padre Ejemplo', '12345678A', '123456789', 'padre@ejemplo.com', '1234567')";
+    $conn->query($sql_insert_tutor);
 }
 
-// Insertar Monitor si no existe
-if (!usuarioExiste($conn, "MONITORES", "monitor@ejemplo.com")) {
-    $stmt = $conn->prepare("INSERT INTO MONITORES (nombre, email, contrasenia) VALUES (?, ?, ?)");
-    $nombre = "Monitor Ejemplo";
-    $email = "monitor@ejemplo.com";
-    $hashed_password = '$2y$10$BdT7ajvlvw8G4ExY0CQ57ewHfT2ctoziqRgpYvoF4QA41uu0/VEgu';  
-    $stmt->bind_param("sss", $nombre, $email, $hashed_password);
-    
-    if ($stmt->execute()) {
-        echo "Monitor insertado correctamente.<br>";
-    } else {
-        echo "Error al insertar Monitor: " . $stmt->error . "<br>";
-    }
-    $stmt->close();
+// Insertar Monitor
+$result = $conn->query($check_monitor);
+$row = $result->fetch_assoc();
+if ($row['count'] == 0) {
+    $sql_insert_monitor = "INSERT INTO MONITORES (nombre, email, contrasenia) 
+                           VALUES ('Monitor Ejemplo', 'monitor@ejemplo.com', '1234567')";
+    $conn->query($sql_insert_monitor);
 }
 
-// Insertar Tutor si no existe
-
-if (!usuarioExiste($conn, "TUTORES", "tutor@ejemplo.com")) {
-    $stmt = $conn->prepare("INSERT INTO TUTORES (nombre, dni, telefono, email, contrasenia) VALUES (?, ?, ?, ?, ?)");
-    $nombre = "Tutor Ejemplo";
-    $dni = "12345678A";
-    $telefono = "123456789";
-    $email = "tutor@ejemplo.com";
-    $tutor_hashed_password = '$2y$10$BdT7ajvlvw8G4ExY0CQ57ewHfT2ctoziqRgpYvoF4QA41uu0/VEgu';
-    $stmt->bind_param("sssss", $nombre, $dni, $telefono, $email, $tutor_hashed_password);
-    
-    if ($stmt->execute()) {
-        echo "Tutor insertado correctamente.<br>";
-    } else {
-        echo "Error al insertar Tutor: " . $stmt->error . "<br>";
-    }
-    $stmt->close();
+// Insertar Admin
+$result = $conn->query($check_admin);
+$row = $result->fetch_assoc();
+if ($row['count'] == 0) {
+    $sql_insert_admin = "INSERT INTO ADMIN (email, contrasenia) 
+                         VALUES ('admin@ejemplo.com', 'admin1234')";
+    $conn->query($sql_insert_admin);
 }
 
-// Insertar Admin si no existe
-if (!usuarioExiste($conn, "ADMIN", "admin@ejemplo.com")) {
-    $stmt = $conn->prepare("INSERT INTO ADMIN (email, contrasenia) VALUES (?, ?)");
-    $email = "admin@ejemplo.com";
-    $admin_hashed_password = '$2y$10$RVcnfes4zNR150gzv5ZfluPaxB1fzxJtyBSM1Nxj0VBWm5yadTRxW'; 
-    $stmt->bind_param("ss", $email, $admin_hashed_password);
-    
-    if ($stmt->execute()) {
-        echo "Admin insertado correctamente.<br>";
-    } else {
-        echo "Error al insertar Admin: " . $stmt->error . "<br>";
-    }
-    $stmt->close();
-}
 //----------------------------------------------------------------------------------------//
 // No se cierra la conexión para que se pueda usar en GestionarLogin.php IMPORTANTE
 //----------------------------------------------------------------------------------------//

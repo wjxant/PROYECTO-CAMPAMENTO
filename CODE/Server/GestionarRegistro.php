@@ -1,35 +1,26 @@
 <?php
 //----------------------------------------------------------------------------------------//
-// Iniciar el buffer de salida para limpiar cualquier salida previa
-//----------------------------------------------------------------------------------------//
-ob_start();
-
-//----------------------------------------------------------------------------------------//
 // Iniciar sesión y configurar la respuesta JSON
 //----------------------------------------------------------------------------------------//
 session_start();
 require 'Conexion.php';
 
-//----------------------------------------------------------------------------------------//
-// Limpiar la salida generada por Conexion.php (si hay) para enviar solo JSON
-//----------------------------------------------------------------------------------------//
-ob_clean();
-
-header('Content-Type: application/json');  // Indicamos que la respuesta es JSON para AJAX
+header('Content-Type: application/json');  // Indicamos que la respuesta es JSON para config AJAX
 
 //----------------------------------------------------------------------------------------//
 // Verificar que se envíen datos mediante método POST
 //----------------------------------------------------------------------------------------//
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    //------------------------------------------------------------------------------------//
-    // Recuperar los datos enviados por el método POST
-    //------------------------------------------------------------------------------------//
+    // Recuperar los datos enviados por el metodo POST
+
     $email = $_POST["email"];
     $password = $_POST["pswd"];
 
     //------------------------------------------------------------------------------------//
-    // Validar que los campos no estén vacíos
+    // Validar que los campos no estén vacios
     //------------------------------------------------------------------------------------//
+
     if (empty($email) || empty($password)) {
         echo json_encode(["error" => "Todos los campos son obligatorios."]);
         exit();
@@ -37,20 +28,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     //------------------------------------------------------------------------------------//
 
     //------------------------------------------------------------------------------------//
-    // Escapar los datos para evitar SQL Injection
+    // Escapar los datos para evitar sql injection
     //------------------------------------------------------------------------------------//
     $email = $conn->real_escape_string($email);
     $password = $conn->real_escape_string($password);
+
     //------------------------------------------------------------------------------------//
 
     //------------------------------------------------------------------------------------//
-    // Hashear la contraseña
-    //------------------------------------------------------------------------------------//
-    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-    //------------------------------------------------------------------------------------//
-
-    //------------------------------------------------------------------------------------//
-    // Consultar si el email ya está registrado en la base de datos
+    // Consultar si el email no esta registrado en la base de datos
     //------------------------------------------------------------------------------------//
     $check_email = "SELECT * FROM TUTORES WHERE email = '$email'";
     $result = $conn->query($check_email);
@@ -59,16 +45,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo json_encode(["error" => "El email ya está registrado."]);
         exit();
     }
-    //------------------------------------------------------------------------------------//
 
     //------------------------------------------------------------------------------------//
-    // Insertar el nuevo TUTOR en la base de datos (solo se insertan email y contraseña)
-    // Los demás campos se insertan como cadena vacía (o NULL, según la definición de la tabla)
+    // Insertar el nuevo TUTOR en la base de datos 
     //------------------------------------------------------------------------------------//
     $sql_insert_tutor = "INSERT INTO TUTORES (nombre, dni, telefono, email, contrasenia) 
-                         VALUES ('', '', '', '$email', '$hashedPassword')";
+                         VALUES ('', '', '', '$email', '$password')";
     if ($conn->query($sql_insert_tutor) === TRUE) {
-         // Registrar el usuario en la sesión y redirigir
+         // Se registra el usuario en la sesión y se le redirige 
         $_SESSION["usuario"] = $email;
         $_SESSION["tipo"] = "TUTOR";
         $_SESSION["id"] = $conn->insert_id;  // Obtener el id del nuevo tutor 
@@ -79,13 +63,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo json_encode(["error" => "Error al registrar el tutor."]);
         exit();
     }
-} else {
-    echo json_encode(["error" => "No se enviaron datos vía POST."]);
+
+}else {
+    echo json_encode(["error" => "No se enviaron datos via POST."]);
     exit();
 }
 
-//----------------------------------------------------------------------------------------//
-// Cerrar la conexión (no es necesario cerrarla ahora)
-//----------------------------------------------------------------------------------------//
+//------------------------------------------------------------------------------------//
+// Cerrar la conexión no es necesario aun 
 // $conn->close();
+//------------------------------------------------------------------------------------//
 ?>
