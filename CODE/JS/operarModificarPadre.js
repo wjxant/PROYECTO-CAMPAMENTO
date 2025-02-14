@@ -83,7 +83,8 @@ function comprobarCambiarContrasenia() {
   if (!seleccionado) return; // No hacer nada si no hay un radio seleccionado
   let espacio = document.getElementById('espacioContrasenia');
   if (seleccionado.value === "si") {
-    if (!document.getElementById('contraseniaAntigua')) {
+    console.log('Si')
+    if (!document.getElementById('contraseniaNueva1')) {  //comprobar si existe los imputs o no 
       //en caso de si seleccionamos que si que si sadria los impput para modificar la contraseña
       espacio.innerHTML = `
         <label for="contraseniaNueva1">Introduce la nueva contraseña</label>
@@ -107,6 +108,7 @@ function comprobarCambiarContrasenia() {
       quiereCambiarContrasenia = "si"
     }
   } else if (seleccionado.value === "no") {
+    console.log('No')
     espacio.innerHTML = ''; // Elimina el textarea si selecciona "No"
     quiereCambiarContrasenia = "no";
   }
@@ -301,7 +303,10 @@ formulario.onsubmit = async function (event) {
 
 
 //variabe para guardad avatar
-let avatarbbdd = ""
+//la logica del avatar, es crear un variable que asigna el direccion del avatar default y se comprueba si en bbdd existe avatar o no, en caso de si se asigna un nuevo valor, 
+//y luego se le asigna al img que esta en html para la vista previa, y se insertamos algun img en el file sele coge la ruta para la vista previa 
+//y cuando pasamos el avatar al php, se comprueba si hay archivo, pasamos el archivo y si no se pasa la ruta del bbdd
+let avatarbbdd = "../assets/img/avatar.png" //avatar default
 //id del nino
 //--------------------------------------------------------------------------------//
 let idNino = 0;
@@ -342,7 +347,9 @@ fetch("../Server/GestionarModificarPadre.php", {
       
 
       //asignamos a un variable que esta fuera la ruta de avatar la ruta de avatar que esta en bbdd
-      avatarbbdd = data.infoTutor["avatar_src"]
+      if(data.infoTutor["avatar_src"]){ //comprobamos si existe el avatar en bbdd o no, en caso de que sea nulo, no asignaria y usaria el default
+        avatarbbdd = data.infoTutor["avatar_src"] //en caso de que si existiera avatar en bbdd se asignaria en bbdd
+      }
 
       //----------------------------------------------------------------------------------------------------------------------------------//
 

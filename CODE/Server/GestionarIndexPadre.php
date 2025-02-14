@@ -101,7 +101,7 @@ if (isset($data['id_nino'])) {
     $queryInfoPlan->close();
 
     //SACAR EL NOMBRE DEL GRUPO QUE PERTENECE EL NIÑO
-    $querygrupoNino = $conn->prepare("SELECT G.nombre 
+    $querygrupoNino = $conn->prepare("SELECT G.nombre, G.id_grupo
                                                 FROM GRUPOS G
                                                 JOIN GRUPO_NINOS GN ON G.id_grupo = GN.id_grupo
                                                 WHERE GN.id_nino = ?;
@@ -114,6 +114,7 @@ if (isset($data['id_nino'])) {
     if ($result->num_rows > 0) {    //comprueba si hay resultado o no 
         $grupoHijo = $result->fetch_assoc();  //extraer los datos del primier fila ([nombre => padreEjemplo, wjdwedeu, sduewhud, sduhuwe]), en este caso en js no hace falta mapear, por que solo hay una fila de datos
         $nombreGrupo = $grupoHijo['nombre'];
+        $id_grupo = $grupoHijo['id_grupo']; //aqui sacamos el id del grupo que pertenece el nino
     } else {
         // echo json_encode(['error' => "No se encontraron datos de nombre del grupo para esta persona con el ID " . $id_nino]);
         // exit();
@@ -146,8 +147,8 @@ if (isset($data['id_nino'])) {
 
 
     //HACEMOS LA CONSULTA PARA VER TODO LOS ACTIVIDADES PENDIENTES(HOY O FUTURAS) QUE HAY CON EL MONITOR Y CON EL PLAN QUE PERTENECE EL NIÑO
-    $queryActividades = $conn->prepare("SELECT * FROM ACTIVIDADES WHERE id_monitor = ? AND id_plan = ? AND dia >= CURDATE()");   //sacamos todo los informaciones del actividad, dependiendo del monitor y el plan, por que no va a ser el mismo actividades en los diferentes plan 
-    $queryActividades->bind_param("ii", $idProfesorNino, $datoHijo['id_plan']);    //asignamos el valor de ?, es un i porque es un numero(integer)
+    $queryActividades = $conn->prepare("SELECT * FROM ACTIVIDADES WHERE id_grupo = ? AND id_plan = ? AND dia >= CURDATE()");   //sacamos todo los informaciones del actividad, dependiendo del monitor y el plan, por que no va a ser el mismo actividades en los diferentes plan 
+    $queryActividades->bind_param("ii", $id_grupo, $datoHijo['id_plan']);    //asignamos el valor de ?, es un i porque es un numero(integer)
     $queryActividades->execute();   //ejecutar en bbdd
     $result = $queryActividades->get_result();  //recoge el resultado de la consulta 
     // Comprobamos la respuesta de la consulta

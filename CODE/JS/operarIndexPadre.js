@@ -259,4 +259,83 @@ document.getElementById('modificarPadre').addEventListener('click', function() {
     window.location.href = $paginaModificarPadre;
 });
 
+//-----------------------------------------------------------------------------------------------------------
+//JS DE NAVBAR
+//                                               INICIO DE JS DE NAVBAR
+//-----------------------------------------------------------------------------------------------------------
 
+// Función para abrir la ventana overlay
+document.getElementById('btnCerrarSesion').addEventListener('click', () => {
+    document.getElementById("overlay").classList.add("activeOverlay");
+})
+
+//cuando damos el x de cerrar el overlay
+document.getElementById('cerrarOverlayCerrarSesion').addEventListener('click', cerrarOverlayCerrarSesion)
+//cuando damos el boton de volver
+document.getElementById('volverOverlayCerrarSesion').addEventListener('click', cerrarOverlayCerrarSesion)
+//funcion para quitar el overlay
+function cerrarOverlayCerrarSesion (){
+    document.getElementById("overlay").classList.remove("activeOverlay")
+}
+//cuando damos el boton de cerrar sesion 
+document.getElementById('cerrarSesionOverlayCerrarSesion').addEventListener('click', cerrarSesionSeguro)
+//funcion para cerrar sesion y redireccionar
+function cerrarSesionSeguro (){
+    //conexion con php
+    //este fetch es para que quite los sesiones
+    fetch("../Server/quitarSesion.php", {   //me lleva al php especifico para quitar el sesion 
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json',
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Error al obtener datos del servidor.');
+        }
+        return response.json();
+    })
+    .then(data => {
+        //en caso se ejecuta bien
+        //en caso se ejecuta el funcion que quita el sesion 
+        if(data.logout){
+            //redirigimos a la pagina enviado por servidor
+            window.location.href = data.logout;
+        }
+    })
+}
+//cuando damos el boton de modificar perfil
+document.getElementById('btnModificarDatosPadre').addEventListener('click', () =>{
+    window.location.href = "../html/ModificarPadre.html";
+})
+//cuando damos el boton de notificaciones 
+document.getElementById('btnNotificaciones').addEventListener('click', () =>{
+    window.location.href = "../html/NotificacionesPadre.html";
+})
+//cuando damos el boton de monitor
+document.getElementById('btnMonitor').addEventListener('click', () =>{
+    window.location.href = "../html/infoMonitorPadre.html";
+})
+//cuando damos el boton de contactos
+document.getElementById('btnContacto').addEventListener('click', () =>{
+    window.location.href = "../html/infoContactoPadre.html";
+})
+//cuando damos el boton de politica
+document.getElementById('btnPolitica').addEventListener('click', () =>{
+    window.location.href = "../html/politicas.html";
+})
+//cuando damos el boton de politica
+document.getElementById('btnComedor').addEventListener('click', () =>{
+    window.location.href = "../html/comedor.html";
+})
+//cuando damos el boton de calendario
+document.getElementById('btnCalendario').addEventListener('click', () =>{
+    window.location.href = "../html/calendarioPadre.html";
+})
+//cuando damos el boton de actividades
+document.getElementById('btnInfoActividades').addEventListener('click', () =>{
+    window.location.href = "../html/infoActividades.html";
+})
+//-----------------------------------------------------------------------------------------------------------
+//                                           FIN DE JS DE NAVBAR
+//-----------------------------------------------------------------------------------------------------------
