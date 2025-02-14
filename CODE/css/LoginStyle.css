@@ -146,3 +146,18 @@ button:hover {
 #errorIcon {
     margin-right: 5px; /* Espacio a la derecha del icono */
 }
+
+
+/*--------------------------------------------------------------------------------------------*/
+/* Estilo para colocar la imagen del logo */
+/*--------------------------------------------------------------------------------------------*/
+.logo{
+    width: 200px;
+    height: 200px;
+    rotate: 320deg;
+    position: relative;
+   
+    margin-right: -100px;
+    margin-top: -450px;
+
+}
