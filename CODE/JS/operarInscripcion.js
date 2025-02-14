@@ -126,6 +126,7 @@ function comprobarAlergia() {
       `;
       //comprobamos el contenido de txtarea
       document.getElementById('alergiasNew').onblur = comprobarInputAlergia;
+      document.getElementById('alergiasNew').oninput = comprobarInputAlergia;
       alergiatxt = "si"
     }
   } else if (seleccionado.value === "no") {
@@ -146,64 +147,26 @@ function comprobarInputAlergia() {
   }
 }
 
-//funcion para comprobar si hemos seleccionado el select del plan o no, en caso de si se le asigna el valor a id_plan
-function comprobarPlan(){
-  //sacamos el valor
-  let valorSeleccionado = document.getElementById("planSelect").value;
-  console.log("planSelect seleccionado: " +valorSeleccionado)
-  //asignamos en el valor el valor seleccionado
-  id_plan = valorSeleccionado;
-  //comprobar el valor seleccionado
-  if (valorSeleccionado == 0){
-    //en caso es 0 se salte el error
-    mostrarError(errorPlan, "Escoge un plan");
-    document.getElementById('precioPlan').innerHTML = ``
-    document.getElementById('infoPlan').innerHTML = ``
-  } else {
-    //en caso de otros, se borra el error
-    mostrarError(errorPlan);
-    FetchSacarInfoPlanBBDD(id_plan)
-  }
-
-}
-
-// Funcion para sacar informacion del plan del bbdd
-async function FetchSacarInfoPlanBBDD(id_plan) {
-  console.log("Comprobación de plan en BBDD");
-
-    let response = await fetch("../Server/GestionarInscripcion.php", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ id_planPatabuscarEnBBDD: id_plan }),
-    });
-    if (!response.ok) {
-      throw new Error("Error al obtener datos del servidor.");
-    }
-    let data = await response.json();
-    if (data.infoPlan) {
-      document.getElementById("precioPlan").innerHTML = `Precio: ${data.infoPlan.precio}`;
-      document.getElementById("infoPlan").innerHTML = `Definición: ${data.infoPlan.definicion}`;
-    } else {
-      document.getElementById("precioPlan").innerHTML = "";
-      document.getElementById("infoPlan").innerHTML = "";
-    }
-
-}
 
 
 
 //funcion para comprobar si el variable de id_plan es valido o no
 function comprobarPlanExterno(){
-  //ejecutamos el funcion para asegurar que se asigna un valor en el variable id_plan
-  comprobarPlan()
+  // //ejecutamos el funcion para asegurar que se asigna un valor en el variable id_plan
+  // comprobarPlan()
   console.log("id_plan seleccionado: " +id_plan)  //imprime el nuevo id_plan, ya que se asigna el id_plan en el funcion de la linea anterior
   //comprobar el variable
   if (id_plan == 0 ||id_plan == -1){  //0 en caso si es "seleccione uno" y -1 es por el parametro(no ha seleccionado)
     mostrarError(errorPlan, "Escoge un plan");  //mostrar el error
+    document.querySelectorAll(".tarjeta").forEach(tarjeta => {
+      tarjeta.classList.add("errorSeleccion");
+    });
+
   } else {
     mostrarError(errorPlan);  //quitar
+    document.querySelectorAll(".tarjeta").forEach(tarjeta => {
+      tarjeta.classList.remove("errorSeleccion");
+    });
   }
 }
 
@@ -211,12 +174,21 @@ function comprobarPlanExterno(){
 document.querySelectorAll('input[name="alergiaNew"]').forEach(radio => {
   radio.addEventListener("change", comprobarAlergia);
 });
+//cuando perdemos el foco hacer validacion del campo con su corespondiente funcion
 nombre.onblur = comprobarNombre;
 correo.onblur = comprobarCorreo;
 telefono.onblur = comprobarTelefono;
 dni.onblur = comprobarDni;
 nombre_nino.onblur = comprobarNombreNino;
 fecha_nacimiento.onblur = comprobarFechaNacimiento;
+
+//cuando insertamos cosa en el input hacer validacion del campo con su corespondiente funcion
+nombre.oninput = comprobarNombre;
+correo.oninput = comprobarCorreo;
+telefono.oninput = comprobarTelefono;
+dni.oninput = comprobarDni;
+nombre_nino.oninput = comprobarNombreNino;
+fecha_nacimiento.oninput = comprobarFechaNacimiento;
 
 
 
@@ -251,7 +223,7 @@ formulario.onsubmit = function(event) {
   ) {
     // Formulario válido, permitir el envío
     //AQUI ES LO SIGUIENTE PASO
-    mostrarError(document.getElementById('errorEnviar'));
+    mostrarError(document.getElementById('errorEnviar'), "");
     event.preventDefault(); // Evita el envío del formulario
 
     //envia al servidor
@@ -260,7 +232,7 @@ formulario.onsubmit = function(event) {
 
   } else {
     //mostrar error
-    mostrarError(document.getElementById('errorEnviar'), "El formulario contiene errores");
+    mostrarError(document.getElementById('errorEnviar'), "Por favor, rellene todo los campos obligatorio");
     event.preventDefault(); // Evita el envío del formulario
   }
 };
@@ -321,19 +293,45 @@ fetch("../Server/GestionarInscripcion.php", {
         //en caso nos devuelve un array de tamaño distinto que 0
         document.getElementById('enviar').disabled = false; //habilitamos el boton 
         $arrayPlanes = data.infoPlan; //pasamos los el array enviado por php a un variable
-        //lo mapeamos y ponemos planes en el selecr 
-        plan.innerHTML = `<select name="planSelect" id="planSelect"> 
-        <option value="0">---- Seleccione un Plan ----</option>
-                ${$arrayPlanes.map(plan =>`
-                    <option value="${plan['id_plan']}">${plan['fecha_inicio']} - ${plan['fecha_fin']}</option>
-                        `)}
-            </select> 
-            `;
+        //lo mapeamos y ponemos planes
+        plan.innerHTML = `
+        <div id="contenedorcuadros">
+        ${$arrayPlanes.map(plan => `
+            <div class="tarjeta" data-id="${plan['id_plan']}">
+                <div id="opcion"><p id = "titulo_tarjeta">Opcion: ${plan['id_plan']} </p></div>
+                <div id="fechas"><p>Fechas:</p> ${plan['fecha_inicio']} al ${plan['fecha_fin']}</div>
+                <div id="descripcion"><p>Definición:</p> ${plan['definicion']}</div>
+                <div id="precio"><p>Precio:</p> ${plan['precio']}</div>
+                <div id="inscripcionMax"><p>Fecha Maxima de Inscripcion:</p> ${plan['fecha_maxInscripcion']}(${plan['hora_maximaInscripcion']})</div>
+                
+                <button class="seleccionarPlan" value="${plan['id_plan']}" id="seleccionarPlan" type="button">Seleccionar</button>
+            </div>
+        `).join("")}
+        </div>
+        `;
 
-            //cuando perdemos el foco del select comprobamos si hemos seleccionado o no
-            //por defecto es 0 si no lo selecionamos siempre es 0, y si es 0 se salta el error
-            document.getElementById('planSelect').onblur = comprobarPlan;
-            document.getElementById('planSelect').onchange = comprobarPlan;
+
+
+        //seleccionamos el id del plan si damos el boton 
+        document.querySelectorAll("#seleccionarPlan").forEach(boton => {  //iterramos todo los id que se llama seleccionnarPlan
+          boton.addEventListener("click", function() {  //y si uno de ello se recibe un click
+              id_plan = this.value; //asignamos el id_plan a este mismo valor del seleccionado
+              comprobarPlanExterno(); //esto es para quitar el rojo en caso de no seleccionar 
+              // Quita la clase 'seleccionada' de todas las tarjetas
+              document.querySelectorAll(".tarjeta").forEach(tarjeta => {
+                tarjeta.classList.remove("seleccionada");
+              });
+
+              // Agrega la clase 'seleccionada' solo a la tarjeta clickeada
+              this.parentElement.classList.add("seleccionada");
+
+
+              console.log(`planSeleccionado: ${id_plan}`);  //imprimimos por la consola 
+          });
+      });
+      
+
+        
       }
 
     }

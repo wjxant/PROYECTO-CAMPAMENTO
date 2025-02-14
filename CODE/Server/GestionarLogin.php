@@ -34,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sql = "SELECT id_tutor FROM TUTORES WHERE email = '$email' AND contrasenia = '$password'";
     $result = $conn->query($sql);
     if ($result && $result->num_rows > 0) {
-        $_SESSION["usuario"] = $email;
+        $_SESSION["usuario"] = $email; 
         $_SESSION["tipo"] = "TUTOR";
         $row = $result->fetch_assoc();  // Obtener la fila de datos
         $_SESSION["id"] = $row["id_tutor"]; // Guardar el id_tutor en la sesión
