@@ -294,7 +294,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // En lugar de redirigir directamente, se llama a redirectWithTransition(url)
   
     document.getElementById('btnModificarDatosPadre').addEventListener('click', () => {
-        redirectWithTransition("../html/ModificarPadre.html"); // Redirigir a la página de modificación de datos del padre
+        redirectWithTransition("../html/IndexPadre.html"); // Redirigir a la página de modificación de datos del padre
     });
   
     document.getElementById('btnNotificaciones').addEventListener('click', () => {
