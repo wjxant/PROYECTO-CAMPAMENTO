@@ -7,13 +7,28 @@
     <title>calendario</title>
 </head>
 <body>
-
+    <!-- CONTENEDOR DE TRANSICIÓN -->
+    <div class="transition">
+      <div class="transition-row row1">
+        <div class="block"></div>
+        <div class="block"></div>
+        <div class="block"></div>
+        <div class="block"></div>
+      </div>
+      <div class="transition-row row2">
+        <div class="block"></div>
+        <div class="block"></div>
+        <div class="block"></div>
+        <div class="block"></div>
+      </div>
+    </div>
+  
     <!---------------------------------------------------------------------------------------------------------------------------------------------------------------------->
-                                                                         <!-- NAVBAR -->
+    <!-- NAVBAR -->
     <!---------------------------------------------------------------------------------------------------------------------------------------------------------------------->
     <nav>
-        <img class="logo" src="../assets/logo/logo.png" alt="Logo">
-
+        <img class="logo" src="../assets/logo/Logo1.png" alt="Logo">
+  
         <!--------------------------------------------------------------->
         <!-- Contenedor exclusivo para los elementos de navegación -->
         <!--------------------------------------------------------------->
@@ -31,8 +46,8 @@
                 </div>
             </div>
             <!-- Enlace a la sección de servicios -->
-             <!-- Enlace con un menú desplegable -->
-             <div class="item">
+            <!-- Enlace con un menú desplegable -->
+            <div class="item">
                 Servicios
                 <div class="dropdown">
                     <div>
@@ -56,10 +71,10 @@
             <!-- Enlace a la sección de servicios -->
             <a class="item">idiomas</a>
             <!-- <div id="google_translate_element" class="google"></div> -->
-
+  
             <!-- Enlace al perfil del usuario -->
-             <!-- Enlace con un menú desplegable -->
-             <div class="item">
+            <!-- Enlace con un menú desplegable -->
+            <div class="item">
                 Perfil
                 <div class="dropdown">
                     <div>
@@ -74,18 +89,17 @@
             <div class="underline"></div>
         </div>
     </nav>
-
-        <!-- Ventana Overlay Para cerrar sesion -->
-        <div class="overlay" id="overlay">
-            <div class="overlay-content">
-                <button class="close-btn" id="cerrarOverlayCerrarSesion">×</button>
-                <h2>¿Seguro que quieres cerrar sesión?</h2>
-                <button type="button" id="volverOverlayCerrarSesion">volver</button>
-                <button type="button" id="cerrarSesionOverlayCerrarSesion">Cerrar Sesion</button>
-                
-            </div>
+  
+    <!-- Ventana Overlay Para cerrar sesion -->
+    <div class="overlay" id="overlay">
+        <div class="overlay-content">
+            <button class="close-btn" id="cerrarOverlayCerrarSesion">×</button>
+            <h2>¿Seguro que quieres cerrar sesión?</h2>
+            <button type="button" id="volverOverlayCerrarSesion">volver</button>
+            <button type="button" id="cerrarSesionOverlayCerrarSesion">Cerrar Sesion</button>
         </div>
-
+    </div>
+  
     <div class="espaciador"></div>
      <!---------------------------------------------------------------------------------------------------------------------------------------------------------------------->
                                                               <!-- INICIO CONTENIDO HTML -->
@@ -142,6 +156,9 @@
             <p class="legal">© 2025 Derechos Reservados</p>
         </section>
     </footer>
+    <script src="../js/operarCalendarioPadre.js"></script>
+    <!-- Incluir GSAP (asegúrate de tener conexión o usa un archivo local) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 
 </body>
 
