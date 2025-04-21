@@ -84,53 +84,212 @@ body::-webkit-scrollbar {
     will-change: transform;
   }
   
-
-  /* =====================================================================================================================================================*/
-                                                                       /* NAVBAR */
-  /* =====================================================================================================================================================*/
-  /* Estilo del navbar */
+/* =====================================================================================================================================================*/
+/* NAVBAR */
+/* =====================================================================================================================================================*/
+/* Estilo del navbar */
 * {
-    box-sizing: border-box;
-    border-radius: 8px;
+  box-sizing: border-box;
+  border-radius: 8px;
+}
+button {
+  background-color: #3e99e3;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+button:hover {
+  background-color: #0f80cb;
+  border-radius: 10px;
+}
+
+/* =================================================================*/
+/* El logo se posiciona de forma absoluta (como pegatina) */
+/* =================================================================*/
+nav .logo {
+  position: absolute;
+  top: 50%; /* Centrado verticalmente en el navbar */
+  left: 20px; /* Distancia desde el borde izquierdo */
+  transform: translateY(-50%); /* Centrado vertical */
+  height: 50px;
+  width: auto;
+  z-index: 10;
+}
+
+/* version movil */
+
+/* Mostrar el menú en el móvil */
+@media (max-width: 768px) {
+
+  #navbarMovil {
+    display: block;
+    background-color: #222; /* Un tono más oscuro para mejor contraste */
+    height: 70px;
+    padding: 10px;
+    position: relative;
+    width: 100%;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Sombra para efecto flotante */
+    z-index: 1000; /* Valor alto para que el navbar esté encima */
   }
-  button {
-    background-color: #3E99E3;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
+  #navbarMovil img {
+    width: 50px;
+    height: 50px;
+    display: block;  /* Elimina el espacio debajo de la imagen */
+    margin-left: auto;
+    margin-right: auto; /* Centra la imagen horizontalmente */
+  }
+  
+
+  #navbarOrdenador {
+    display: none;
+  }
+
+  /* Botón hamburguesa moderno */
+  .hamburguesa {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
     cursor: pointer;
-    border-radius: 10px;
-    }
+    position: absolute;
+    top: 10px;
+    left: 15px;
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 10px;
+    transition: background 0.3s ease;
+  }
 
-    button:hover {
-    background-color: #0F80CB;
-    border-radius: 10px;
-    }
-    nav {
-        border-radius: 10px;
-        position: fixed;
-        background: var(--color-nav-bg);
-        font-weight: 400;
-        font-size: 0;
-        display: flex;
-        align-items: center;
-        padding: 0 20px;
-        width: 95%;
-        z-index: 1000; /* Valor alto para que el navbar esté encima */
-      }
+  .hamburguesa .bar {
+    width: 35px;
+    height: 4px;
+    background-color: white;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+  }
 
-  /* =================================================================*/
-  /* El logo se posiciona de forma absoluta (como pegatina) */
-  /* =================================================================*/
+  /* Animación de la hamburguesa */
+  .hamburguesa:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  .hamburguesa:hover .bar {
+    background-color: #ffcc00;
+  }
+
+  /* Menú con diseño moderno */
+  #menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background: rgba(30, 30, 30, 0.95); /* Fondo semitransparente */
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    display: none;
+    flex-direction: column;
+    text-align: center;
+    border-radius: 0 0 10px 10px;
+    overflow: hidden;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease-in-out;
+  }
+
+  #menu.mostrar-menu {
+    display: flex;
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  #menu li {
+    padding: 15px 20px;
+    border-bottom: 1px solid #444;
+    transition: background 0.3s ease;
+  }
+
+  #menu li:last-child {
+    border-bottom: none;
+  }
+
+  #menu li:hover {
+    background: #ffcc00;
+  }
+
+  #menu li button {
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    background: none;
+    border: none;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+
+  #menu li:hover button {
+    color: black;
+  }
+
+  /* Ajustar el logo */
   nav .logo {
     position: absolute;
-    top: 50%;           /* Centrado verticalmente en el navbar */
-    left: 20px;         /* Distancia desde el borde izquierdo */
-    transform: translateY(-50%); /* Centrado vertical */
-    height: 50px;        
-    width: auto;
-    z-index: 10;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 120px;
+  }
+}
+
+
+
+
+
+@media (min-width: 769px) {
+  #navbarMovil {
+    display: none;
+  }
+
+  #navbarOrdenador {
+    display: block;
+  }
+
+  /* Mostrar el menú cuando se active */
+  #menu.mostrar {
+    display: none;
+  }
+
+  nav {
+    border-radius: 10px;
+    position: fixed;
+    background: var(--color-nav-bg);
+    font-weight: 400;
+    font-size: 0;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    width: 95%;
+    z-index: 1000; /* Valor alto para que el navbar esté encima */
   }
 
   /* =================================================================*/
@@ -140,11 +299,11 @@ body::-webkit-scrollbar {
     display: flex;
     position: relative;
     flex: 1;
-    margin-left: 80px;  /* Ajusta este valor según el ancho del logo y el espacio deseado */
+    margin-left: 80px; /* Ajusta este valor según el ancho del logo y el espacio deseado */
   }
-  
+
   /* =================================================================*/
-    /* Items de navegación */
+  /* Items de navegación */
   /* =================================================================*/
   /* Estilo de los items del navbar */
   /* NOTA: Se usa flex-grow para que los items se expandan y ocupen todo el espacio disponible */
@@ -173,14 +332,14 @@ body::-webkit-scrollbar {
     left: 0;
     top: 62px;
   }
-  
+
   /* Oculto inicialmente y se muestra al hacer hover */
   .dropdown > div {
     translate: 0 -100%;
     transition: all 0.5s 0.1s;
     position: relative;
   }
-  
+
   /* Enlaces del dropdown */
   .dropdown a {
     display: block;
@@ -189,15 +348,15 @@ body::-webkit-scrollbar {
     height: 40px;
     line-height: 40px;
     background: var(--color-primary);
-    color: rgb(26, 106, 143);
+    color: rgb(117, 21, 96);
     text-decoration: none;
   }
-  
+
   /* Hover en los enlaces del dropdown */
   .dropdown a:hover {
     background: var(--color-dropdown-hover);
   }
-  
+
   /* Línea inferior (underline) */
   .underline {
     height: 6px;
@@ -209,28 +368,28 @@ body::-webkit-scrollbar {
     pointer-events: none;
     transition: 0.35s;
   }
-  
+
   /* Mostrar el dropdown al hacer hover sobre su item */
   nav .item:hover > .dropdown > div {
     translate: 0;
   }
-  
-    /* =================================================================*/
+
+  /* =================================================================*/
   /* Movimiento de la underline según el item (NOTA: esto funciona correctamente
-     porque solo se cuentan los hijos dentro de .nav-container) */
-     /* =================================================================*/
+   porque solo se cuentan los hijos dentro de .nav-container) */
+  /* =================================================================*/
   nav .item:nth-child(1):hover ~ .underline {
     translate: 0;
   }
-  
+
   nav .item:nth-child(2):hover ~ .underline {
     translate: 100%;
   }
-  
+
   nav .item:nth-child(3):hover ~ .underline {
     translate: 200%;
   }
-  
+
   nav .item:nth-child(4):hover ~ .underline {
     translate: 300%;
   }
@@ -238,14 +397,47 @@ body::-webkit-scrollbar {
     translate: 400%;
   }
 
-  .botonNavbar{
+  .botonNavbar {
     width: 100%;
     height: 100%;
   }
 
+  /* bienvenida */
+  #contenedorBienvenido {
+    background-color: #e9ecef;
+    padding: 5px 15px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-family: "Arial", sans-serif;
+    max-width: 250px;
+    height: 30px;
+    margin-left: auto;
+  }
+  #contenedorBienvenido p {
+    margin: 0; /* Eliminar márgenes predeterminados */
+    font-size: 14px; /* Texto más pequeño */
+    color: #333; /* Color de texto oscuro */
+  }
+
+  #biembenidoNombre {
+    font-weight: bold; /* Resaltar el nombre */
+    color: #007bff; /* Color azul para un toque moderno */
+  }
+
+  .bienvenidoInfo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+  }
+}
+  
+
   /* espaciador para el navbar y el contenido, para que no se superpongan */
   .espaciador{
-    height: 100px;
+    height: 15em;
   }
   /* -------------------------------------------------------------------------------------------------- */
   /* overlay para cerrar sesion */
@@ -265,6 +457,7 @@ body::-webkit-scrollbar {
       opacity: 0;
       transition: opacity 0.3s ease, visibility 0.3s;
       color: #333;  /* Color del texto */
+      z-index: 1000; /* Valor alto para que cubra todo */
   }
 
   /* Estilo para la ventana emergente */
@@ -316,9 +509,13 @@ body::-webkit-scrollbar {
   .open-btn:hover {
       background: #0056b3;
   }
+  .logo, #btninicio {
+    cursor: pointer;
+}
   /* -------------------------------------------------------------------------------------------------- */
 
-
+  
+  
 /* =====================================================================================================================================================*/
                                                             /* FOOTER */        
 /* =====================================================================================================================================================*/
@@ -327,100 +524,437 @@ body::-webkit-scrollbar {
 /* Estilos generales */
 /* ==================================================================*/
 .background {
-    position: absolute;
-    z-index: -1; /* Detrás de todo */
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+  position: absolute;
+  z-index: -1; /* Detrás de todo */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+/* ==================================================================*/
+/* Estilos del footer */
+/* ==================================================================*/
+ul {
+  display: flex;
+  list-style: none; /* Quita los puntos de la lista */
+  padding: 0;
+  margin: 0;
+}
+
+/* ==================================================================*/
+/* Estilos de los elementos */
+/* ==================================================================*/
+
+.socials {
+  gap: 20px;
+}
+#iconos{
+  text-decoration: none;
+  color: rgb(255, 255, 255);
+}
+
+.socials a {
+  font-size: 24px;
+}
+
+.links {
+  gap: 10px;
+}
+
+.legal {
+  font-size: 12px;
+  margin: 0;
+}
+
+/* ==================================================================*/
+/* Estilos de la onda */
+/* ==================================================================*/
+svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%; /* Ocupa todo el alto */
+  transform: scaleY(3) scaleX(2.25); /* Escala la onda */
+  transform-origin: bottom;
+  box-sizing: border-box;
+  display: block; /* Quita el espacio extra */
+  pointer-events: none;
+}
+
+/* ==================================================================*/
+/* Estilos del footer - Cambio de position */
+/* ==================================================================*/
+footer {
+  position: relative; /* Se fija al fondo */
+  left: 0;
+  bottom: 0; /* Ajusta al fondo de la página */
+  display: flex;
+  justify-content: center; /* Centra el contenido en el footer */
+  width: 100%; /* Ocupa todo el ancho */
+  height: 350px; /* Altura del footer */
+  overflow-x: hidden;
+  z-index: 10; /* Asegura que el footer quede por encima de otros elementos */
+}
+
+/* ==================================================================*/
+/* Estilos del contenido dentro del footer */
+/* ==================================================================*/
+section {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 30px;
+  padding-bottom: 80px; /* Ajusta este valor según el alto de la onda */
+  padding-left: 60px; /* Ajusta este valor según el ancho de la onda */
+  width: 100%;
+}
+
+@media (min-width: 420px) {
+  section {
+    align-items: center; /* Centra horizontalmente */
+    padding-left: 0;
+    gap: 20px; /* Ajusta este valor según el espacio deseado */
   }
-  
-  /* ==================================================================*/
-  /* Estilos del footer */
-  /* ==================================================================*/
-  ul {
-    display: flex;
-    list-style: none; /* Quita los puntos de la lista */
-    padding: 0;
-    margin: 0;
-  }
-  
-  /* ==================================================================*/
-  /* Estilos de los elementos */
-  /* ==================================================================*/
-  
-  .socials {
+
+  .links {
     gap: 20px;
   }
-  
-  .socials a {
-    font-size: 24px;
-  }
-  
-  .links {
-    gap: 10px;
-  }
-  
-  .legal {
-    font-size: 12px;
-    margin: 0;
-  }
-  
-  /* ==================================================================*/
-  /* Estilos de la onda */
-  /* ==================================================================*/
-  svg {
-    position: absolute;
+}
+/* =====================================================================================================================================================*/
+                                                                      /*HTML CONTENIDO*/
+/* =====================================================================================================================================================*/
+
+
+/* ==================================================================*/
+/* Tarjetas de actividades con efecto de giro */
+/* ==================================================================*/
+/* Contenedor principal para las tarjetas */
+#tarjetasActividades {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  padding: 20px;
+}
+.card{
+  position: relative;
+  width: 300px;
+  height: 350px;
+  /*aplicar margenes con resto de cartas*/
+  margin: 20px;
+}
+.card .face{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  /*Determinar la cara trasero*/
+  /*determina si la cara posterior de un elemento es visible de frente
+  a1 usuario.
+  La cara posterior de un elemento siempre es un fondo transparente,
+  permitiendo,
+  cuando es visible, que se muestre una imagen de espejo de la cara frontal.
+  iene la propiedad visible: significa que la cara posterior es visible,
+  permitiendo que la cara frontal se muestre invertida.
+  hidden: significa que la cara posterior no es visible,
+  ocultando la cara frontal */
+  backface-visibility: hidden;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: 0.5s;
+
+}
+.card .front{
+  transform: perspective(600px) rotateY(0deg);
+  box-shadow: 0px 5px 10px #000;
+}
+.card .front img{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  /*indica como el contenido de un elemento debera ser redimensionado para ajustarse en su contenedor */
+  object-fit: cover;
+}
+.card .front h3{
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  height: 45px;
+  line-height: 45px;
+  color: #fff;
+  background: rgb(0, 0, 0, 0.4);
+  text-align: center;
+}
+.card .back{
+  transform: perspective(600px) rotateY(180deg);
+  background: rgb(3, 35, 54);
+  padding: 15px;
+  color: #f3f3f3;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+  box-shadow: 0px 5px 10px #000;
+}
+.card .back .link {
+  border-top: 1px solid #f3f3f3;
+  height: 50px;
+  line-height: 50px;
+}
+.card .back .link a {
+  color: #f3f3f3;
+}
+.card .back h3{
+  font-size: 30px;
+  margin-top: 20px;
+  letter-spacing: 2px;
+}
+.card .back p{
+  letter-spacing: 1px;
+}
+.card:hover .front{
+  transform: perspective(600px) rotateY(180deg);
+}
+.card:hover .back{
+  transform: perspective(600px) rotateY(360deg);
+}
+
+
+/* ==================================================================*/
+/* Overlay para mostrar mas definicion */
+/* ==================================================================*/
+  /* Estilo para el overlay */
+  .overlayDefinicion {
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%; /* Ocupa todo el alto */
-    transform: scaleY(3) scaleX(2.25); /* Escala la onda */
-    transform-origin: bottom;
-    box-sizing: border-box;
-    display: block; /* Quita el espacio extra */
-    pointer-events: none;
-  }
-  
-  /* ==================================================================*/
-  /* Estilos del footer - Cambio de position */
-  /* ==================================================================*/
-  footer {
-    position: fixed; /* Se fija al fondo */
-    left: 0;
-    bottom: 0; /* Ajusta al fondo de la página */
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
     display: flex;
-    justify-content: center; /* Centra el contenido en el footer */
-    width: 100%; /* Ocupa todo el ancho */
-    height: 350px; /* Altura del footer */
-    overflow-x: hidden;
-    z-index: 10; /* Asegura que el footer quede por encima de otros elementos */
+    justify-content: center;
+    align-items: center;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease, visibility 0.3s;
+    color: #333;  /* Color del texto */
+    overflow: auto; /* Agrega desplazamiento si es necesario */
+    padding: 20px;  /* Evita que el contenido toque los bordes */
+}
+
+
+  /* Estilo para la ventana emergente */
+  .overlayContent2 {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    width: 80%;
+    text-align: center;
+    position: relative;
+    max-height: 80%;
+    overflow-y: auto; /* Habilita el scroll si el contenido excede el 80% */
+}
+
+
+  /* Botón de cierre */
+  .closeBtnDefinicion {
+    position: absolute;
+    font-size: large;
+    top: 10px;
+    right: 10px;
+    background: #ff4d4d00;
+    color: #007BFF;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
   }
+
+  .closeBtnDefinicion:hover {
+    background: #cc000000;
+  }
+
+  /* Clase para mostrar el overlay */
+  .overlayDefinicion.activeOverlayDefinicion {
+    visibility: visible;
+    opacity: 1;
+  }
+
+
+/* ==================================================================*/
+/* fin de Overlay para mostrar mas definicion */
+/* ==================================================================*/
+
+
+
+
+.area{
+  background: #72a3ec;  
+  background: -webkit-linear-gradient(to left, #83d0f7, #248de3);  
+  width: 100%;
+  height:100vh;
+  z-index: -1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.circles{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.circles li{
+  position: absolute;
+  display: block;
+  list-style: none;
+  width: 20px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.2);
+  animation: animate 25s linear infinite;
+  bottom: -150px;
   
-  /* ==================================================================*/
-  /* Estilos del contenido dentro del footer */
-  /* ==================================================================*/
-  section {
+}
+
+.circles li:nth-child(1){
+  left: 25%;
+  width: 80px;
+  height: 80px;
+  animation-delay: 0s;
+}
+
+
+.circles li:nth-child(2){
+  left: 10%;
+  width: 20px;
+  height: 20px;
+  animation-delay: 2s;
+  animation-duration: 12s;
+}
+
+.circles li:nth-child(3){
+  left: 70%;
+  width: 20px;
+  height: 20px;
+  animation-delay: 4s;
+}
+
+.circles li:nth-child(4){
+  left: 40%;
+  width: 60px;
+  height: 60px;
+  animation-delay: 0s;
+  animation-duration: 18s;
+}
+
+.circles li:nth-child(5){
+  left: 65%;
+  width: 20px;
+  height: 20px;
+  animation-delay: 0s;
+}
+
+.circles li:nth-child(6){
+  left: 75%;
+  width: 110px;
+  height: 110px;
+  animation-delay: 3s;
+}
+
+.circles li:nth-child(7){
+  left: 35%;
+  width: 150px;
+  height: 150px;
+  animation-delay: 7s;
+}
+
+.circles li:nth-child(8){
+  left: 50%;
+  width: 25px;
+  height: 25px;
+  animation-delay: 15s;
+  animation-duration: 45s;
+}
+
+.circles li:nth-child(9){
+  left: 20%;
+  width: 15px;
+  height: 15px;
+  animation-delay: 2s;
+  animation-duration: 35s;
+}
+
+.circles li:nth-child(10){
+  left: 85%;
+  width: 150px;
+  height: 150px;
+  animation-delay: 0s;
+  animation-duration: 11s;
+}
+
+
+
+@keyframes animate {
+
+  0%{
+      transform: translateY(0) rotate(0deg);
+      opacity: 1;
+      border-radius: 0;
+  }
+
+  100%{
+      transform: translateY(-1000px) rotate(720deg);
+      opacity: 0;
+      border-radius: 50%;
+  }
+
+}
+
+
+
+@media (max-width: 768px) {
+  .nav {
+    position: relative;
+    height: 100px;
+    margin-left: 500px;
+     /* Ancho del 100% del contenedor padre */
+    max-width: 1200px; /* Ancho máximo si deseas limitarlo */
+  }
+}
+
+
+
+@media (min-width: 769px) {
+  #navbarMovil {
+    display: none;
+  }
+
+  #navbarOrdenador {
+    display: block;
+  }
+
+  /* Mostrar el menú cuando se active */
+  #menu.mostrar {
+    display: none;
+  }
+
+  nav {
+    border-radius: 10px;
+    position: fixed;
+    background: var(--color-nav-bg);
+    font-weight: 400;
+    font-size: 0;
     display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    gap: 30px;
-    padding-bottom: 80px; /* Ajusta este valor según el alto de la onda */
-    padding-left: 60px; /* Ajusta este valor según el ancho de la onda */
-    width: 100%;
+    align-items: center;
+    padding: 0 20px;
+    width: 95%;
+    z-index: 1000; /* Valor alto para que el navbar esté encima */
   }
-  
-  @media (min-width: 420px) {
-    section {
-      align-items: center; /* Centra horizontalmente */
-      padding-left: 0;
-      gap: 20px; /* Ajusta este valor según el espacio deseado */
-    }
-  
-    .links {
-      gap: 20px;
-    }
-  }
-    /* =====================================================================================================================================================*/
-                                                                         /*HTML CONTENIDO*/
-    /* =====================================================================================================================================================*/
+}

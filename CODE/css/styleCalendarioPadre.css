@@ -1,4 +1,4 @@
- /* =====================================================================================================================================================*/
+/* =====================================================================================================================================================*/
                                                                        /* ESTILO GENERAL BODY*/
   /* =====================================================================================================================================================*/
 
@@ -84,53 +84,212 @@ body::-webkit-scrollbar {
     will-change: transform;
   }
   
-
-  /* =====================================================================================================================================================*/
-                                                                       /* NAVBAR */
-  /* =====================================================================================================================================================*/
-  /* Estilo del navbar */
+/* =====================================================================================================================================================*/
+/* NAVBAR */
+/* =====================================================================================================================================================*/
+/* Estilo del navbar */
 * {
-    box-sizing: border-box;
-    border-radius: 8px;
+  box-sizing: border-box;
+  border-radius: 8px;
+}
+button {
+  background-color: #3e99e3;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+button:hover {
+  background-color: #0f80cb;
+  border-radius: 10px;
+}
+
+/* =================================================================*/
+/* El logo se posiciona de forma absoluta (como pegatina) */
+/* =================================================================*/
+nav .logo {
+  position: absolute;
+  top: 50%; /* Centrado verticalmente en el navbar */
+  left: 20px; /* Distancia desde el borde izquierdo */
+  transform: translateY(-50%); /* Centrado vertical */
+  height: 50px;
+  width: auto;
+  z-index: 10;
+}
+
+/* version movil */
+
+/* Mostrar el menú en el móvil */
+@media (max-width: 768px) {
+
+  #navbarMovil {
+    display: block;
+    background-color: #222; /* Un tono más oscuro para mejor contraste */
+    height: 70px;
+    padding: 10px;
+    position: relative;
+    width: 100%;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Sombra para efecto flotante */
+    z-index: 1000; /* Valor alto para que el navbar esté encima */
   }
-  button {
-    background-color: #3E99E3;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
+  #navbarMovil img {
+    width: 50px;
+    height: 50px;
+    display: block;  /* Elimina el espacio debajo de la imagen */
+    margin-left: auto;
+    margin-right: auto; /* Centra la imagen horizontalmente */
+  }
+  
+
+  #navbarOrdenador {
+    display: none;
+  }
+
+  /* Botón hamburguesa moderno */
+  .hamburguesa {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
     cursor: pointer;
-    border-radius: 10px;
-    }
+    position: absolute;
+    top: 10px;
+    left: 15px;
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 10px;
+    transition: background 0.3s ease;
+  }
 
-    button:hover {
-    background-color: #0F80CB;
-    border-radius: 10px;
-    }
-    nav {
-        border-radius: 10px;
-        position: fixed;
-        background: var(--color-nav-bg);
-        font-weight: 400;
-        font-size: 0;
-        display: flex;
-        align-items: center;
-        padding: 0 20px;
-        width: 95%;
-        z-index: 1000; /* Valor alto para que el navbar esté encima */
-      }
+  .hamburguesa .bar {
+    width: 35px;
+    height: 4px;
+    background-color: white;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+  }
 
-  /* =================================================================*/
-  /* El logo se posiciona de forma absoluta (como pegatina) */
-  /* =================================================================*/
+  /* Animación de la hamburguesa */
+  .hamburguesa:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  .hamburguesa:hover .bar {
+    background-color: #ffcc00;
+  }
+
+  /* Menú con diseño moderno */
+  #menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background: rgba(30, 30, 30, 0.95); /* Fondo semitransparente */
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    display: none;
+    flex-direction: column;
+    text-align: center;
+    border-radius: 0 0 10px 10px;
+    overflow: hidden;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease-in-out;
+  }
+
+  #menu.mostrar-menu {
+    display: flex;
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  #menu li {
+    padding: 15px 20px;
+    border-bottom: 1px solid #444;
+    transition: background 0.3s ease;
+  }
+
+  #menu li:last-child {
+    border-bottom: none;
+  }
+
+  #menu li:hover {
+    background: #ffcc00;
+  }
+
+  #menu li button {
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    background: none;
+    border: none;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+
+  #menu li:hover button {
+    color: black;
+  }
+
+  /* Ajustar el logo */
   nav .logo {
     position: absolute;
-    top: 50%;           /* Centrado verticalmente en el navbar */
-    left: 20px;         /* Distancia desde el borde izquierdo */
-    transform: translateY(-50%); /* Centrado vertical */
-    height: 50px;        
-    width: auto;
-    z-index: 10;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 120px;
+  }
+}
+
+
+
+
+
+@media (min-width: 769px) {
+  #navbarMovil {
+    display: none;
+  }
+
+  #navbarOrdenador {
+    display: block;
+  }
+
+  /* Mostrar el menú cuando se active */
+  #menu.mostrar {
+    display: none;
+  }
+
+  nav {
+    border-radius: 10px;
+    position: fixed;
+    background: var(--color-nav-bg);
+    font-weight: 400;
+    font-size: 0;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    width: 95%;
+    z-index: 1000; /* Valor alto para que el navbar esté encima */
   }
 
   /* =================================================================*/
@@ -140,11 +299,11 @@ body::-webkit-scrollbar {
     display: flex;
     position: relative;
     flex: 1;
-    margin-left: 80px;  /* Ajusta este valor según el ancho del logo y el espacio deseado */
+    margin-left: 80px; /* Ajusta este valor según el ancho del logo y el espacio deseado */
   }
-  
+
   /* =================================================================*/
-    /* Items de navegación */
+  /* Items de navegación */
   /* =================================================================*/
   /* Estilo de los items del navbar */
   /* NOTA: Se usa flex-grow para que los items se expandan y ocupen todo el espacio disponible */
@@ -173,14 +332,14 @@ body::-webkit-scrollbar {
     left: 0;
     top: 62px;
   }
-  
+
   /* Oculto inicialmente y se muestra al hacer hover */
   .dropdown > div {
     translate: 0 -100%;
     transition: all 0.5s 0.1s;
     position: relative;
   }
-  
+
   /* Enlaces del dropdown */
   .dropdown a {
     display: block;
@@ -192,12 +351,12 @@ body::-webkit-scrollbar {
     color: rgb(117, 21, 96);
     text-decoration: none;
   }
-  
+
   /* Hover en los enlaces del dropdown */
   .dropdown a:hover {
     background: var(--color-dropdown-hover);
   }
-  
+
   /* Línea inferior (underline) */
   .underline {
     height: 6px;
@@ -209,28 +368,28 @@ body::-webkit-scrollbar {
     pointer-events: none;
     transition: 0.35s;
   }
-  
+
   /* Mostrar el dropdown al hacer hover sobre su item */
   nav .item:hover > .dropdown > div {
     translate: 0;
   }
-  
-    /* =================================================================*/
+
+  /* =================================================================*/
   /* Movimiento de la underline según el item (NOTA: esto funciona correctamente
-     porque solo se cuentan los hijos dentro de .nav-container) */
-     /* =================================================================*/
+   porque solo se cuentan los hijos dentro de .nav-container) */
+  /* =================================================================*/
   nav .item:nth-child(1):hover ~ .underline {
     translate: 0;
   }
-  
+
   nav .item:nth-child(2):hover ~ .underline {
     translate: 100%;
   }
-  
+
   nav .item:nth-child(3):hover ~ .underline {
     translate: 200%;
   }
-  
+
   nav .item:nth-child(4):hover ~ .underline {
     translate: 300%;
   }
@@ -238,84 +397,139 @@ body::-webkit-scrollbar {
     translate: 400%;
   }
 
-  .botonNavbar{
+  .botonNavbar {
     width: 100%;
     height: 100%;
   }
 
+  /* bienvenida */
+  #contenedorBienvenido {
+    background-color: #e9ecef;
+    padding: 5px 15px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-family: "Arial", sans-serif;
+    max-width: 250px;
+    height: 30px;
+    margin-left: auto;
+  }
+  #contenedorBienvenido p {
+    margin: 0; /* Eliminar márgenes predeterminados */
+    font-size: 14px; /* Texto más pequeño */
+    color: #333; /* Color de texto oscuro */
+  }
+
+  #biembenidoNombre {
+    font-weight: bold; /* Resaltar el nombre */
+    color: #007bff; /* Color azul para un toque moderno */
+  }
+
+  .bienvenidoInfo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+  }
+}
+  
+
   /* espaciador para el navbar y el contenido, para que no se superpongan */
   .espaciador{
-    height: 100px;
+    height: 15em;
   }
   /* -------------------------------------------------------------------------------------------------- */
-  /* overlay para cerrar sesion */
-  /* -------------------------------------------------------------------------------------------------- */
-    /* Estilo para el overlay */
-    .overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      visibility: hidden;
-      opacity: 0;
-      transition: opacity 0.3s ease, visibility 0.3s;
-      color: #333;  /* Color del texto */
-  }
+/* overlay para cerrar sesion */
+/* -------------------------------------------------------------------------------------------------- */
+/* Estilo para el overlay */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.3s ease, visibility 0.3s;
+  color: #333; /* Color del texto */
+  z-index: 1000; /* Valor alto para que cubra todo */
+}
 
-  /* Estilo para la ventana emergente */
-  .overlay-content {
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-      width: 300px;
-      text-align: center;
-      position: relative;
-  }
+/* Estilo para la ventana emergente */
+.overlay-content {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  width: 300px;
+  text-align: center;
+  position: relative;
+}
 
-  /* Botón de cierre */
-  .close-btn {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: #ff4d4d;
-      color: white;
-      border: none;
-      padding: 5px 10px;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 14px;
-  }
+/* Botón de cierre */
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #ff4d4d00;
+  color: rgb(255, 0, 0);
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
 
-  .close-btn:hover {
-      background: #cc0000;
-  }
+.close-btn:hover {
+  background: #cc000000;
+}
 
-  /* Clase para mostrar el overlay */
-  .overlay.activeOverlay {
-      visibility: visible;
-      opacity: 1;
-  }
+/* Clase para mostrar el overlay */
+.overlay.activeOverlay {
+  visibility: visible;
+  opacity: 1;
+}
 
-  /* Botón para abrir */
-  .open-btn {
-      padding: 10px 15px;
-      background: #007BFF;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 16px;
-  }
+/* Botón para abrir */
+.open-btn {
+  padding: 10px 15px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
 
-  .open-btn:hover {
-      background: #0056b3;
-  }
+.open-btn:hover {
+  background: #0056b3;
+}
+.logo,
+#btninicio {
+  cursor: pointer;
+}
+
+#volverOverlayCerrarSesion{
+  cursor: pointer;
+  background-color: #ccc;
+  color: #333;
+}
+#volverOverlayCerrarSesion:hover{
+  background-color: #bbb;
+}
+#cerrarSesionOverlayCerrarSesion{
+  cursor: pointer;
+  background-color: #f00;
+  color: #fff;
+}
+#cerrarSesionOverlayCerrarSesion:hover{
+  background-color: #d00;
+}
   /* -------------------------------------------------------------------------------------------------- */
 
 
@@ -356,6 +570,10 @@ body::-webkit-scrollbar {
   .socials a {
     font-size: 24px;
   }
+  #iconos{
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+  }
   
   .links {
     gap: 10px;
@@ -386,7 +604,7 @@ body::-webkit-scrollbar {
   /* Estilos del footer - Cambio de position */
   /* ==================================================================*/
   footer {
-    position: fixed; /* Se fija al fondo */
+    position: relative; /* Se fija al fondo */
     left: 0;
     bottom: 0; /* Ajusta al fondo de la página */
     display: flex;
@@ -425,3 +643,472 @@ body::-webkit-scrollbar {
     /* =====================================================================================================================================================*/
                                                                          /*HTML CONTENIDO*/
     /* =====================================================================================================================================================*/
+
+    :root {
+      --dark-body: #4d4c5a;
+      --dark-main: #141529;
+      --dark-second: #79788c;
+      --dark-hover: #323048;
+      --dark-text: #f8fbff;
+    
+      --light-body: #90baec;
+      --light-main: #53a0c4;
+      --light-second: #3720a8;
+      --light-hover: #2d66c9;
+      --light-text: #151426;
+    
+    --blue: #0000ff;
+    --white: #fff;
+    
+    --shadow: rgba(100,100,111,0.2) 0px 7px 29px 0px;
+    
+    --font-family: cursive;
+    }
+    
+    .dark {
+        --bg-body: var(--dark-body);
+        --bg-main: var(--dark-main);                                                         
+        --bg-second: var(--dark-second);
+        --bg-hover: var(--dark-hover);
+        --bg-txt: var(--dark-text);
+    }
+    
+    .light {
+        --bg-body: var(--light-body);
+        --bg-main: var(--light-main);                                                         
+        --bg-second: var(--light-second);
+        --bg-hover: var(--light-hover);
+        --bg-txt: var(--light-text);
+    }
+
+
+  .calendar {
+      height: max-content;
+      width: max-content;
+      background-color: var(--bg-main);
+      border-radius: 30px;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+      margin-top: 100px; /* Ajusta este valor según sea necesario */
+  }
+  
+  .light .calendar {
+      box-shadow: var(--shadow);
+  }
+  
+  .calendar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 25px;
+      font-weight: 600;
+      color: var(--color-text);
+      padding: 10px;
+  }
+  
+  .calendar-body {
+      padding: 10px;
+  }
+  
+  .calendar-week-day {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      font-weight: 600;
+      height: 50px;
+  }
+  
+  .calendar-week-day div {
+      display: grid;
+      place-items: center;
+      color: var(--bg-second);
+  }
+  
+  .calendar-days {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 2px;
+      color: var(--color-txt);
+  }
+  
+  .calendar-days div {
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 5px;
+      position: relative;
+      cursor: pointer;
+      animation: to-top 1s forwards;
+  }
+  
+  .month-picker {
+      padding: 5px 10px;
+      border-radius: 10px;
+      cursor: pointer;
+  }
+  
+  .month-picker:hover {
+      background-color: var(--bg-hover);
+  }
+  
+  .year-picker {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--white); /* Asegúrate de que el color sea blanco */
+  }
+  
+  .year-change {
+      height: 40px;
+      width: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 10px;
+      cursor: pointer;
+      color: var(--white); /* Asegúrate de que el color sea blanco */
+      font-size: 24px; /* Ajusta el tamaño de la fuente según sea necesario */
+      line-height: 1; /* Asegúrate de que la línea de altura sea 1 */
+  }
+  
+  .year-change pre {
+      margin: 0;
+      font-size: 24px; /* Ajusta el tamaño de la fuente según sea necesario */
+      line-height: 1; /* Asegúrate de que la línea de altura sea 1 */
+  }
+  
+  .year-change:hover {
+      background-color: var(--bg-hover);
+  }
+  
+  .calendar-footer {
+    padding: 10px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+  
+  .toggle {
+      display: flex;
+  }
+  
+  .toggle span {
+      margin-right: 10px;
+      color: var(--color-txt);
+  }
+  
+  .dark-mode-switch {
+      position: relative;
+      width: 48px;
+      height: 25px;
+      border-radius: 14px;
+      background-color: var(--bg-second);
+      cursor: pointer;
+  }
+  
+  .dark-mode-switch-ident {
+      width: 21px;
+      height: 21px;
+      border-radius: 50%;
+      background-color: var(--bg-main);
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      transition: left 0.2s ease-in-out;
+  }
+  
+  .dark .dark-mode-switch .dark-mode-switch-ident{
+      top: 2px;
+      left: calc(2px + 50%);
+  }
+  
+  .calendar-days div span {
+      position: absolute;
+  
+  }
+  
+  .calendar-days div:hover span {
+      transition: width 0.2s ease-in-out, height 0.2s ease-in-out;
+  }
+  
+  .calendar-days div span:nth-child(1),
+  .calendar-days div span:nth-child(3) {
+      width: 2px;
+      height: 0;
+     background-color: var(--bg-txt);
+  }
+  .calendar-days div:hover span:nth-child(1),
+  .calendar-days div:hover span:nth-child(3){
+      height: 100%;
+  }
+  .calendar-days div span:nth-child(1) {
+      bottom: 0;
+      left: 0;
+  }
+  
+  .calendar-days div span:nth-child(3) {
+       top: 0;
+       right: 0;
+  }
+  
+  .calendar-days div span:nth-child(2),
+  .calendar-days div span:nth-child(4) {
+         width: 0;
+         height: 2px;
+         background-color: var(--bg-txt);
+  }
+  
+  .calendar-days div:hover span:nth-child(2),
+  .calendar-days div:hover span:nth-child(4){
+      width: 100%;
+  }
+  
+  .calendar-days div span:nth-child(2) {
+    top: 0;
+    left: 0;
+  }
+  
+  .calendar-days div span:nth-child(4) {
+      bottom: 0;
+      right: 0;
+  }
+  
+  .calendar-days div:hover span:nth-child(2) {
+      transition-delay: 0.2s;
+  }
+  
+  .calendar-days div:hover span:nth-child(3) {
+      transition-delay: 0.4s;
+  }
+  
+  .calendar-days div:hover span:nth-child(4) {
+      transition-delay: 0.6s;
+  }
+  
+  .calendar-days div.curr-date {
+      background-color: var(--blue);
+      color: var(--white);
+      border-radius: 50%;
+  }
+  
+  .calendar-days div.curr-date span {
+      display: none;
+  }
+  
+  .month-list {
+      position: absolute; 
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background-color: var(--bg-main);
+      padding: 20px;
+      color: var(--bg-txt);
+      display: grid;
+      grid-template-columns: repeat(3, auto);
+      gap: 5px;
+      transform: scale(1.5);
+      visibility: hidden;
+      pointer-events: none;
+      
+  }
+  
+  .month-list.show {
+      transform: scale(1);
+      visibility: visible;
+      pointer-events: visible;
+      transition: all 0.2s ease-in-out;
+  
+  }
+  
+  .month-list > div {
+      display: grid;
+      place-items: center;
+  }
+  
+  .month-list > div > div {
+      width: 100%;
+      padding: 5px 20px;
+      border-radius: 10px;
+      text-align: center;
+      cursor: pointer;
+  }
+  
+  .month-list > div > div:hover {
+      background-color: var(--dark-hover);
+  }
+  
+  @keyframes to-top {
+      0%{
+          transform: translateY(100%);
+          opacity: 0;
+      }
+      100% {
+      transform: translateY(0);
+      opacity: 1;
+      }
+  }
+/* Estilo para el overlay de eventos (card) */
+.event-overlay {
+  border: 2px solid rgb(255, 255, 255); 
+  position: absolute;
+  background-color: rgba(255, 140, 8, 0.8);
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  max-width: 200px;
+  font-size: 14px;
+  display: block; /* Se muestra cuando se añade al DOM */
+  transform: translate(-50%, 0);
+}
+
+.event-overlay h3 {
+  margin-top: 0;
+}
+
+.event-overlay p {
+  margin: 5px 0;
+}
+
+
+.area{
+  background: #72a3ec;  
+  background: -webkit-linear-gradient(to left, #83d0f7, #248de3);  
+  width: 100%;
+  height:100vh;
+  z-index: -1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.circles{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.circles li{
+  position: absolute;
+  display: block;
+  list-style: none;
+  width: 20px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.2);
+  animation: animate 25s linear infinite;
+  bottom: -150px;
+  
+}
+
+.circles li:nth-child(1){
+  left: 25%;
+  width: 80px;
+  height: 80px;
+  animation-delay: 0s;
+}
+
+
+.circles li:nth-child(2){
+  left: 10%;
+  width: 20px;
+  height: 20px;
+  animation-delay: 2s;
+  animation-duration: 12s;
+}
+
+.circles li:nth-child(3){
+  left: 70%;
+  width: 20px;
+  height: 20px;
+  animation-delay: 4s;
+}
+
+.circles li:nth-child(4){
+  left: 40%;
+  width: 60px;
+  height: 60px;
+  animation-delay: 0s;
+  animation-duration: 18s;
+}
+
+.circles li:nth-child(5){
+  left: 65%;
+  width: 20px;
+  height: 20px;
+  animation-delay: 0s;
+}
+
+.circles li:nth-child(6){
+  left: 75%;
+  width: 110px;
+  height: 110px;
+  animation-delay: 3s;
+}
+
+.circles li:nth-child(7){
+  left: 35%;
+  width: 150px;
+  height: 150px;
+  animation-delay: 7s;
+}
+
+.circles li:nth-child(8){
+  left: 50%;
+  width: 25px;
+  height: 25px;
+  animation-delay: 15s;
+  animation-duration: 45s;
+}
+
+.circles li:nth-child(9){
+  left: 20%;
+  width: 15px;
+  height: 15px;
+  animation-delay: 2s;
+  animation-duration: 35s;
+}
+
+.circles li:nth-child(10){
+  left: 85%;
+  width: 150px;
+  height: 150px;
+  animation-delay: 0s;
+  animation-duration: 11s;
+}
+
+/* Asegúrate de que el contenedor del día tenga position: relative; */
+.calendar-day-hover {
+  position: relative;
+}
+
+/* Indicador para días con evento */
+.calendar-day-hover.has-event::after {
+  content: "";
+  position: absolute;
+  bottom: 4px;
+  left: 4px;
+  right: 4px; /* Cambiado de right a left */
+  width: 8px;
+  height: 8px;
+  margin-left: 18px;
+  background-color: rgb(250, 153, 9);
+  border-radius: 50%;
+
+}
+
+
+
+@media (max-width: 768px) {
+  .nav{
+position: relative;
+margin-left: 800px;
+  }
+}
+

@@ -7,6 +7,13 @@ require 'Conexion.php';
 
 header('Content-Type: application/json');  // Indicamos que la respuesta es JSON para AJAX
 
+// Función para manejar errores y devolver una respuesta JSON
+function manejarError($mensaje) {
+    error_log($mensaje);  // Registrar el error en el log del servidor
+    echo json_encode(["error" => $mensaje]);
+    exit();
+}
+
 //----------------------------------------------------------------------------------------//
 // Verificar que se envíen datos mediante método POST
 //----------------------------------------------------------------------------------------//
@@ -18,21 +25,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Validar que los campos no estén vacíos
     //------------------------------------------------------------------------------------//
     if (empty($email) || empty($password)) {
-        echo json_encode(["error" => "Todos los campos son obligatorios."]);
-        exit();
+        manejarError("Todos los campos son obligatorios.");
     }
-
-    //------------------------------------------------------------------------------------//
-    // Escapar los datos para prevenir SQL Injection
-    //------------------------------------------------------------------------------------//
-    $email = $conn->real_escape_string($email);
-    $password = $conn->real_escape_string($password);
 
     //------------------------------------------------------------------------------------//
     // Verificar en la tabla TUTORES (Padres)
     //------------------------------------------------------------------------------------//
-    $sql = "SELECT id_tutor, contrasenia FROM TUTORES WHERE email = '$email'";
-    $result = $conn->query($sql);
+    $sql = "SELECT id_tutor, contrasenia FROM TUTORES WHERE email = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result === false) {
+        manejarError("Error en la consulta SQL: " . $conn->error);
+    }
     if ($result && $result->num_rows > 0) {
         $row = $result->fetch_assoc();
         // Verificar si la contraseña ingresada coincide con la hasheada en la BD
@@ -41,7 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION["tipo"] = "TUTOR";
             $_SESSION["id"] = $row["id_tutor"];
             $_SESSION["login"] = "OK";
-            echo json_encode(["redirect" => "../html/IndexPadre.html"]);
+            echo json_encode(["redirect" => "../html/Bienvenido_tutor.html"]);
             exit();
         }
     }
@@ -49,8 +55,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     //------------------------------------------------------------------------------------//
     // Verificar en la tabla MONITORES
     //------------------------------------------------------------------------------------//
-    $sql = "SELECT id_monitor, contrasenia FROM MONITORES WHERE email = '$email'";
-    $result = $conn->query($sql);
+    $sql = "SELECT id_monitor, contrasenia FROM MONITORES WHERE email = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result === false) {
+        manejarError("Error en la consulta SQL: " . $conn->error);
+    }
     if ($result && $result->num_rows > 0) {
         $row = $result->fetch_assoc();
         if (password_verify($password, $row['contrasenia'])) {
@@ -58,7 +70,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION["tipo"] = "MONITOR";
             $_SESSION["id"] = $row["id_monitor"];
             $_SESSION["login"] = "OK";
-            echo json_encode(["redirect" => "../html/IndexMonitor.html"]);
+            echo json_encode(["redirect" => "../html/Bienvenido_monitor.html"]);
             exit();
         }
     }
@@ -66,8 +78,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     //------------------------------------------------------------------------------------//
     // Verificar en la tabla ADMIN
     //------------------------------------------------------------------------------------//
-    $sql = "SELECT id_admin, contrasenia FROM ADMIN WHERE email = '$email'";
-    $result = $conn->query($sql);
+    $sql = "SELECT id_admin, contrasenia FROM ADMIN WHERE email = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result === false) {
+        manejarError("Error en la consulta SQL: " . $conn->error);
+    }
     if ($result && $result->num_rows > 0) {
         $row = $result->fetch_assoc();
         if (password_verify($password, $row['contrasenia'])) {
@@ -83,14 +101,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     //------------------------------------------------------------------------------------//
     // Si no se encuentran coincidencias, enviar mensaje de error
     //------------------------------------------------------------------------------------//
-    echo json_encode(["error" => "Credenciales incorrectas."]);
-    exit();
+    manejarError("Credenciales incorrectas.");
 } else {
     //------------------------------------------------------------------------------------//
     // Si el método no es POST, se deniega el acceso 
     //------------------------------------------------------------------------------------//
-    echo json_encode(["error" => "Acceso denegado."]);
-    exit();
+    manejarError("Acceso denegado.");
 }
 
 //----------------------------------------------------------------------------------------//

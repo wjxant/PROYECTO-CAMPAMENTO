@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
     //----------------------------------------------------------------------------------------//
     document.getElementById("loginForm").addEventListener("submit", function (e) {
         e.preventDefault();  // Prevenir el comportamiento por defecto del formulario
+
         //----------------------------------------------------------------------------------------//
         // Obtener los valores de los campos de email y contraseña
         //----------------------------------------------------------------------------------------//
@@ -26,18 +27,37 @@ document.addEventListener("DOMContentLoaded", function () {
             // Procesar la respuesta JSON
             //------------------------------------------------------------------------------------//
             if (data.error) { 
-                alert(data.error);
+                mostrarErrorLogin(data.error); // Mostrar error localmente
             } else if (data.redirect) {
                 window.location.href = data.redirect;
+            } else if (data.message) {
+                console.log(data.message);  // Manejar el mensaje de éxito si es necesario
             } else {
-                alert("Respuesta desconocida del servidor.");
+                mostrarErrorLogin("Respuesta desconocida del servidor."); // Mostrar error localmente
             }
         })
         .catch(error => console.error("Error:", error));  // Manejar errores en la petición 
     });
 });
 
-//-----------------------------------------------------------------------------------------//
+//--------------------------------------------------------------------------------------------//
+// Función para mostrar errores de login localmente
+//--------------------------------------------------------------------------------------------//
+function mostrarErrorLogin(mensaje) {
+    const errorContainer = document.getElementById("errorLogin");
+    const iconoError = `<img src="../assets/icons/errorIcon.png" alt="error" id="iconoError">`; // Icono de error
+    if (!errorContainer) {
+        const nuevoErrorContainer = document.createElement("div");
+        nuevoErrorContainer.id = "errorLogin";
+        nuevoErrorContainer.style.color = "red";
+        nuevoErrorContainer.style.margin = "10px";
+        nuevoErrorContainer.style.marginLeft = "70px";
+        nuevoErrorContainer.innerHTML = `${iconoError} ${mensaje}`;
+        document.getElementById("errorLogin123").appendChild(nuevoErrorContainer);
+    } else {
+        errorContainer.innerHTML = `${iconoError} ${mensaje}`;
+    }
+}
 
 //--------------------------------------------------------------------------------------------//
 // Selección de elementos de formulario (Iniciar sesión y Crear Cuenta)
@@ -76,6 +96,7 @@ const estiloError = `
     margin-top: 5px; 
     display: flex; 
     align-items: center; 
+    justify-content: center;
 `;
 // Aplica el estilo a todos los contenedores de errores
 [errorCorreoLogin, errorContrasenaLogin, errorCorreoSignup, errorContrasenaSignup].forEach(el => (el.style.cssText = estiloError));
@@ -159,7 +180,39 @@ formularioLogin.addEventListener('submit', function (e) {
         if (errorContrasena) contrasenaLogin.setCustomValidity('error');
     } else {
         // Si todo está correcto, limpia los errores
-        limpiarErrores();
+
+        //----------------------------------------------------------------------------------------//
+        // Obtener los valores de los campos de email y contraseña
+        //----------------------------------------------------------------------------------------//
+        let email = correoLogin.value;
+        let pswd = contrasenaLogin.value;
+
+        //----------------------------------------------------------------------------------------//
+        // Enviar los datos al servidor usando fetch
+        //----------------------------------------------------------------------------------------//
+        fetch("../Server/GestionarLogin.php", {  // Verifica que la ruta sea correcta
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: `email=${encodeURIComponent(email)}&pswd=${encodeURIComponent(pswd)}`
+        })
+        .then(response => response.json())  // Parsear la respuesta como JSON
+        .then(data => {
+            //------------------------------------------------------------------------------------//
+            // Procesar la respuesta JSON
+            //------------------------------------------------------------------------------------//
+            if (data.error) { 
+                mostrarErrorLogin(data.error); // Mostrar error localmente
+            } else if (data.redirect) {
+                window.location.href = data.redirect;
+            } else if (data.message) {
+                console.log(data.message);  // Manejar el mensaje de éxito si es necesario
+            } else {
+                mostrarErrorLogin("Respuesta desconocida del servidor."); // Mostrar error localmente
+            }
+        })
+        .catch(error => console.error("Error:", error));  // Manejar errores en la petición 
     }
 });
 
@@ -201,6 +254,11 @@ correoLogin.addEventListener('input', function() {
 });
 contrasenaLogin.addEventListener('input', function() {
     validarCampos(contrasenaLogin, errorContrasenaLogin, validarContrasena); // Llama a la función de validación para la contraseña de login
+    // Además, elimina el mensaje de error del login (creado por mostrarErrorLogin) si existe:
+    const errorContainer = document.getElementById("errorLogin");
+    if (errorContainer) {
+        errorContainer.remove();
+    }
 });
 correoSignup.addEventListener('input', function() {
     validarCampos(correoSignup, errorCorreoSignup, validarCorreo); // Llama a la función de validación para el correo de signup
@@ -208,7 +266,6 @@ correoSignup.addEventListener('input', function() {
 contrasenaSignup.addEventListener('input', function() {
     validarCampos(contrasenaSignup, errorContrasenaSignup, validarContrasena); // Llama a la función de validación para la contraseña de signup
 });
-
 
 //--------------------------------------------------------------------------------------------//
 // Listener para la validación al perder el foco (onblur)
@@ -224,7 +281,34 @@ contrasenaLogin.addEventListener('blur', function () {
 correoSignup.addEventListener('blur', function () {
     validarCampos(correoSignup, errorCorreoSignup, validarCorreo); // Valida el correo de signup al perder el foco
 });
-
 contrasenaSignup.addEventListener('blur', function () {
     validarCampos(contrasenaSignup, errorContrasenaSignup, validarContrasena); // Valida la contraseña de signup al perder el foco
+});
+
+//--------------------------------------------------------------------------------------------//
+//                             INICIAR SESION CON GOOGLE 
+//--------------------------------------------------------------------------------------------//
+
+// Autenticación con Google
+document.getElementById("googleLogin").addEventListener("click", function() {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    firebase.auth().signInWithPopup(provider)
+        .then(result => console.log("Usuario autenticado:", result.user))
+        .catch(error => console.error("Error en autenticación:", error));
+});
+
+// Autenticación con Facebook
+document.getElementById("facebookLogin").addEventListener("click", function() {
+    const provider = new firebase.auth.FacebookAuthProvider();
+    firebase.auth().signInWithPopup(provider)
+        .then(result => console.log("Usuario autenticado:", result.user))
+        .catch(error => console.error("Error en autenticación:", error));
+});
+
+// Autenticación con Twitter
+document.getElementById("twitterLogin").addEventListener("click", function() {
+    const provider = new firebase.auth.TwitterAuthProvider();
+    firebase.auth().signInWithPopup(provider)
+        .then(result => console.log("Usuario autenticado:", result.user))
+        .catch(error => console.error("Error en autenticación:", error));
 });

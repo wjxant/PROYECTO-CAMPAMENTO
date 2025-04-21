@@ -4,31 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/styleInfoActividades.css">
+    <link rel="shortcut icon" href="../assets/logo/Logo1.png" type="image/x-icon">
     <title>InfoActividades</title>
 </head>
 <body>
     <!-- CONTENEDOR DE TRANSICIÓN -->
-    <div class="transition">
-      <div class="transition-row row1">
+    <div class="transition-row row1">
         <div class="block"></div>
         <div class="block"></div>
         <div class="block"></div>
         <div class="block"></div>
-      </div>
-      <div class="transition-row row2">
-        <div class="block"></div>
-        <div class="block"></div>
-        <div class="block"></div>
-        <div class="block"></div>
-      </div>
     </div>
-  
+    <div class="transition-row row2">
+        <div class="block"></div>
+        <div class="block"></div>
+        <div class="block"></div>
+        <div class="block"></div>
+    </div>
+</div>
     <!---------------------------------------------------------------------------------------------------------------------------------------------------------------------->
-                                                                         <!-- NAVBAR -->
+    <!-- NAVBAR -->
     <!---------------------------------------------------------------------------------------------------------------------------------------------------------------------->
-    <nav>
-        <img class="logo" src="../assets/logo/Logo1.png" alt="Logo">
-  
+    <nav id="navbarOrdenador">
+        <img class="logo" src="../assets/logo/Logo1.png" alt="Logo" id="btninicio" />
+
         <!--------------------------------------------------------------->
         <!-- Contenedor exclusivo para los elementos de navegación -->
         <!--------------------------------------------------------------->
@@ -40,8 +39,12 @@
                 <div class="dropdown">
                     <div>
                         <!-- Opciones del menú desplegable -->
-                        <a><button type="button" class="botonNavbar" id="btnCalendario">Calendario</button></a>
-                        <a><button type="button" class="botonNavbar" id="btnInfoActividades">Informacion de Actividades</button></a>
+                        <a><button type="button" class="botonNavbar" id="btnCalendario">
+                                Calendario
+                            </button></a>
+                        <a><button type="button" class="botonNavbar" id="btnInfoActividades">
+                                Informacion de Actividades
+                            </button></a>
                     </div>
                 </div>
             </div>
@@ -52,7 +55,9 @@
                 <div class="dropdown">
                     <div>
                         <!-- Opciones del menú desplegable -->
-                        <a><button type="button" class="botonNavbar" id="btnComedor">Comedor</button></a>
+                        <a><button type="button" class="botonNavbar" id="btnComedor">
+                                Comedor
+                            </button></a>
                     </div>
                 </div>
             </div>
@@ -62,16 +67,20 @@
                 <div class="dropdown">
                     <div>
                         <!-- Opciones del menú desplegable -->
-                        <a><button type="button" class="botonNavbar" id="btnContacto">Contacto</button></a>
-                        <a><button type="button" class="botonNavbar" id="btnMonitor">Monitor</button></a>
-                        <a><button type="button" class="botonNavbar" id="btnPolitica">Politicas</button></a>
+                        <a><button type="button" class="botonNavbar" id="btnContacto">
+                                Contacto
+                            </button></a>
+                        <a><button type="button" class="botonNavbar" id="btnMonitor">
+                                Monitor
+                            </button></a>
+                        <a><button type="button" class="botonNavbar" id="btnPolitica">
+                                Politicas
+                            </button></a>
                     </div>
                 </div>
             </div>
             <!-- Enlace a la sección de servicios -->
-            <a class="item">idiomas</a>
-            <!-- <div id="google_translate_element" class="google"></div> -->
-  
+
             <!-- Enlace al perfil del usuario -->
             <!-- Enlace con un menú desplegable -->
             <div class="item">
@@ -79,35 +88,119 @@
                 <div class="dropdown">
                     <div>
                         <!-- Opciones del menú desplegable -->
-                        <a><button type="button" class="botonNavbar" id="btnNotificaciones">Notificaciones</button></a>
-                        <a><button type="button" class="botonNavbar" id="btnModificarDatosPadre">Modificar Datos</button></a>
-                        <a><button type="button" class="botonNavbar" id="btnCerrarSesion">Cerrar Sesion</button></a>
+                        <a><button type="button" class="botonNavbar" id="btnNotificaciones">
+                                Notificaciones
+                            </button></a>
+                        <a><button type="button" class="botonNavbar" id="btnModificarDatosPadre">
+                                Modificar Datos
+                            </button></a>
+                        <a><button type="button" class="botonNavbar" id="btnCerrarSesion">
+                                Cerrar Sesion
+                            </button></a>
                     </div>
                 </div>
             </div>
             <!-- Elemento decorativo para subrayar la navegación -->
             <div class="underline"></div>
+            <div class="bienvenidoInfo">
+                <div id="contenedorBienvenido">
+                    <p>Bienvenido, <span id="biembenidoNombre">Tutor</span></p>
+                </div>
+            </div>
         </div>
     </nav>
-  
+
+    <!-- Navbar para móvil -->
+    <nav id="navbarMovil">
+        <div class="hamburguesa" id="menuToggle">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>
+        <img src="../assets/logo/Logo1.png" id="btninicio" alt="Logo" />
+        <ul id="menu" class="ocultar">
+            <li>
+                <button type="button" class="botonNavbar" id="btnCalendario">
+                    Calendario
+                </button>
+            </li>
+            <li>
+                <button type="button" class="botonNavbar" id="btnInfoActividades">
+                    Informacion de Actividades
+                </button>
+            </li>
+            <li>
+                <button type="button" class="botonNavbar" id="btnComedor">
+                    Comedor
+                </button>
+            </li>
+            <li>
+                <button type="button" class="botonNavbar" id="btnContacto">
+                    Contacto
+                </button>
+            </li>
+            <li>
+                <button type="button" class="botonNavbar" id="btnMonitor">
+                    Monitor
+                </button>
+            </li>
+            <li>
+                <button type="button" class="botonNavbar" id="btnPolitica">
+                    Politicas
+                </button>
+            </li>
+            <li>
+                <button type="button" class="botonNavbar" id="btnNotificaciones">
+                    Notificaciones
+                </button>
+            </li>
+            <li>
+                <button type="button" class="botonNavbar" id="btnModificarDatosPadre">
+                    Modificar Datos
+                </button>
+            </li>
+            <li>
+                <button type="button" class="botonNavbar" id="btnCerrarSesion">
+                    Cerrar Sesion
+                </button>
+            </li>
+        </ul>
+    </nav>
+
     <!-- Ventana Overlay Para cerrar sesion -->
     <div class="overlay" id="overlay">
         <div class="overlay-content">
             <button class="close-btn" id="cerrarOverlayCerrarSesion">×</button>
             <h2>¿Estas seguro que quieres cerrar sesión?</h2>
-            <button type="button" id="volverOverlayCerrarSesion">volver</button>
-            <button type="button" id="cerrarSesionOverlayCerrarSesion">Cerrar Sesion</button>
+            <button type="button" id="volverOverlayCerrarSesion">Volver</button>
+            <button type="button" id="cerrarSesionOverlayCerrarSesion">
+                Cerrar Sesion
+            </button>
         </div>
     </div>
-  
+
     <div class="espaciador"></div>
-     <!---------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+    <!---------------------------------------------------------------------------------------------------------------------------------------------------------------------->
                                                               <!-- INICIO CONTENIDO HTML -->
     <!---------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+   <div class="recuadro">
+    <div id="tarjetasActividades"></div>
+
+    <!-- El overlay se oculta por defecto y se mostrará cuando se haga clic en el botón -->
+    <div id="overlayDefinicion" class="overlayDefinicion">
+        <div class="overlayContent2">
+            <p id="descripcionCompleta"></p>
+            <button class="closeBtnDefinicion">X</button>
+        </div>
+    </div>
+    </div>
+    
+
+    <!---------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+                                                              <!-- FIN CONTENIDO HTML -->
+    <!---------------------------------------------------------------------------------------------------------------------------------------------------------------------->
    
-     
-   
-     <!---------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+    <!---------------------------------------------------------------------------------------------------------------------------------------------------------------------->
                                                                               <!-- FOOTER -->
     <!---------------------------------------------------------------------------------------------------------------------------------------------------------------------->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -138,11 +231,11 @@
             </svg>
         </div>
         <section>
-            <!-- Redes sociales -->
-            <ul class="socials">
-                <li><a class="fa-brands fa-x-twitter"></a></li>
-                <li><a class="fa-brands fa-facebook"></a></li>
-                <li><a class="fa-brands fa-linkedin"></a></li>
+             <!-- Redes sociales -->
+             <ul class="socials">
+                <li><a class="fa-brands fa-x-twitter" href="https://x.com/i/flow/login" id="iconos"></a></li>
+                <li><a class="fa-brands fa-facebook" href="https://es-es.facebook.com/login/web/" id="iconos"></a></li>
+                <li><a class="fa-brands fa-linkedin" href="https://www.linkedin.com/" id="iconos"></a></li>
             </ul>
             <!-- Enlaces de navegación adicionales -->
             <ul class="links">
@@ -156,9 +249,22 @@
             <p class="legal">© 2025 Derechos Reservados</p>
         </section>
     </footer>
-    <script src="../js/operarCalendarioPadre.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-
+    <script src="../js/operarInfoActividades.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <div class="area">
+        <ul class="circles">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
 </body>
 
 </html>

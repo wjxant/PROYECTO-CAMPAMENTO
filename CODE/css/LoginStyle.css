@@ -1,3 +1,39 @@
+/* =====================================================================/*
+                            TRANSICIÓN CON GSAP
+  /*======================================================================== */
+  .transition {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    z-index: 1000; /* Valor alto para que cubra todo */
+    pointer-events: none;
+  }
+  
+  .transition-row {
+    flex: 1;
+    display: flex;
+  }
+  
+  /* Ajuste: Usamos .row1 y .row2, de acuerdo a tu HTML */
+  .transition-row.row1 .block {
+    transform-origin: top;
+  }
+  
+  .transition-row.row2 .block {
+    transform-origin: bottom;
+  }
+  
+  .block {
+    flex: 1;
+    background-color: #2788c0; /* Puedes ajustar el color si lo deseas */
+    transform: scaleY(1);
+    will-change: transform;
+  }
+  
 /*--------------------------------------------------------------------------------------------*/
 /* Estilo para el cuerpo de la página (background, alineación y tamaño) */
 /*--------------------------------------------------------------------------------------------*/
@@ -9,12 +45,26 @@ body {
     align-items: center; /* Centra los elementos verticalmente */
     min-height: 100vh; /* Asegura que el body ocupe toda la altura de la ventana */
     font-family: 'Jost', sans-serif; /* Establece la fuente de texto */
-
-
-    /* Cambiar la imagen al html y asignarle una clase, utilizar propiedades: mask(filtro negro) y opacity(bajar opacidad) */
-    background-size: cover; /* La imagen cubre todo el fondo, adaptándose al tamaño */
-    background-attachment: fixed; /* Mantiene la imagen fija al hacer scroll */
+    position: relative; /* Necesario para el pseudo-elemento */
+    overflow: hidden; /* Oculta cualquier desbordamiento */
 }
+
+body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../assets/logo/bg.jpg'); /* Imagen de fondo */
+    background-attachment: fixed; /* Mantiene la imagen fija al hacer scroll */
+    background-size: cover; /* Asegura que la imagen cubra todo el fondo */
+    background-position: center; /* Centra la imagen de fondo */
+    opacity: 0.9; /* Mantener la opacidad de la imagen de fondo */
+    filter: brightness(0.9) contrast(1.0); /* Reducir el filtro blanco */
+    z-index: -1; /* Coloca el pseudo-elemento detrás del contenido */
+}
+ 
 
 /*--------------------------------------------------------------------------------------------*/
 /* Estilo para el contenedor principal del login */
@@ -38,7 +88,7 @@ body {
 /*--------------------------------------------------------------------------------------------*/
 /* Estilo para la sección de signup (Crear cuenta) */
 /*--------------------------------------------------------------------------------------------*/
-.signup {
+.login {
     position: relative; /* Posiciona de manera relativa dentro de su contenedor */
     width: 100%; /* Ocupa el 100% del ancho */
     height: 100%; /* Ocupa el 100% de la altura */
@@ -84,7 +134,7 @@ button {
     justify-content: center; 
     display: block; 
     color: #fff; /* Color del texto en el botón */
-    background: #573b8a; /* Color de fondo del botón */
+    background: #ec7627; /* Color de fondo del botón */
     font-size: 1em; 
     font-weight: bold; 
     margin-top: 20px; 
@@ -105,9 +155,9 @@ button:hover {
 /*--------------------------------------------------------------------------------------------*/
 /* Estilo para el contenedor de login */
 /*--------------------------------------------------------------------------------------------*/
-.login {
+.signup {
     height: 460px; /* Altura del contenedor de login */
-    background: #eee; /* Color de fondo del login */
+    background: #5395e0; /* Color de fondo del login */
     border-radius: 60% / 10%; /* Bordes redondeados en un patrón elíptico */
     transform: translateY(-180px); /* Desplaza el contenedor hacia arriba */
     transition: .8s ease-in-out; /* Efecto de transición suave */
@@ -116,29 +166,29 @@ button:hover {
 /*--------------------------------------------------------------------------------------------*/
 /* Estilo para la etiqueta dentro del contenedor de login (cambia al hacer interactuar con el formulario) */
 /*--------------------------------------------------------------------------------------------*/
-.login label {
-    color: #573b8a; /* Color del texto en el formulario de login */
+.signup label {
+    color: #ffffff; /* Color del texto en el formulario de login */
     transform: scale(.6); /* Reduce el tamaño del texto cuando está en login */
 }
 
 /*--------------------------------------------------------------------------------------------*/
 /* Efecto cuando el checkbox está marcado, transforma el login hacia arriba */
 /*--------------------------------------------------------------------------------------------*/
-#chk:checked ~ .login {
+#chk:checked ~ .signup {
     transform: translateY(-500px); /* Desplaza el contenedor aún más arriba */
 }
 
 /*--------------------------------------------------------------------------------------------*/
 /* Estilo para la etiqueta dentro del login cuando el checkbox está marcado (escala de nuevo) */
 /*--------------------------------------------------------------------------------------------*/
-#chk:checked ~ .login label {
+#chk:checked ~ .signup label {
     transform: scale(1); /* Escala el texto a su tamaño original */
 }
 
 /*--------------------------------------------------------------------------------------------*/
 /* Estilo para la etiqueta dentro del signup cuando el checkbox está marcado (reduce el tamaño) */
 /*--------------------------------------------------------------------------------------------*/
-#chk:checked ~ .signup label {
+#chk:checked ~ .login label {
     transform: scale(.6); /* Escala el texto hacia abajo */
 }
 
@@ -148,7 +198,6 @@ button:hover {
 #errorIcon {
     margin-right: 5px; /* Espacio a la derecha del icono */
 }
-
 
 /*--------------------------------------------------------------------------------------------*/
 /* Estilo para colocar la imagen del logo */
@@ -163,3 +212,130 @@ button:hover {
     margin-top: -450px;
 
 }
+
+
+.area{
+    background: #72a3ec;  
+    background: -webkit-linear-gradient(to left, #83d0f7, #248de3);  
+    width: 100%;
+    height:100vh;
+    z-index: -1000;
+    position: fixed;
+    top: 0;
+    left: 0;
+  }
+  
+  .circles{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+  
+  .circles li{
+    position: absolute;
+    display: block;
+    list-style: none;
+    width: 20px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    animation: animate 25s linear infinite;
+    bottom: -150px;
+    
+  }
+  
+  .circles li:nth-child(1){
+    left: 25%;
+    width: 80px;
+    height: 80px;
+    animation-delay: 0s;
+  }
+  
+  
+  .circles li:nth-child(2){
+    left: 10%;
+    width: 20px;
+    height: 20px;
+    animation-delay: 2s;
+    animation-duration: 12s;
+  }
+  
+  .circles li:nth-child(3){
+    left: 70%;
+    width: 20px;
+    height: 20px;
+    animation-delay: 4s;
+  }
+  
+  .circles li:nth-child(4){
+    left: 40%;
+    width: 60px;
+    height: 60px;
+    animation-delay: 0s;
+    animation-duration: 18s;
+  }
+  
+  .circles li:nth-child(5){
+    left: 65%;
+    width: 20px;
+    height: 20px;
+    animation-delay: 0s;
+  }
+  
+  .circles li:nth-child(6){
+    left: 75%;
+    width: 110px;
+    height: 110px;
+    animation-delay: 3s;
+  }
+  
+  .circles li:nth-child(7){
+    left: 35%;
+    width: 150px;
+    height: 150px;
+    animation-delay: 7s;
+  }
+  
+  .circles li:nth-child(8){
+    left: 50%;
+    width: 25px;
+    height: 25px;
+    animation-delay: 15s;
+    animation-duration: 45s;
+  }
+  
+  .circles li:nth-child(9){
+    left: 20%;
+    width: 15px;
+    height: 15px;
+    animation-delay: 2s;
+    animation-duration: 35s;
+  }
+  
+  .circles li:nth-child(10){
+    left: 85%;
+    width: 150px;
+    height: 150px;
+    animation-delay: 0s;
+    animation-duration: 11s;
+  }
+  
+  
+  
+  @keyframes animate {
+  
+    0%{
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+        border-radius: 0;
+    }
+  
+    100%{
+        transform: translateY(-1000px) rotate(720deg);
+        opacity: 0;
+        border-radius: 50%;
+    }
+  
+  }

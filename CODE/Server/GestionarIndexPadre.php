@@ -16,7 +16,13 @@ if (!isset($_SESSION["login"])){
     echo json_encode(['noLogin' => '../html/noLogeado.html']);
     exit(); //detenerse
 }else{
-    $login= "ok";
+    //comprobar si es perfil del admin o no 
+    if ($_SESSION["tipo"] !== "TUTOR"){
+        echo json_encode(['noLogin' => '../html/noLogeado.html']);
+        exit();
+    }else{
+        $login= "ok"; 
+    }
 }
 
 
@@ -65,6 +71,8 @@ $profesorNino = [];
 $idProfesorNino = [];
 $actividades = [];  // Creamos un array vacío para almacenar los actividades
 $datoInfoPlan=[];
+$planHijo=[];
+$id_grupo = 0;
 if (isset($data['id_nino'])) {
     //SACAR INFORMACION BASICO DEL NIÑO
     //guardamos el id de niño al server
@@ -83,6 +91,25 @@ if (isset($data['id_nino'])) {
     }
     //cerramos e query
     $querydatoHijo->close();
+
+
+    $queryPlanHijo = $conn->prepare("SELECT PF.*
+        FROM PLAN_FECHAS PF
+        JOIN PLAN_NINOS PN ON PF.id_plan = PN.id_plan
+        WHERE PN.id_nino = ?;
+        ");
+    $queryPlanHijo->bind_param("i", $id_nino);    //asignamos el valor de ?, es un i porque es un numero(integer)
+    $queryPlanHijo->execute();   //ejecutar en bbdd
+    $result = $queryPlanHijo->get_result();  //recoge el resultado de la consulta 
+    // Comprobamos la respuesta de la consulta
+    if ($result->num_rows > 0) {    //comprueba si hay resultado o no 
+        $planHijo = $result->fetch_assoc();  //extraer los datos del primier fila ([nombre => padreEjemplo, wjdwedeu, sduewhud, sduhuwe]), en este caso en js no hace falta mapear, por que solo hay una fila de datos
+    } else {
+        // echo json_encode(['error' => "No se encontraron datos para esta Hijo con el ID " . $id_nino]);
+        // exit();
+    }
+    //cerramos e query
+    $queryPlanHijo->close();
 
     
     //SACAR EL LAS FECHA DE INICIO Y FIN DEL PLAN QUE ENCUENTRA EL NIÑO
@@ -110,6 +137,7 @@ if (isset($data['id_nino'])) {
     $querygrupoNino->bind_param("i", $id_nino);    //asignamos el valor de ?, es un i porque es un numero(integer)
     $querygrupoNino->execute();   //ejecutar en bbdd
     $result = $querygrupoNino->get_result();  //recoge el resultado de la consulta 
+
     // Comprobamos la respuesta de la consulta
     if ($result->num_rows > 0) {    //comprueba si hay resultado o no 
         $grupoHijo = $result->fetch_assoc();  //extraer los datos del primier fila ([nombre => padreEjemplo, wjdwedeu, sduewhud, sduhuwe]), en este caso en js no hace falta mapear, por que solo hay una fila de datos
@@ -146,9 +174,35 @@ if (isset($data['id_nino'])) {
     $queryprofesorgrupoNino->close();
 
 
+    $queryPlanHijo = $conn->prepare("SELECT id_plan FROM plan_ninos WHERE id_nino = ?");
+    $queryPlanHijo->bind_param("i", $id_nino);    //asignamos el valor de ?, es un i porque es un numero(integer)
+    $queryPlanHijo->execute();   //ejecutar en bbdd
+    $result = $queryPlanHijo->get_result();  //recoge el resultado de la consulta 
+    // Comprobamos la respuesta de la consulta
+    if ($result->num_rows > 0) {    //comprueba si hay resultado o no 
+        $planhijo = $result->fetch_assoc();  //extraer los datos del primier fila ([nombre => padreEjemplo, wjdwedeu, sduewhud, sduhuwe]), en este caso en js no hace falta mapear, por que solo hay una fila de datos
+    } else {
+        // echo json_encode(['error' => "No se encontraron datos para esta Hijo con el ID " . $id_nino]);
+        // exit();
+    }
+    //cerramos e query
+    $queryPlanHijo->close();
+
+
+
+
+
     //HACEMOS LA CONSULTA PARA VER TODO LOS ACTIVIDADES PENDIENTES(HOY O FUTURAS) QUE HAY CON EL MONITOR Y CON EL PLAN QUE PERTENECE EL NIÑO
-    $queryActividades = $conn->prepare("SELECT * FROM ACTIVIDADES WHERE id_grupo = ? AND id_plan = ? AND dia >= CURDATE()");   //sacamos todo los informaciones del actividad, dependiendo del monitor y el plan, por que no va a ser el mismo actividades en los diferentes plan 
-    $queryActividades->bind_param("ii", $id_grupo, $datoHijo['id_plan']);    //asignamos el valor de ?, es un i porque es un numero(integer)
+    $queryActividades = $conn->prepare("SELECT A.*
+FROM ACTIVIDADES A
+JOIN GRUPO_NINOS GN ON A.id_grupo = GN.id_grupo
+JOIN PLAN_NINOS PN ON GN.id_nino = PN.id_nino
+WHERE PN.id_nino = ? 
+AND PN.id_plan = ? 
+AND A.id_plan = PN.id_plan
+AND A.dia >= CURDATE();
+");   //sacamos todo los datos del actividad donde con el id_nino sacamos el id_grupo y con el idplan 
+    $queryActividades->bind_param("ii", $id_nino, $planhijo['id_plan']);    //asignamos el valor de ?, es un i porque es un numero(integer)
     $queryActividades->execute();   //ejecutar en bbdd
     $result = $queryActividades->get_result();  //recoge el resultado de la consulta 
     // Comprobamos la respuesta de la consulta
@@ -183,5 +237,7 @@ echo json_encode([
     'profesorHijo' => $profesorNino,
     'idProfesorHijo' => $idProfesorNino,
     'actividades' => $actividades,
-    'datoInfoPlan' => $datoInfoPlan
+    'datoInfoPlan' => $datoInfoPlan,
+    '$id_grupo' => $id_grupo,
+    'planHijo' => $planHijo
 ]);

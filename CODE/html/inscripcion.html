@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="../css/styleInscripcion.css" />
+    <link rel="shortcut icon" href="../assets/logo/Logo1.png" type="image/x-icon">
     <title>Inscripcion al Campamento</title>
   </head>
   <body>
@@ -35,6 +36,13 @@
 
       <h4>Datos del niño</h4>
 
+      <label for="avatar">Sube aqui el avatar: (opcional)</label>
+      <div id="vistaPreviaavatar">
+        <img id="vistaPrevia" src="" alt="Vista previa del avatar" style="display: none; width: 150px; height: 150px;">
+      </div>
+      <input type="file" name="avatar" id="avatar"><br><br>
+
+
       <label for="nombre_nino">Nombre del niño</label>
       <input type="text" name="nombre_nino" id="nombre_nino" />
       <div id="errornombre_nino"></div>
@@ -47,7 +55,7 @@
 
       <label for="alergiaNew">Alergias</label>
       <input type="radio" name="alergiaNew" value="si" id="alergiaNew_si" required /> Si
-      <input type="radio" name="alergiaNew" value="no" id="alergiaNew_no" /> No
+      <input type="radio" name="alergiaNew" value="no" id="alergiaNew_no" checked/> No
       <div id="espacioInputAlergiaNew"></div>
       <div id="errorAlergiaNew"></div>
       <br />
@@ -72,13 +80,27 @@
       </p>
 </div>
 <div class="button-container">
-  <input type="submit" value="Inscribir" id="enviar"/>
   <button type="button" id="volver">Volver</button>
+  <input type="submit" value="Inscribir" id="enviar"/>
+  
 </div>
 <div id="errorEnviar"></div>
 </form>
 <div id="infoForm"></div>
 <script src="../JS/operarInscripcion.js"></script>
 </div>
+<div class="area">
+  <ul class="circles">
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+</ul></div>
 </body>
 </html>
